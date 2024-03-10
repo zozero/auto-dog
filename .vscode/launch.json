@@ -1,0 +1,62 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "app",
+            "cwd": "${workspaceFolder}",
+            // 应用编译的执行文件
+            "runtimeExecutable": "${workspaceFolder}/node_modules/electron/dist/electron.exe",
+            "trace": "verbose",
+            // 本地运行，开启远程调试端口
+            "runtimeArgs": [
+                "--local",
+                // 必须要有，表示在当前目录下运行app，当前目录就是项目目录
+                ".",
+                "--remote-debugging-port=9876"
+            ],
+        },
+        {
+            "name": "Renderer",
+            "type": "chrome",
+            "request": "attach",
+            "port": 9876,
+            "url": "http://localhost:4200",
+            "sourceMaps": true,  
+            "timeout": 10000,
+            "trace": "verbose",
+            "sourceMapPathOverrides": {
+                "webpack:///./*": "${workspaceFolder}/*"
+            },
+            "preLaunchTask": "Build.Renderer"
+        },
+        {
+            "name": "Main",
+            "type": "node",
+            "request": "launch",
+            "protocol": "inspector",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+            "trace": "verbose",
+            "runtimeArgs": [
+                "--serve",
+                ".",
+                "--remote-debugging-port=9876"
+            ],
+            "windows": {
+                "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+            },
+            "preLaunchTask": "Build.Main"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Application Debug",
+            "configurations": [ "Renderer", "Main" ]
+        }
+    ]
+}
