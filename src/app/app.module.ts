@@ -4,7 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
-
+// DevUI部分组件依赖angular动画，需要引入animations模块
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 
 // NG Translate
@@ -16,6 +17,11 @@ import { DetailModule } from './detail/detail.module';
 
 import { AppComponent } from './app.component';
 
+
+import { DevUIModule } from 'ng-devui';
+import { MenuModule } from 'ng-devui/menu';
+import { LayoutModule } from 'ng-devui';
+
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>  new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
@@ -23,6 +29,7 @@ const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>  new Transl
   declarations: [AppComponent],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
     CoreModule,
@@ -36,7 +43,11 @@ const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>  new Transl
         useFactory: httpLoaderFactory,
         deps: [HttpClient]
       }
-    })
+    }),
+    
+    DevUIModule,
+    MenuModule,
+    LayoutModule
   ],
   providers: [],
   bootstrap: [AppComponent]

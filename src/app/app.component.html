@@ -1,1 +1,41 @@
+<div class="menu-box">
+  <d-row>
+    <d-col>
+      <!-- 主菜单 -->
+      <div dMenu (menuItemClick)="menuItemClick($event)" class="menu">
+        <ng-container *ngFor="let m of menus;">
+            <div
+            dMenuItem
+            [title]="m.menu.name"
+            (itemClick)="itemClick(m.menu.key,m)"
+            [active]="m.menu.key === activeKey"
+          >
+          <a routerLink="/detail">
+          <!-- <d-icon class="devui-menu-item-icon" icon="icon-op-list" /> -->
+          <span class="devui-menu-item-name over-flow-ellipsis">{{ m.menu.name }}</span>
+        </a>
+          </div>
+          </ng-container>
+      </div>
+    </d-col>
+    
+    <d-col *ngIf="menuSubs?.length">
+      <!-- 子栏 -->
+      <div dMenu (menuItemClick)="menuItemClick($event)" class="sub-menu" >
+        <ng-container *ngFor="let sub of menuSubs">
+            <div
+            dMenuItem
+            [title]="sub.name"
+            (itemClick)="itemClickSub(sub.key)"
+            [active]="sub.key === activeKeySub"
+          >
+          <!-- <d-icon class="devui-menu-item-icon" icon="icon-op-list" /> -->
+          <span class="devui-menu-item-name over-flow-ellipsis">{{ sub.name }}</span>
+          </div>
+          </ng-container>
+      </div>
+    </d-col>
+  </d-row>
+</div>
+
 <router-outlet></router-outlet>

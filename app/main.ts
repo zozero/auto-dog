@@ -46,6 +46,7 @@ function createWindow(): BrowserWindow {
 
     const url = new URL(path.join('file:', __dirname, pathIndex));
     win.loadURL(url.href);
+    // win.loadURL('http://localhost:4200');
   }
 
   // Emitted when the window is closed.

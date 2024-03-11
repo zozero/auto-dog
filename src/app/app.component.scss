@@ -1,3 +1,19 @@
-:host {
-  
+
+.menu-box{
+    
+    .devui-menu{
+        padding: 2px;
+    }
+    .menu{
+        width: 108px;
+    }
+    .sub-menu{
+        width: 216px;
+        background-color:  lightgray;
+    }
+    .devui-menu-item{
+        text-align: center;
+        justify-content: center;
+        padding: 0;
+    }
 }
