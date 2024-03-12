@@ -1,6 +1,8 @@
-import { MenuItemType } from 'ng-devui/menu';
-
+export interface MyMenuItemType{
+  icon: string;
+  name: string;
+}
 export interface MyMenu {
-  menu: MenuItemType;
-  subMenu: MenuItemType[];
+  menu: MyMenuItemType;
+  subMenuList: MyMenuItemType[];
 }

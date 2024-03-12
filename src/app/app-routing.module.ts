@@ -7,22 +7,36 @@ import { DetailRoutingModule } from './detail/detail-routing.module';
 
 const routes: Routes = [
   {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
+    path: '配置',
+    loadComponent: () =>
+      import('./config/config.component').then((mod) => mod.ConfigComponent),
+  },
+  {
+    path: '图片处理/:str',
+    loadComponent: () =>
+      import('./image-process/image-process.component').then(
+        (mod) => mod.ImageProcessComponent
+      ),
+  },
+  {
+    path: '流程规划/:str',
+    loadComponent: () =>
+      import('./workflow-planed/workflow-planed.component').then(
+        (mod) => mod.WorkflowPlanedComponent
+      ),
   },
   {
     path: '**',
-    component: PageNotFoundComponent
-  }
+    component: PageNotFoundComponent,
+  },
 ];
 
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, {}),
     HomeRoutingModule,
-    DetailRoutingModule
+    DetailRoutingModule,
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
