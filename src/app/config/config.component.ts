@@ -13,11 +13,11 @@ import { executionSideTable } from '../core/services/dexie-db/execution-side-tab
 export class ConfigComponent {
   version: string = '';
   constructor() {
-    void this.setExecutionSideTable();
     void this.setVersion();
+    void this.setExecutionSideTable();
   }
   async setExecutionSideTable() {
-    await executionSideTable.initConfigData();
+    await executionSideTable.initExecutionSideInfo();
   }
   async setVersion() {
     await configTable.initConfigData();

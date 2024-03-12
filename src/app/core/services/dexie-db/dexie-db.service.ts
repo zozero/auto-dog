@@ -41,15 +41,14 @@ export class DexieDBService extends Dexie {
   // new Date('2023/03/01'),new Date('2023/03/04')
   // return historyDB.historyTable.where('dateTime').between(startDate, endDate)
   // }
-  async tableAddData(table: any, data: any) {
+  async tableAddData(table: Table, data: any) {
     const currentDate=new Date();
     data.createTime =currentDate;
     data.updateTime = currentDate;
-    console.log(data);
     await table.add(data);
   }
 
-  async tableAddDatas(table: any, datas: any[]) {
+  async tableAddDatas(table: Table, datas: any[]) {
     for (let i = 0; i < datas.length; ++i) {
       const currentDate=new Date();
       datas[i].createTime = currentDate;
@@ -57,6 +56,7 @@ export class DexieDBService extends Dexie {
     }
     await table.bulkAdd(datas);
   }
+
 
   // 初始化表格，先删除表格，后重新打开表格
   async initTable() {
