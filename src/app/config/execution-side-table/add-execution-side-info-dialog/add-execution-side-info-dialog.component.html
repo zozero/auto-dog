@@ -1,0 +1,18 @@
+<div>
+    <div class="d-form-field">
+      <div class="d-form-label">
+        <div class="text" title="name" for="input-label">IP:端口</div>
+      </div>
+      <div class="d-form-ctrl">
+        <input
+          dTextInput type="text" 
+          class="d-form-text" 
+          [(ngModel)]="mydata.ipPort"
+          [attr.maxlength]="128"
+          [attr.minlength]="3"
+        />
+      </div>
+      <!-- 该内容具有唯一性，不可以在重复出现 -->
+    </div>
+    
+  </div>
