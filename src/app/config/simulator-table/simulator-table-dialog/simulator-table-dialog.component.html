@@ -1,0 +1,53 @@
+<div>
+  <div class="d-form-field">
+    <div class="d-form-label">
+      <div class="text" title="name" for="input-label">名称</div>
+    </div>
+    <div class="d-form-ctrl">
+      <input
+        dTextInput
+        type="text"
+        class="d-form-text"
+        [(ngModel)]="mydata.name"
+        [attr.maxlength]="128"
+        [attr.minlength]="3"
+      />
+    </div>
+  </div>
+
+  <div class="d-form-field">
+    <div class="d-form-label">
+      <div class="text" title="ipPort" for="input-label">IP:端口</div>
+    </div>
+    <div class="d-form-ctrl">
+      <input
+        dTextInput
+        type="text"
+        class="d-form-text"
+        [(ngModel)]="mydata.ipPort"
+        [attr.maxlength]="64"
+        [attr.minlength]="3"
+      />
+    </div>
+  </div>
+
+  <div class="d-form-field">
+    <div class="d-form-label">
+      <div class="text" title="type" for="input-label">类型</div>
+    </div>
+    <div class="d-form-ctrl">
+      <d-select
+        [options]="simulatorType"
+        [isSearch]="true"
+        class="d-form-text"
+        [toggleOnFocus]="true"
+        [appendToBody]="true"
+        [(ngModel)]="mydata.type"
+      >
+        <ng-template let-option="option">
+          {{ option }}
+        </ng-template>
+      </d-select>
+    </div>
+  </div>
+</div>

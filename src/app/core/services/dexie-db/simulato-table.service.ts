@@ -42,6 +42,12 @@ export class SimulatorTableService extends DexieDBService  {
   async updateSimulatorInfo(key:number,data:{ [keyPath: string]: any}){
     await this.tableUpdateData(this.oneTable,key,data);
   }
+  
+  // 返回最后一条数据
+  async queryLastData(){
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return await this.oneTable.orderBy('id').last();
+  }
 }
 
 export const simulatorTable = new SimulatorTableService();

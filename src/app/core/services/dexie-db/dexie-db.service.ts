@@ -21,7 +21,7 @@ export class DexieDBService extends Dexie {
     this.version(1).stores({
       configDataTable: '++id,createTime,updateTime',
       executionSideInfoTable: '++id,&ipPort,updateTime,createTime',
-      simulatorInfoTable: '++id,&ipPort,type,&name,updateTime,createTime',
+      simulatorInfoTable: '++id,&name,&ipPort,type,updateTime,createTime',
     });
 
     //   this.on('populate', () => this.populate());
