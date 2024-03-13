@@ -20,8 +20,8 @@ export class DexieDBService extends Dexie {
     super('AutoDog');
     this.version(1).stores({
       configDataTable: '++id,createTime,updateTime',
-      executionSideInfoTable: '++id,ip,port,updateTime,createTime',
-      simulatorInfoTable: '++id,ip,port,type,name,updateTime,createTime',
+      executionSideInfoTable: '++id,&ipPort,updateTime,createTime',
+      simulatorInfoTable: '++id,&ipPort,type,&name,updateTime,createTime',
     });
 
     //   this.on('populate', () => this.populate());
@@ -57,6 +57,11 @@ export class DexieDBService extends Dexie {
     await table.bulkAdd(datas);
   }
 
+  async tableUpdateData(table: Table, key: number,data:{ [keyPath: string]: any}){
+    const currentDate=new Date();
+    data.updateTime = currentDate;
+    await table.update(key,data);
+  }
 
   // 初始化表格，先删除表格，后重新打开表格
   async initTable() {

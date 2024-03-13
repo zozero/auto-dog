@@ -17,6 +17,7 @@ import { AppComponent } from './app.component';
 
 
 import { DevUIModule } from 'ng-devui';
+import { IconModule } from 'ng-devui/icon';
 import { MenuModule } from 'ng-devui/menu';
 import { LayoutModule } from 'ng-devui';
 
@@ -44,7 +45,9 @@ const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>  new Transl
     
     DevUIModule,
     MenuModule,
-    LayoutModule
+    LayoutModule,
+    IconModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]

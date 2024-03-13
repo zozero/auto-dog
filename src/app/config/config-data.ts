@@ -13,8 +13,7 @@ export interface SimulatorInfo {
   id?: number;
   name: string;
   type: string;
-  ip: string;
-  port: number;
+  ipPort: string;
   // 修改的时间
   updateTime?: Date;
   // 记录创建的时间

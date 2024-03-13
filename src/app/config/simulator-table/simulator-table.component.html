@@ -1,0 +1,109 @@
+<h3>模拟器表格</h3>
+<d-data-table
+  #dataTable
+  [dataSource]="dataList"
+  [tableOverflowType]="'overlay'"
+  [scrollable]="true"
+>
+  <thead dTableHead>
+    <tr dTableRow>
+      <th dHeadCell>序号</th>
+      <th dHeadCell>模拟器名称</th>
+      <th dHeadCell>类型</th>
+      <th dHeadCell>IP+端口</th>
+      <th dHeadCell>创建日期</th>
+      <th dHeadCell>更新日期</th>
+    </tr>
+  </thead>
+  <tbody dTableBody>
+    <ng-template let-rowItem="rowItem" let-rowIndex="rowIndex">
+      <tr dTableRow>
+        <td dTableCell [rowItem]="rowItem" [field]="'id'">
+          <span>{{ rowItem?.id }}</span>
+        </td>
+        <td
+          dTableCell
+          [editable]="true"
+          [editableTip]="editableTip"
+          [(editing)]="rowItem['nameEdit']"
+          [rowItem]="rowItem"
+          [field]="'name'"
+          [beforeEditStart]="beforeEditStart"
+          [beforeEditEnd]="beforeEditEnd"
+        >
+          <span *ngIf="!rowItem['nameEdit']">{{ rowItem?.name }}</span>
+          <div *ngIf="rowItem['nameEdit']" class="edit-padding-fix">
+            <!-- 引入dCommonsModule的autofocus -->
+            <input
+              [dAutoFocus]="true"
+              class="devui-form-control"
+              name="name"
+              [(ngModel)]="rowItem.name"
+              [attr.maxlength]="100"
+              [attr.minlength]="3"
+            />
+          </div>
+        </td>
+
+        <td
+          dTableCell
+          [editable]="true"
+          [editableTip]="editableTip"
+          [(editing)]="rowItem['typeEdit']"
+          [rowItem]="rowItem"
+          [field]="'type'"
+          [beforeEditStart]="beforeEditStart"
+          [beforeEditEnd]="beforeEditEnd"
+        >
+          <span *ngIf="!rowItem['typeEdit']">{{ rowItem?.type }}</span>
+          <div
+            *ngIf="rowItem['typeEdit']"
+            class="customized-editor edit-padding-fix"
+          >
+            <d-select
+              [options]="simulatorType"
+              [isSearch]="true"
+              [autoFocus]="true"
+              [toggleOnFocus]="true"
+              [appendToBody]="true"
+              [(ngModel)]="rowItem.type"
+              (ngModelChange)="onSelectEditEnd(rowItem, 'typeEdit')"
+            >
+              <ng-template let-option="option">
+                {{ option }}
+              </ng-template>
+            </d-select>
+          </div>
+        </td>
+
+        <td
+          dTableCell
+          [editable]="true"
+          [editableTip]="editableTip"
+          [(editing)]="rowItem['ipPortEdit']"
+          [rowItem]="rowItem"
+          [field]="'ipPort'"
+          [beforeEditStart]="beforeEditStart"
+          [beforeEditEnd]="beforeEditEnd"
+        >
+          <span *ngIf="!rowItem['ipPortEdit']">{{ rowItem?.ipPort }}</span>
+          <input
+            *ngIf="rowItem['ipPortEdit']"
+            [dAutoFocus]="true"
+            class="devui-form-control"
+            name="ipPort"
+            [(ngModel)]="rowItem.ipPort"
+            [attr.maxlength]="100"
+            [attr.minlength]="3"
+          />
+        </td>
+        <td dTableCell [rowItem]="rowItem" [field]="'createTime'">
+          <span>{{ rowItem?.createTime | i18nDate : "full" : false }}</span>
+        </td>
+        <td dTableCell [rowItem]="rowItem" [field]="'updateTime'">
+          <span>{{ rowItem?.updateTime | i18nDate : "full" : false }}</span>
+        </td>
+      </tr>
+    </ng-template>
+  </tbody>
+</d-data-table>

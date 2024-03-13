@@ -15,11 +15,32 @@ export class SimulatorTableService extends DexieDBService  {
   constructor() {
     super();
   }
+  // 初始化配置数据
+  async initSimulatorInfo() {
+    const one={
+      name: "蓝叠模拟器1",
+      type: "android",
+      ipPort: '127.0.0.1:5555',
+    }
+    // 可以原地让它返回为空这样就不需要让整个函数为异步了
+    // const count=await this.getDataCount(this.executionSideInfoTable);
+    const count=await this.oneTable.count();
+    console.log("🚀 ~ ExecutionSideTableService ~ initConfigData ~ count:", count)
+     // 如果数据时零条就加入一条数据
+     if (!count) {
+      await this.addSimulatorInfo(one);
+    }
+    return one
+  }
 
-  
   // 添加一条数据
-  async addtExecutionSideInfo(data:SimulatorInfo){
+  async addSimulatorInfo(data:SimulatorInfo){
     await this.tableAddData(this.oneTable, data);
+  }
+
+  // 更新一条数据
+  async updateSimulatorInfo(key:number,data:{ [keyPath: string]: any}){
+    await this.tableUpdateData(this.oneTable,key,data);
   }
 }
 
