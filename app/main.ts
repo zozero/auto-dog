@@ -27,6 +27,7 @@ function createWindow(): BrowserWindow {
       allowRunningInsecureContent: serve,
       contextIsolation: false,
     },
+    title:'自动化小犬'
   });
 
   if (serve) {

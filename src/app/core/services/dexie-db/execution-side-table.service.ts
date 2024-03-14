@@ -22,10 +22,6 @@ export class ExecutionSideTableService extends DexieDBService {
     // 可以原地让它返回为空这样就不需要让整个函数为异步了
     // const count=await this.getDataCount(this.executionSideInfoTable);
     const count = await this.oneTable.count();
-    console.log(
-      '🚀 ~ ExecutionSideTableService ~ initConfigData ~ count:',
-      count
-    );
     // 如果数据时零条就加入一条数据
     if (!count) {
       await this.addtExecutionSideInfo(one);
@@ -46,6 +42,11 @@ export class ExecutionSideTableService extends DexieDBService {
   async queryLastData(){
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return await this.oneTable.orderBy('id').last();
+  }
+
+  // 删除一条数据
+  async deleteExecutionSideInfo(id:number){
+    await this.oneTable.delete(id);
   }
 }
 

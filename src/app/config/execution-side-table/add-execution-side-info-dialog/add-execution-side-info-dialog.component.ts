@@ -3,11 +3,12 @@ import { ExecutionSideInfo } from '../../config-data';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { executionSideTable } from '../../../core/services/dexie-db/execution-side-table.service';
 import { TipsDialogService } from '../../../core/services/tips-dialog/tips-dialog.service';
+import { DevUIModule } from 'ng-devui';
 
 @Component({
   selector: 'app-add-execution-side-info-dialog',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule,DevUIModule],
   templateUrl: './add-execution-side-info-dialog.component.html',
   styleUrl: './add-execution-side-info-dialog.component.scss'
 })

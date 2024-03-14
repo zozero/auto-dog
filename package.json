@@ -1,11 +1,11 @@
 {
-  "name": "angular-electron",
+  "name": "auto-dog",
   "version": "14.0.0",
-  "description": "Angular 17 with Electron 27 (Typescript + SASS + Hot Reload)",
+  "description": "自动化小犬",
   "homepage": "https://github.com/maximegris/angular-electron",
   "author": {
-    "name": "Maxime GRIS",
-    "email": "maxime.gris@gmail.com"
+    "name": "zozero",
+    "email": "null@null.null"
   },
   "keywords": [
     "angular",

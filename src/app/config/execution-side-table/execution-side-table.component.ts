@@ -86,4 +86,10 @@ export class ExecutionSideTableComponent {
     };
     void executionSideTable.updateExecutionSideInfo(rowItem.id as number, data);
   }
+
+  deleteData(id:number){
+    console.log(id)
+    // void executionSideTable.deleteExecutionSideInfo(id);
+    
+  }
 }

@@ -1,9 +1,9 @@
 {
-  "name": "angular-electron",
-  "description": "Angular Electron sample",
+  "name": "auto-dog",
+  "description": "自动化小犬",
   "author": {
-    "name": "Maxime GRIS",
-    "email": "maxime.gris@gmail.com"
+    "name": "zozero",
+    "email": "null@null.null"
   },
   "version": "14.0.0",
   "main": "main.js",

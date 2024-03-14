@@ -5,11 +5,13 @@ import { TipsDialogService } from '../../../core/services/tips-dialog/tips-dialo
 import { SelectModule } from 'ng-devui/select';
 import { simulatorType } from '../simulator-table.component';
 import { simulatorTable } from '../../../core/services/dexie-db/simulato-table.service';
+import { InputGroupModule } from 'ng-devui/input-group';
+import { DevUIModule } from 'ng-devui';
 
 @Component({
   selector: 'app-simulator-table-dialog',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, SelectModule],
+  imports: [FormsModule, ReactiveFormsModule, SelectModule,InputGroupModule,DevUIModule],
   templateUrl: './simulator-table-dialog.component.html',
   styleUrl: './simulator-table-dialog.component.scss',
 })
