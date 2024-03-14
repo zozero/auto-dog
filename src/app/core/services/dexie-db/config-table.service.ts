@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 
 import { DexieDBService } from './dexie-db.service';
-import { ConfigData } from '../../../config/config-data';
+import { ConfigData, ExecutionSideInfo, SimulatorInfo } from '../../../config/config-data';
 import { Table } from 'dexie';
+import { executionSideTable } from './execution-side-table.service';
+import { simulatorTable } from './simulato-table.service';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +22,8 @@ export class ConfigTableService extends DexieDBService {
     const one = {
       id: 1,
       version: '1.0',
+      currentExecutionSideInfo:await executionSideTable.queryExecutionSideFirstInfo(),
+      currentSimulatorInfo:await simulatorTable.querySimulatorFirstInfo()
     };
     // 可以原地让它返回为空这样就不需要让整个函数为异步了
     const count = await this.oneTable.count();
@@ -40,6 +44,13 @@ export class ConfigTableService extends DexieDBService {
   // 添加多条配置数据
   async addtConfigDataList(datas: ConfigData[]) {
     await this.tableAddDatas(this.oneTable, datas);
+  }
+
+  // 更新数据
+  async updateData(data:{"currentSimulatorInfo":SimulatorInfo}|{"currentExecutionSideInfo":ExecutionSideInfo}){
+    if(data){
+      await this.oneTable.update(1,data) 
+    }
   }
 }
 

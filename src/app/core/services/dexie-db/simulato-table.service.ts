@@ -42,7 +42,13 @@ export class SimulatorTableService extends DexieDBService  {
   async updateSimulatorInfo(key:number,data:{ [keyPath: string]: any}){
     await this.tableUpdateData(this.oneTable,key,data);
   }
-  
+
+  // 返回第一条数据
+  async querySimulatorFirstInfo(){
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return await this.oneTable.orderBy('id').first();
+  }
+
   // 返回最后一条数据
   async querySimulatorLastInfo(){
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
@@ -50,7 +56,7 @@ export class SimulatorTableService extends DexieDBService  {
   }
 
   // 获取所有数据
-  async queryAllSimulatorLastInfos(){
+  async queryAllSimulatorInfos(){
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return await this.oneTable.toArray();
   }

@@ -6,35 +6,6 @@
     </d-button>
   </d-col>
   <d-col [dSpan]="10" [dOffset]="6">
-    <d-row>
-      <!-- <d-col  [dSpan]="12">
-        <d-select
-        [placeholder]="'执行端'"
-          [options]="simulatorType"
-          [isSearch]="true"
-          [toggleOnFocus]="true"
-          [appendToBody]="true"
-          [(ngModel)]="simulatorInfo"
-        >
-          <ng-template let-option="option">
-            {{ simulatorInfo?.name }}
-          </ng-template>
-        </d-select>
-      </d-col> -->
-      <d-col [dSpan]="12">
-        <d-select
-          [placeholder]="'模拟器端'"
-          [options]="simulatorInfoList"
-          [isSearch]="true"
-          [toggleOnFocus]="true"
-          [filterKey]="'name'"
-          [(ngModel)]="currentSimulatorInfo"
-        >
-          <ng-template let-option="option">
-            {{ option.name }} {{ option.ipPort }}
-          </ng-template>
-        </d-select>
-      </d-col>
-    </d-row>
+    
   </d-col>
 </d-row>

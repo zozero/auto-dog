@@ -38,6 +38,12 @@ export class ExecutionSideTableService extends DexieDBService {
     await this.tableUpdateData(this.oneTable, key, data);
   }
 
+  // 返回第一条数据
+  async queryExecutionSideFirstInfo(){
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return await this.oneTable.orderBy('id').first();
+  }
+
   // 返回最后一条数据
   async queryExecutionSideLastInfo(){
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
