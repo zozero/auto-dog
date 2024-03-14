@@ -8,7 +8,7 @@ export const BROWSER_STORAGE = new InjectionToken<Storage>('Browser Storage', {
 @Injectable({
   providedIn: 'root'
 })
-export class BrowserStorageService {
+export class MyLocalStorageService {
   constructor(@Inject(BROWSER_STORAGE) public storage: Storage) {}
 
   get(key: string) {

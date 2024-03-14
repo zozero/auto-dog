@@ -24,12 +24,13 @@ export class ImageProcessComponent {
     this.route.params.subscribe((param) => {
       this.projectName = param.str;
     });
-   
+    this.route.url.subscribe((url:any) => {
+      console.log("🚀 ~ ImageProcessComponent ~ this.route.url.subscribe ~ url:", url)
+    })
   }
-  
-
 
   toggleLoading() {
+    // await configTable
     this.showLoading = true;
     setTimeout(() => {
       this.showLoading = false;

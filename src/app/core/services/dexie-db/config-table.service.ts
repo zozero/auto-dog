@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 
 import { DexieDBService } from './dexie-db.service';
-import { ConfigData, ExecutionSideInfo, SimulatorInfo } from '../../../config/config-data';
+import {
+  ConfigData,
+  ExecutionSideInfo,
+  SimulatorInfo,
+} from '../../../config/config-data';
 import { Table } from 'dexie';
 import { executionSideTable } from './execution-side-table.service';
 import { simulatorTable } from './simulato-table.service';
@@ -12,7 +16,7 @@ import { simulatorTable } from './simulato-table.service';
 
 // 配置数据表
 export class ConfigTableService extends DexieDBService {
-  oneTable:Table =this.configDataTable;
+  oneTable: Table = this.configDataTable;
   constructor() {
     super();
     console.log(new Date().toLocaleString('zh-CN'));
@@ -22,8 +26,9 @@ export class ConfigTableService extends DexieDBService {
     const one = {
       id: 1,
       version: '1.0',
-      currentExecutionSideInfo:await executionSideTable.queryExecutionSideFirstInfo(),
-      currentSimulatorInfo:await simulatorTable.querySimulatorFirstInfo()
+      currentExecutionSideInfo:
+        await executionSideTable.queryExecutionSideFirstInfo(),
+      currentSimulatorInfo: await simulatorTable.querySimulatorFirstInfo(),
     };
     // 可以原地让它返回为空这样就不需要让整个函数为异步了
     const count = await this.oneTable.count();
@@ -47,10 +52,20 @@ export class ConfigTableService extends DexieDBService {
   }
 
   // 更新数据
-  async updateData(data:{"currentSimulatorInfo":SimulatorInfo}|{"currentExecutionSideInfo":ExecutionSideInfo}){
-    if(data){
-      await this.oneTable.update(1,data) 
+  async updateData(
+    data:
+      | { currentSimulatorInfo: SimulatorInfo }
+      | { currentExecutionSideInfo: ExecutionSideInfo }
+  ) {
+    if (data) {
+      await this.oneTable.update(1, data);
     }
+  }
+
+  // 返回第一条数据
+  async getOneConfigData(): Promise<ConfigData> {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return await this.oneTable.get(1);
   }
 }
 

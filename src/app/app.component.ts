@@ -9,6 +9,7 @@ import { ExecutionSideInfo, SimulatorInfo } from './config/config-data';
 import { simulatorTable } from './core/services/dexie-db/simulato-table.service';
 import { executionSideTable } from './core/services/dexie-db/execution-side-table.service';
 import { configTable } from './core/services/dexie-db/config-table.service';
+import { MyLocalStorageService } from './core/services/my-local-storage/my-local-storage.service';
 
 const myMenuList: MyMenu[] = [
   {
@@ -71,14 +72,18 @@ export class AppComponent {
   // 子菜单列表，由于所有主菜单的子菜单相同，所以子菜单列表固定
   subMenuList: MyMenuItemType[] = [];
   // 当前子菜单
-  currentSubMenu: MyMenuItemType | undefined;
+  currentSubMenu!: MyMenuItemType;
 
   constructor(
     private electronService: ElectronService,
     private translate: TranslateService,
-    private router: Router
+    private router: Router,
+    private myLocalStorage: MyLocalStorageService
   ) {
     void this.setHttpDatas();
+
+    // this.setOneMenu();
+    this.setStoreMenu()
 
     this.translate.setDefaultLang('en');
     console.log('APP_CONFIG', APP_CONFIG);
@@ -91,6 +96,32 @@ export class AppComponent {
     } else {
       console.log('Run in browser');
     }
+  }
+
+  // 刷新或查询打开时设置当前菜单
+  setOneMenu() {
+    this.myLocalStorage.set('currentMenu', this.currentMenu.menu.name);
+    this.myLocalStorage.set('currentSubMenu', this.currentSubMenu.name);
+  }
+
+  // 设置保存的菜单
+  setStoreMenu() {
+    const curMuen = this.myLocalStorage.get('currentMenu');
+    console.log("🚀 ~ AppComponent ~ setStoreMenu ~ curMuen:", curMuen)
+    this.menuList.forEach((d1) => {
+      if (d1.menu.name === curMuen) {
+        this.currentMenu = d1;
+        this.subMenuList=this.currentMenu.subMenuList;
+        const curSubMuen = this.myLocalStorage.get('currentSubMenu');
+        this.currentMenu.subMenuList.forEach((d2) => {
+          if (d2.name === curSubMuen) {
+            this.currentSubMenu = d2;
+            console.log("🚀 ~ AppComponent ~ this.currentMenu.subMenuList.forEach ~ this.currentSubMenu :", this.currentSubMenu )
+          
+          }
+        });
+      }
+    });
   }
 
   // 主菜单栏某项被点击
@@ -118,6 +149,9 @@ export class AppComponent {
         .navigate([this.currentMenu.menu.name, this.currentSubMenu?.name])
         .then(
           (nav) => {
+            this.setOneMenu();
+            
+            console.log('🚀 ~ AppComponent ~ menuBoxClick ~ nav:', nav);
             console.log(nav); // true if navigation is successful
           },
           (err) => {
@@ -127,6 +161,9 @@ export class AppComponent {
     } else {
       this.router.navigate([this.currentMenu.menu.name]).then(
         (nav) => {
+          this.setOneMenu();
+
+          console.log('🚀 ~ AppComponent ~ menuBoxClick ~ nav:', nav);
           console.log(nav); // true if navigation is successful
         },
         (err) => {
@@ -139,12 +176,25 @@ export class AppComponent {
 
   // 设置当前需要传输的网络地址，即执行端地址和模拟器地址
   async setHttpDatas() {
-    this.simulatorInfoList = await simulatorTable.queryAllSimulatorInfos();
-    this.currentSimulatorInfo = this.simulatorInfoList[0];
+    console.log("🚀 ~ AppComponent ~ setHttpDatas ~ setHttpDatas:")
+    // 获取所有数据
     this.executionSideInfoList =
       await executionSideTable.queryAllExecutionSideInfos();
-    this.currentExecutionSide = this.executionSideInfoList[0];
-    this.onSelectEditEnd('');
+    this.simulatorInfoList = await simulatorTable.queryAllSimulatorInfos();
+
+    // 判断数据库是否已经存在执行端和模拟器端的数据，是的话读取
+    const oneSimulatorInfo = await configTable.getOneConfigData();
+    if (
+      oneSimulatorInfo?.currentExecutionSideInfo &&
+      oneSimulatorInfo?.currentSimulatorInfo
+    ) {
+      this.currentExecutionSide = oneSimulatorInfo.currentExecutionSideInfo;
+      this.currentSimulatorInfo = oneSimulatorInfo.currentSimulatorInfo;
+    } else {
+      this.currentExecutionSide = this.executionSideInfoList[0];
+      this.currentSimulatorInfo = this.simulatorInfoList[0];
+      await this.onSelectEditEnd('');
+    }
   }
 
   // 更新数据
@@ -163,18 +213,33 @@ export class AppComponent {
   }
 
   // 更新配置数据
-  onSelectEditEnd(type: string) {
+  async onSelectEditEnd(type: string) {
+    console.log("🚀 ~ AppComponent ~ onSelectEditEnd ~ onSelectEditEnd:")
     switch (type) {
       case '执行端':
-        void configTable.updateData({"currentExecutionSideInfo":this.currentExecutionSide});
+        await configTable.updateData({
+          currentExecutionSideInfo: this.currentExecutionSide,
+        });
         break;
       case '模拟器端':
-        void configTable.updateData({"currentSimulatorInfo":this.currentSimulatorInfo});
+        await configTable.updateData({
+          currentSimulatorInfo: this.currentSimulatorInfo,
+        });
         break;
       default:
-        void configTable.updateData({"currentExecutionSideInfo":this.currentExecutionSide});
-        void configTable.updateData({"currentSimulatorInfo":this.currentSimulatorInfo});
+        await configTable.updateData({
+          currentExecutionSideInfo: this.currentExecutionSide,
+        });
+        await configTable.updateData({
+          currentSimulatorInfo: this.currentSimulatorInfo,
+        });
         break;
     }
+  }
+
+  keepMenu(menu: string, subMenu: string) {
+    console.log('🚀 ~ AppComponent ~ keepMenu ~ menu:', menu);
+    this.currentMenu.menu.name = menu;
+    this.currentSubMenu.name = subMenu;
   }
 }
