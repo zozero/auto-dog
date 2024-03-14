@@ -150,7 +150,11 @@ export class AppComponent {
         .then(
           (nav) => {
             this.setOneMenu();
-            
+            // 防止初次载入时不存在http数据
+            if(!this.currentExecutionSide && !this.currentSimulatorInfo){
+              void this.setHttpDatas()
+            }
+
             console.log('🚀 ~ AppComponent ~ menuBoxClick ~ nav:', nav);
             console.log(nav); // true if navigation is successful
           },
@@ -162,6 +166,10 @@ export class AppComponent {
       this.router.navigate([this.currentMenu.menu.name]).then(
         (nav) => {
           this.setOneMenu();
+          // 防止初次载入时不存在http数据
+          if(!this.currentExecutionSide && !this.currentSimulatorInfo){
+            void this.setHttpDatas()
+          }
 
           console.log('🚀 ~ AppComponent ~ menuBoxClick ~ nav:', nav);
           console.log(nav); // true if navigation is successful
