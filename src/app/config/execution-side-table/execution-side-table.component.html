@@ -18,8 +18,8 @@
   <tbody dTableBody>
     <ng-template let-rowItem="rowItem" let-rowIndex="rowIndex">
       <tr dTableRow>
-        <td dTableCell [rowItem]="rowItem" [field]="'id'">
-          <span>{{ rowItem?.id }}</span>
+        <td dTableCell [rowItem]="rowItem" [field]="'index'">
+          <span>{{rowIndex+1}}</span>
         </td>
         <td
           dTableCell

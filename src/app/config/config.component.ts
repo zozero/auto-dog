@@ -4,15 +4,15 @@ import { configTable } from '../core/services/dexie-db/config-table.service';
 import { ExecutionSideTableComponent } from './execution-side-table/execution-side-table.component';
 import { ExecutionSideInfo, SimulatorInfo } from './config-data';
 import { simulatorTable } from '../core/services/dexie-db/simulato-table.service';
-import { SimulatorTableComponent } from "./simulator-table/simulator-table.component";
-// import { ConfigData } from './config-data';
+import { SimulatorTableComponent } from "./simulator-table/simulator-table.component";;
+import { AlertModule } from 'ng-devui/alert';
 
 @Component({
     selector: 'app-config',
     standalone: true,
     templateUrl: './config.component.html',
     styleUrl: './config.component.scss',
-    imports: [ExecutionSideTableComponent, SimulatorTableComponent]
+    imports: [ExecutionSideTableComponent, SimulatorTableComponent,AlertModule]
 })
 export class ConfigComponent implements OnInit {
   version: string = '';

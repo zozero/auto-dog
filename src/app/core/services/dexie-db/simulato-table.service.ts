@@ -19,7 +19,7 @@ export class SimulatorTableService extends DexieDBService  {
   async initSimulatorInfo() {
     const one={
       name: "蓝叠模拟器1",
-      type: "android",
+      type: "安卓",
       ipPort: '127.0.0.1:5555',
     }
     // 可以原地让它返回为空这样就不需要让整个函数为异步了
@@ -47,6 +47,12 @@ export class SimulatorTableService extends DexieDBService  {
   async queryLastData(){
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return await this.oneTable.orderBy('id').last();
+  }
+
+  
+  // 删除一条数据
+  async deleteSimulatorInfo(id:number){
+    await this.oneTable.delete(id);
   }
 }
 

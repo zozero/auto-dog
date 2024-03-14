@@ -1,4 +1,5 @@
 <h2>配置页面</h2>
+<d-alert [type]="'info'" [closeable]="false"> 即使删除了所有数据，在重新载入后也会生成一条数据。 </d-alert>
 <app-execution-side-table [dataList]="executionSideInfoList"></app-execution-side-table>
 <hr>
 <app-simulator-table [dataList]="simulatorInfoList"></app-simulator-table>

@@ -9,6 +9,7 @@ import { SimulatorInfo } from '../config-data';
 import { I18nModule } from 'ng-devui/i18n';
 import { simulatorTable } from '../../core/services/dexie-db/simulato-table.service';
 import { SimulatorTableDialogComponent } from './simulator-table-dialog/simulator-table-dialog.component';
+import { remove } from 'lodash';
 
 export const simulatorType = ['安卓', '其他'];
 
@@ -94,6 +95,14 @@ export class SimulatorTableComponent {
           },
         },
       ],
+    });
+  }
+
+  deleteData(id: number) {
+    void simulatorTable.deleteSimulatorInfo(id).finally(() => {
+      remove(this.dataList, (data) => {
+        return data.id === id;
+      });
     });
   }
 }

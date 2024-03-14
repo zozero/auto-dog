@@ -14,13 +14,14 @@
       <th dHeadCell>IP:端口</th>
       <th dHeadCell>创建日期</th>
       <th dHeadCell>更新日期</th>
+      <th dHeadCell>操作</th>
     </tr>
   </thead>
   <tbody dTableBody>
     <ng-template let-rowItem="rowItem" let-rowIndex="rowIndex">
       <tr dTableRow>
-        <td dTableCell [rowItem]="rowItem" [field]="'id'">
-          <span>{{ rowItem?.id }}</span>
+        <td dTableCell [rowItem]="rowItem" [field]="'index'">
+          <span>{{rowIndex+1}}</span>
         </td>
         <td
           dTableCell
@@ -103,6 +104,9 @@
         </td>
         <td dTableCell [rowItem]="rowItem" [field]="'updateTime'">
           <span>{{ rowItem?.updateTime | i18nDate : "full" : false }}</span>
+        </td>
+        <td dTableCell >
+          <d-button bsStyle="text"  (btnClick)="deleteData(rowItem?.id)">删除</d-button>
         </td>
       </tr>
     </ng-template>

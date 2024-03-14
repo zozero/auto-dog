@@ -6,6 +6,7 @@ import { InputGroupModule } from 'ng-devui/input-group';
 import { DevUIModule, DialogService } from 'ng-devui';
 import { ExecutionSideInfo } from '../config-data';
 import { I18nModule } from 'ng-devui/i18n';
+import { remove } from 'lodash';
 import { executionSideTable } from '../../core/services/dexie-db/execution-side-table.service';
 import { AddExecutionSideInfoDialogComponent } from './add-execution-side-info-dialog/add-execution-side-info-dialog.component';
 
@@ -54,8 +55,8 @@ export class ExecutionSideTableComponent {
                   .then((curData: ExecutionSideInfo) => {
                     this.dataList.push(curData);
                   });
-                  // 关闭窗口
-                  results.modalInstance.hide();
+                // 关闭窗口
+                results.modalInstance.hide();
               }
             });
           },
@@ -87,9 +88,11 @@ export class ExecutionSideTableComponent {
     void executionSideTable.updateExecutionSideInfo(rowItem.id as number, data);
   }
 
-  deleteData(id:number){
-    console.log(id)
-    // void executionSideTable.deleteExecutionSideInfo(id);
-    
+  deleteData(id: number) {
+    void executionSideTable.deleteExecutionSideInfo(id).finally(() => {
+      remove(this.dataList, (data) => {
+        return data.id === id;
+      });
+    });
   }
 }
