@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { executionSideTable } from '../../../core/services/dexie-db/execution-side-table.service';
 import { TipsDialogService } from '../../../core/services/tips-dialog/tips-dialog.service';
 import { DevUIModule } from 'ng-devui';
+import { defaultExecutionSideInfo } from '../../../shared/mock-data/config-mock';
 
 @Component({
   selector: 'app-add-execution-side-info-dialog',
@@ -13,9 +14,7 @@ import { DevUIModule } from 'ng-devui';
   styleUrl: './add-execution-side-info-dialog.component.scss'
 })
 export class AddExecutionSideInfoDialogComponent {
-  mydata:ExecutionSideInfo={
-    ipPort:'127.0.0.1:5555'
-  }
+  mydata:ExecutionSideInfo=defaultExecutionSideInfo
 
   constructor(private dialogService: TipsDialogService) {}
 

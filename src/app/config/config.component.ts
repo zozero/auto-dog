@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { configTable } from '../core/services/dexie-db/config-table.service';
 import { ExecutionSideTableComponent } from './execution-side-table/execution-side-table.component';
 import { ExecutionSideInfo, SimulatorInfo } from './config-data';
-import { simulatorTable } from '../core/services/dexie-db/simulato-table.service';
+import { simulatorTable } from '../core/services/dexie-db/simulator-table.service';
 import { SimulatorTableComponent } from "./simulator-table/simulator-table.component";
 import { AlertModule } from 'ng-devui/alert';
 

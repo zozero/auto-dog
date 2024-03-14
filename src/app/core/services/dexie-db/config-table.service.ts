@@ -8,7 +8,7 @@ import {
 } from '../../../config/config-data';
 import { Table } from 'dexie';
 import { executionSideTable } from './execution-side-table.service';
-import { simulatorTable } from './simulato-table.service';
+import { simulatorTable } from './simulator-table.service';
 
 @Injectable({
   providedIn: 'root',

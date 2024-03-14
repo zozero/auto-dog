@@ -6,7 +6,7 @@ import { MenuItemClickType } from 'ng-devui/menu';
 import { MyMenu, MyMenuItemType } from './app-data';
 import { Router } from '@angular/router';
 import { ExecutionSideInfo, SimulatorInfo } from './config/config-data';
-import { simulatorTable } from './core/services/dexie-db/simulato-table.service';
+import { simulatorTable } from './core/services/dexie-db/simulator-table.service';
 import { executionSideTable } from './core/services/dexie-db/execution-side-table.service';
 import { configTable } from './core/services/dexie-db/config-table.service';
 import { MyLocalStorageService } from './core/services/my-local-storage/my-local-storage.service';

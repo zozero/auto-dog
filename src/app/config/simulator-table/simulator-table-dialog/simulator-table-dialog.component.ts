@@ -3,10 +3,10 @@ import { SimulatorInfo } from '../../config-data';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TipsDialogService } from '../../../core/services/tips-dialog/tips-dialog.service';
 import { SelectModule } from 'ng-devui/select';
-import { simulatorType } from '../simulator-table.component';
-import { simulatorTable } from '../../../core/services/dexie-db/simulato-table.service';
+import { simulatorTable } from '../../../core/services/dexie-db/simulator-table.service';
 import { InputGroupModule } from 'ng-devui/input-group';
 import { DevUIModule } from 'ng-devui';
+import { defaultSimulatorInfo, simulatorType } from '../../../shared/mock-data/config-mock';
 
 @Component({
   selector: 'app-simulator-table-dialog',
@@ -16,11 +16,7 @@ import { DevUIModule } from 'ng-devui';
   styleUrl: './simulator-table-dialog.component.scss',
 })
 export class SimulatorTableDialogComponent {
-  mydata: SimulatorInfo = {
-    ipPort: '127.0.0.1:5555',
-    name: '随便',
-    type: '安卓',
-  };
+  mydata: SimulatorInfo = defaultSimulatorInfo
   simulatorType = simulatorType;
 
   constructor(private dialogService: TipsDialogService) {}

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SimulatorTableService } from './simulato-table.service';
+import { SimulatorTableService } from './simulator-table.service';
 
 describe('SimulatorInfoTableService', () => {
   let service: SimulatorTableService;

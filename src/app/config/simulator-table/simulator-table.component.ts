@@ -7,11 +7,12 @@ import { InputGroupModule } from 'ng-devui/input-group';
 import { DevUIModule, DialogService } from 'ng-devui';
 import { SimulatorInfo } from '../config-data';
 import { I18nModule } from 'ng-devui/i18n';
-import { simulatorTable } from '../../core/services/dexie-db/simulato-table.service';
+import { simulatorTable } from '../../core/services/dexie-db/simulator-table.service';
 import { SimulatorTableDialogComponent } from './simulator-table-dialog/simulator-table-dialog.component';
 import { remove } from 'lodash';
+import { simulatorType } from '../../shared/mock-data/config-mock';
 
-export const simulatorType = ['安卓', '其他'];
+
 
 @Component({
   selector: 'app-simulator-table',

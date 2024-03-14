@@ -4,6 +4,7 @@ import { ButtonModule } from 'ng-devui/button';
 import { LayoutModule } from 'ng-devui';
 import { SelectModule } from 'ng-devui/select';
 import { FormsModule } from '@angular/forms';
+import { configTable } from '../core/services/dexie-db/config-table.service';
 
 
 
@@ -29,8 +30,10 @@ export class ImageProcessComponent {
     })
   }
 
-  toggleLoading() {
-    // await configTable
+  async toggleLoading() {
+    const configDatao= await configTable.getOneConfigData();
+    console.log("🚀 ~ ImageProcessComponent ~ toggleLoading ~ configDatao:", configDatao)
+    
     this.showLoading = true;
     setTimeout(() => {
       this.showLoading = false;

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { DexieDBService } from './dexie-db.service';
 import { SimulatorInfo } from '../../../config/config-data';
 import { Table } from 'dexie';
-// import { SimulatorInfo } from '../../../config/config-data';
+import { defaultSimulatorInfo } from '../../../shared/mock-data/config-mock';
 
 @Injectable({
   providedIn: 'root'
@@ -17,20 +17,15 @@ export class SimulatorTableService extends DexieDBService  {
   }
   // 初始化配置数据
   async initSimulatorInfo() {
-    const one={
-      name: "蓝叠模拟器1",
-      type: "安卓",
-      ipPort: '127.0.0.1:5555',
-    }
     // 可以原地让它返回为空这样就不需要让整个函数为异步了
     // const count=await this.getDataCount(this.executionSideInfoTable);
     const count=await this.oneTable.count();
-    console.log("🚀 ~ ExecutionSideTableService ~ initConfigData ~ count:", count)
+    console.log("🚀 ~ ExecutionSideTableService ~ initConfigData ~ count:", defaultSimulatorInfo)
      // 如果数据时零条就加入一条数据
      if (!count) {
-      await this.addSimulatorInfo(one);
+      await this.addSimulatorInfo(defaultSimulatorInfo);
     }
-    return one
+    return defaultSimulatorInfo
   }
 
   // 添加一条数据
