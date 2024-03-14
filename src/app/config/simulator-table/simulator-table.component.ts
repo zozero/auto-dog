@@ -84,7 +84,7 @@ export class SimulatorTableComponent {
               // err等于0是自己捕获错误设置的，如果等于零就不执行了
               if (err !== 0) {
                 void simulatorTable
-                  .queryLastData()
+                  .querySimulatorLastInfo()
                   .then((curData: SimulatorInfo) => {
                     this.dataList.push(curData);
                   });

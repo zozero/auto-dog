@@ -51,7 +51,7 @@ export class ExecutionSideTableComponent {
               // err等于0是自己捕获错误设置的，如果等于零就不执行了
               if (err !== 0) {
                 void executionSideTable
-                  .queryLastData()
+                  .queryExecutionSideLastInfo()
                   .then((curData: ExecutionSideInfo) => {
                     this.dataList.push(curData);
                   });

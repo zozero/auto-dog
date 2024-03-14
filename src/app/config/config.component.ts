@@ -36,10 +36,8 @@ export class ConfigComponent implements OnInit {
   // 获取执行侧数据和模拟器数据
   async getAndSetData(){
     // 获取和设置数据
-    this.executionSideInfoList=await executionSideTable.oneTable.toArray();
-    console.log("🚀 ~ ConfigComponent ~ getAndSetData ~  this.executionSideInfoList:",  this.executionSideInfoList)
-    this.simulatorInfoList=await simulatorTable.oneTable.toArray();
-    console.log("🚀 ~ ConfigComponent ~ getAndSetData ~ this.simulatorInfoList:", this.simulatorInfoList)
+    this.executionSideInfoList=await executionSideTable.queryAllExecutionSideInfos();
+    this.simulatorInfoList=await simulatorTable.querySimulatorLastInfo();
   }
 
 

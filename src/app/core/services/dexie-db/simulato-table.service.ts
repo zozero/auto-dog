@@ -44,11 +44,16 @@ export class SimulatorTableService extends DexieDBService  {
   }
   
   // 返回最后一条数据
-  async queryLastData(){
+  async querySimulatorLastInfo(){
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return await this.oneTable.orderBy('id').last();
   }
 
+  // 获取所有数据
+  async queryAllSimulatorLastInfos(){
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return await this.oneTable.toArray();
+  }
   
   // 删除一条数据
   async deleteSimulatorInfo(id:number){
