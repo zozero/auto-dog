@@ -20,6 +20,7 @@ export class HttpSelectComponent {
   currentSimulatorInfo!: SimulatorInfo;
   currentExecutionSide!: ExecutionSideInfo;
 
+
   // 更新数据
   async selectClickUpdateDatas(type: string) {
     switch (type) {
@@ -60,25 +61,8 @@ export class HttpSelectComponent {
   }
 
   // 设置当前需要传输的网络地址，即执行端地址和模拟器地址
-  async setHttpDatas() {
-    console.log('🚀 ~ AppComponent ~ setHttpDatas ~ setHttpDatas:');
-    // 获取所有数据
-    this.executionSideInfoList =
-      await executionSideTable.queryAllExecutionSideInfos();
-    this.simulatorInfoList = await simulatorTable.queryAllSimulatorInfos();
-
-    // 判断数据库是否已经存在执行端和模拟器端的数据，是的话读取
-    const oneSimulatorInfo = await configTable.getOneConfigData();
-    if (
-      oneSimulatorInfo?.currentExecutionSideInfo &&
-      oneSimulatorInfo?.currentSimulatorInfo
-    ) {
-      this.currentExecutionSide = oneSimulatorInfo.currentExecutionSideInfo;
-      this.currentSimulatorInfo = oneSimulatorInfo.currentSimulatorInfo;
-    } else {
-      this.currentExecutionSide = this.executionSideInfoList[0];
-      this.currentSimulatorInfo = this.simulatorInfoList[0];
-      await this.onSelectEditEnd('');
-    }
-  }
+  // async setHttpDatas() {
+  //   console.log('🚀 ~ AppComponent ~ setHttpDatas ~ setHttpDatas:');
+ 
+  // }
 }

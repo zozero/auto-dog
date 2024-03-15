@@ -1,4 +1,4 @@
-<h3 style="margin-top: 56px;">模拟器表格</h3>
+<h3 style="margin-top: 56px;">项目表格</h3>
 <d-button (btnClick)="addData()">添加数据</d-button>
 <d-data-table
   #dataTable
@@ -12,9 +12,9 @@
     <tr dTableRow>
       <th dHeadCell>序号</th>
       <th dHeadCell>标识</th>
+      <th dHeadCell>项目名</th>
+      <th dHeadCell>执行端</th>
       <th dHeadCell>模拟器名称</th>
-      <th dHeadCell>类型</th>
-      <th dHeadCell>IP:端口</th>
       <th dHeadCell>创建日期</th>
       <th dHeadCell>更新日期</th>
       <th dHeadCell>操作</th>
@@ -24,7 +24,7 @@
     <ng-template let-rowItem="rowItem" let-rowIndex="rowIndex">
       <tr dTableRow>
         <td dTableCell [rowItem]="rowItem" [field]="'index'">
-          <span>{{rowIndex+1}}</span>
+          <span>{{ rowIndex + 1 }}</span>
         </td>
         <td dTableCell [rowItem]="rowItem" [field]="'id'">
           <span>{{ rowItem?.id }}</span>
@@ -57,28 +57,35 @@
           dTableCell
           [editable]="true"
           [editableTip]="editableTip"
-          [(editing)]="rowItem['typeEdit']"
+          [(editing)]="rowItem['executionSideInfoEdit']"
           [rowItem]="rowItem"
-          [field]="'type'"
+          [field]="'executionSideInfo'"
           [beforeEditStart]="beforeEditStart"
           [beforeEditEnd]="beforeEditEnd"
         >
-          <span *ngIf="!rowItem['typeEdit']">{{ rowItem?.type }}</span>
+          <span
+            (click)="selectClickUpdateDatas('执行端')"
+            *ngIf="!rowItem['executionSideInfoEdit']"
+            >{{ rowItem?.executionSideInfo.ipPort }}</span
+          >
           <div
-            *ngIf="rowItem['typeEdit']"
+            *ngIf="rowItem['executionSideInfoEdit']"
             class="customized-editor edit-padding-fix"
           >
             <d-select
-              [options]="simulatorType"
+              [options]="executionSideInfoList"
               [isSearch]="true"
               [autoFocus]="true"
+              [filterKey]="'ipPort'"
               [toggleOnFocus]="true"
               [appendToBody]="true"
-              [(ngModel)]="rowItem.type"
-              (ngModelChange)="onSelectEditEnd(rowItem, 'typeEdit')"
+              [(ngModel)]="rowItem.executionSideInfo"
+              (ngModelChange)="
+                onSelectEditEnd(rowItem, 'executionSideInfoEdit')
+              "
             >
-              <ng-template let-option="option">
-                {{ option }}
+              <ng-template let-option="option"  let-filterKey="filterKey">
+                {{ option[filterKey] }}
               </ng-template>
             </d-select>
           </div>
@@ -88,31 +95,48 @@
           dTableCell
           [editable]="true"
           [editableTip]="editableTip"
-          [(editing)]="rowItem['ipPortEdit']"
+          [(editing)]="rowItem['simulatorInfoEdit']"
           [rowItem]="rowItem"
-          [field]="'ipPort'"
+          [field]="'simulatorInfo'"
           [beforeEditStart]="beforeEditStart"
           [beforeEditEnd]="beforeEditEnd"
         >
-          <span *ngIf="!rowItem['ipPortEdit']">{{ rowItem?.ipPort }}</span>
-          <input
-            *ngIf="rowItem['ipPortEdit']"
-            [dAutoFocus]="true"
-            class="devui-form-control"
-            name="ipPort"
-            [(ngModel)]="rowItem.ipPort"
-            [attr.maxlength]="100"
-            [attr.minlength]="3"
-          />
+          <span
+            (click)="selectClickUpdateDatas('模拟器端')"
+            *ngIf="!rowItem['simulatorInfoEdit']"
+            >{{ rowItem?.simulatorInfo.name }}</span
+          >
+          <div
+            *ngIf="rowItem['simulatorInfoEdit']"
+            class="customized-editor edit-padding-fix"
+          >
+            <d-select
+              [options]="simulatorInfoList"
+              [isSearch]="true"
+              [autoFocus]="true"
+              [filterKey]="'name'"
+              [toggleOnFocus]="true"
+              [appendToBody]="true"
+              [(ngModel)]="rowItem.simulatorInfo"
+              (ngModelChange)="onSelectEditEnd(rowItem, 'simulatorInfoEdit')"
+            >
+              <ng-template let-option="option" let-filterKey="filterKey">
+                {{ option[filterKey] }}
+              </ng-template>
+            </d-select>
+          </div>
         </td>
+
         <td dTableCell [rowItem]="rowItem" [field]="'createTime'">
           <span>{{ rowItem?.createTime | i18nDate : "full" : false }}</span>
         </td>
         <td dTableCell [rowItem]="rowItem" [field]="'updateTime'">
           <span>{{ rowItem?.updateTime | i18nDate : "full" : false }}</span>
         </td>
-        <td dTableCell >
-          <d-button bsStyle="text"  (btnClick)="deleteData(rowItem?.id)">删除</d-button>
+        <td dTableCell>
+          <d-button bsStyle="text" (btnClick)="deleteData(rowItem?.id)"
+            >删除</d-button
+          >
         </td>
       </tr>
     </ng-template>

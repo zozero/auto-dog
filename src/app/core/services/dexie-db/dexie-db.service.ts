@@ -3,6 +3,7 @@ import Dexie, { Table } from 'dexie';
 import {
   ConfigData,
   ExecutionSideInfo,
+  ProjectInfo,
   SimulatorInfo,
 } from '../../../config/config-data';
 
@@ -15,6 +16,8 @@ export class DexieDBService extends Dexie {
   configDataTable!: Table<ConfigData, number>;
   executionSideInfoTable!: Table<ExecutionSideInfo, number>;
   simulatorInfoTable!: Table<SimulatorInfo, number>;
+  projectInfoTable!: Table<ProjectInfo, number>;
+
   constructor() {
     // 传递数据库的名称
     super('AutoDog');
@@ -22,6 +25,7 @@ export class DexieDBService extends Dexie {
       configDataTable: '++id,createTime,updateTime',
       executionSideInfoTable: '++id,&ipPort,updateTime,createTime',
       simulatorInfoTable: '++id,&name,&ipPort,type,updateTime,createTime',
+      projectInfoTable: '++id,&name,updateTime,createTime',
     });
 
     //   this.on('populate', () => this.populate());

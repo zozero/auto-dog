@@ -1,7 +1,19 @@
-<h2>配置页面</h2>
-<d-alert [type]="'info'" [closeable]="false"> 即使删除了所有数据，重新载入界面后也会生成一条数据。 </d-alert>
-<app-execution-side-table [dataList]="executionSideInfoList"></app-execution-side-table>
-<hr>
-<app-simulator-table [dataList]="simulatorInfoList"></app-simulator-table>
-<hr>
-<p>版本信息：{{version}}</p>
+<div class="config-conent">
+  <div>
+    <h2>配置页面</h2>
+    <d-alert [type]="'info'" [closeable]="false">
+      即使删除了所有数据，重新载入界面后也会生成一条数据。
+    </d-alert>
+  </div>
+  <div class="config-list">
+    <app-execution-side-table
+      [dataList]="executionSideInfoList"
+    ></app-execution-side-table>
+    <app-simulator-table [dataList]="simulatorInfoList"></app-simulator-table>
+    <app-project-table [dataList]="projectInfoList"></app-project-table>
+  </div>
+  <hr />
+  <div>
+    <p>版本信息：{{ version }}</p>
+  </div>
+</div>

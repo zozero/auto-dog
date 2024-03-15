@@ -5,10 +5,13 @@
   [dataSource]="dataList"
   [tableOverflowType]="'overlay'"
   [scrollable]="true"
+  [fixHeader]="true"
+  tableHeight="170px"
 >
   <thead dTableHead>
     <tr dTableRow>
       <th dHeadCell>序号</th>
+      <th dHeadCell>标识</th>
       <th dHeadCell>IP:端口</th>
       <th dHeadCell>创建日期</th>
       <th dHeadCell>更新日期</th>
@@ -19,7 +22,10 @@
     <ng-template let-rowItem="rowItem" let-rowIndex="rowIndex">
       <tr dTableRow>
         <td dTableCell [rowItem]="rowItem" [field]="'index'">
-          <span>{{rowIndex+1}}</span>
+          <span>{{ rowIndex + 1 }}</span>
+        </td>
+        <td dTableCell [rowItem]="rowItem" [field]="'id'">
+          <span>{{ rowItem?.id }}</span>
         </td>
         <td
           dTableCell
@@ -48,8 +54,10 @@
         <td dTableCell [rowItem]="rowItem" [field]="'updateTime'">
           <span>{{ rowItem?.updateTime | i18nDate : "full" : false }}</span>
         </td>
-        <td dTableCell >
-          <d-button bsStyle="text"  (btnClick)="deleteData(rowItem?.id)">删除</d-button>
+        <td dTableCell>
+          <d-button bsStyle="text" (btnClick)="deleteData(rowItem?.id)"
+            >删除</d-button
+          >
         </td>
       </tr>
     </ng-template>

@@ -1,0 +1,59 @@
+<div>
+  <div class="d-form-field">
+    <div class="d-form-label">
+      <div class="text" title="name" for="input-label">名称</div>
+    </div>
+    <div class="d-form-ctrl">
+      <input
+        dTextInput
+        type="text"
+        class="d-form-text"
+        [dAutoFocus]="true"
+        [(ngModel)]="mydata.name"
+        [attr.maxlength]="128"
+        [attr.minlength]="3"
+      />
+    </div>
+  </div>
+  <div class="d-form-field">
+    <div class="d-form-label">
+      <div class="text" title="type" for="input-label">执行端</div>
+    </div>
+    <div class="d-form-ctrl">
+      <d-select
+        [options]="executionSideInfoList"
+        [isSearch]="true"
+        class="d-form-text"
+        [toggleOnFocus]="true"
+        [filterKey]="'ipPort'"
+        [appendToBody]="true"
+        [(ngModel)]="mydata.executionSideInfo"
+      >
+        <ng-template let-option="option" let-filterKey="filterKey">
+          {{ option[filterKey] }}
+        </ng-template>
+      </d-select>
+    </div>
+  </div>
+
+  <div class="d-form-field">
+    <div class="d-form-label">
+      <div class="text" title="type" for="input-label">模拟器</div>
+    </div>
+    <div class="d-form-ctrl">
+      <d-select
+        [options]="simulatorInfoList"
+        [isSearch]="true"
+        class="d-form-text"
+        [toggleOnFocus]="true"
+        [filterKey]="'name'"
+        [appendToBody]="true"
+        [(ngModel)]="mydata.simulatorInfo"
+      >
+        <ng-template let-option="option" let-filterKey="filterKey">
+          {{ option[filterKey] }}
+        </ng-template>
+      </d-select>
+    </div>
+  </div>
+</div>

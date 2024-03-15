@@ -13,7 +13,6 @@ import { remove } from 'lodash';
 import { simulatorType } from '../../shared/mock-data/config-mock';
 
 
-
 @Component({
   selector: 'app-simulator-table',
   standalone: true,
@@ -48,13 +47,8 @@ export class SimulatorTableComponent {
   };
 
   beforeEditEnd = (rowItem: any, field: any) => {
-    console.log('beforeEditEnd');
-    this.updateData(rowItem, field);
-    if (rowItem && rowItem[field].length < 3) {
-      return false;
-    } else {
-      return true;
-    }
+    console.log(rowItem, field);
+    return true;
   };
 
   updateData(rowItem: any, field: any) {

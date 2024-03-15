@@ -1,9 +1,5 @@
 export interface ConfigData {
   id?: number;
-  // 当前执行端信息
-  currentExecutionSideInfo?:ExecutionSideInfo;
-  // 当前模拟器信息
-  currentSimulatorInfo?:SimulatorInfo;
   // 版本信息
   version: string;
   // 修改的时间
@@ -28,6 +24,18 @@ export interface SimulatorInfo {
   name: string;
   type: string;
   ipPort: string;
+  // 修改的时间
+  updateTime?: Date;
+  // 记录创建的时间
+  createTime?: Date;
+}
+
+
+export interface ProjectInfo {
+  id?: number;
+  name: string;
+  executionSideInfo?: ExecutionSideInfo;
+  simulatorInfo?: SimulatorInfo;
   // 修改的时间
   updateTime?: Date;
   // 记录创建的时间

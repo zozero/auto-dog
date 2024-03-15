@@ -2,22 +2,26 @@ import { executionSideTable } from './../core/services/dexie-db/execution-side-t
 import { Component, OnInit } from '@angular/core';
 import { configTable } from '../core/services/dexie-db/config-table.service';
 import { ExecutionSideTableComponent } from './execution-side-table/execution-side-table.component';
-import { ExecutionSideInfo, SimulatorInfo } from './config-data';
+import { ExecutionSideInfo, ProjectInfo, SimulatorInfo } from './config-data';
 import { simulatorTable } from '../core/services/dexie-db/simulator-table.service';
 import { SimulatorTableComponent } from "./simulator-table/simulator-table.component";
 import { AlertModule } from 'ng-devui/alert';
+import { projectTable } from '../core/services/dexie-db/project-table.service';
+import { ProjectTableComponent } from "./project-table/project-table.component";
+import { LayoutModule } from 'ng-devui';
 
 @Component({
     selector: 'app-config',
     standalone: true,
     templateUrl: './config.component.html',
     styleUrl: './config.component.scss',
-    imports: [ExecutionSideTableComponent, SimulatorTableComponent,AlertModule]
+    imports: [LayoutModule,ExecutionSideTableComponent, SimulatorTableComponent, AlertModule, ProjectTableComponent]
 })
 export class ConfigComponent implements OnInit {
   version: string = '';
   executionSideInfoList:ExecutionSideInfo[]=[]
   simulatorInfoList:SimulatorInfo[]=[]
+  projectInfoList:ProjectInfo[]=[]
   constructor() {
     
   }
@@ -27,9 +31,12 @@ export class ConfigComponent implements OnInit {
   }
   // 初始化数据
   async initData(){
+    await configTable.initConfigData();
+
     await executionSideTable.initExecutionSideInfo();
     await simulatorTable.initSimulatorInfo();
-    await configTable.initConfigData();
+    await projectTable.initProjectInfo();
+
     await this.setVersion();
     await this.getAndSetData();
   }
@@ -38,6 +45,7 @@ export class ConfigComponent implements OnInit {
     // 获取和设置数据
     this.executionSideInfoList=await executionSideTable.queryAllExecutionSideInfos();
     this.simulatorInfoList=await simulatorTable.queryAllSimulatorInfos();
+    this.projectInfoList=await projectTable.queryAllProjectInfos();
   }
 
 
