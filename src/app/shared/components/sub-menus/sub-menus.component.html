@@ -1,0 +1,18 @@
+ <!-- 子栏 -->
+ <d-col [dSpan]="13" *ngIf="subMenuList.length">
+    <div dMenu class="sub-menu">
+      <ng-container *ngFor="let sub of subMenuList">
+        <div
+        dMenuItem
+        [title]="sub.name"
+        (itemClick)="subMenuClick(sub)"
+        [active]="sub.name === currentSubMenu.name"
+      >
+        <!-- <d-icon class="devui-menu-item-icon" icon="icon-op-list" /> -->
+        <span class="devui-menu-item-name over-flow-ellipsis">{{
+          sub.name
+        }}</span>
+      </div>
+      </ng-container>
+    </div>
+  </d-col>

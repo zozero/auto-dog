@@ -42,7 +42,7 @@ const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>  new Transl
         deps: [HttpClient]
       }
     }),
-    
+
     DevUIModule,
     MenuModule,
     LayoutModule,

@@ -1,87 +1,29 @@
+<!-- 菜单栏 -->
 <d-row>
-  <!-- 菜单栏 -->
-  <d-col [dSpan]="5">
+  <!-- 主菜单 -->
+  <d-col [dSpan]="3">
     <div class="menu-box">
-      <d-row>
-        <!-- 主菜单 -->
-        <d-col [dSpan]="11">
-          <div dMenu (menuItemClick)="menuBoxClick($event)" class="menu">
-            <ng-container *ngFor="let m of menuList">
-              <div
-                dMenuItem
-                [title]="m.menu.name"
-                (itemClick)="menuClick( m)"
-                [active]="m.menu.name === currentMenu.menu.name"
-              >
-                <!-- <d-icon class="devui-menu-item-icon" icon="icon-op-list" /> -->
-                <span class="devui-menu-item-name over-flow-ellipsis">{{
-                  m.menu.name
-                }}</span>
-              </div>
-            </ng-container>
-          </div>
-        </d-col>
-        <!-- 子栏 -->
-        <d-col [dSpan]="13" *ngIf="subMenuList.length">
-          <div dMenu (menuItemClick)="menuBoxClick($event)" class="sub-menu">
-            <ng-container *ngFor="let sub of subMenuList">
-              <a [routerLink]="[currentMenu.menu.name , sub.name]">
-                <div
-                  dMenuItem
-                  [title]="sub.name"
-                  (itemClick)="subMenuClick(sub)"
-                  [active]="sub.name === currentSubMenu?.name"
-                >
-                  <!-- <d-icon class="devui-menu-item-icon" icon="icon-op-list" /> -->
-                  <span class="devui-menu-item-name over-flow-ellipsis">{{
-                    sub.name
-                  }}</span>
-                </div>
-              </a>
-            </ng-container>
-          </div>
-        </d-col>
-      </d-row>
+      <div dMenu class="menu">
+        <ng-container *ngFor="let m of menuList">
+          <a [routerLink]="m.name">
+            <div
+              dMenuItem
+              [title]="m.name"
+              (itemClick)="menuClick(m)"
+              [active]="m.name === currentMenu.name"
+            >
+              <!-- <d-icon class="devui-menu-item-icon" icon="icon-op-list" /> -->
+              <span class="devui-menu-item-name over-flow-ellipsis">{{
+                m.name
+              }}</span>
+            </div>
+          </a>
+        </ng-container>
+      </div>
     </div>
   </d-col>
-  <d-col [dSpan]="19">
-    <!-- 服务端的选择 -->
-    <d-row style="padding-top: 12px;">
-      <d-col [dSpan]="5" >
-        <d-select
-          (click)="selectClickUpdateDatas('执行端')"
-          [placeholder]="'执行端'"
-          [options]="executionSideInfoList"
-          [isSearch]="true"
-          [toggleOnFocus]="true"
-          [filterKey]="'ipPort'"
-          [(ngModel)]="currentExecutionSide"
-          (ngModelChange)="onSelectEditEnd('执行端')"
-        >
-          <ng-template let-option="option">
-            {{ option.ipPort }}
-          </ng-template>
-        </d-select>
-      </d-col>
-      <d-col [dSpan]="5">
-        <d-select
-        (click)="selectClickUpdateDatas('模拟器端')"
-          [placeholder]="'模拟器端'"
-          [options]="simulatorInfoList"
-          [isSearch]="true"
-          [toggleOnFocus]="true"
-          [filterKey]="'name'"
-          [(ngModel)]="currentSimulatorInfo"
-          (ngModelChange)="onSelectEditEnd('模拟器端')"
-        >
-          <ng-template let-option="option">
-            {{ option.name }} {{ option.ipPort }}
-          </ng-template>
-        </d-select>
-      </d-col>
-    </d-row>
-    
-  <!-- 页面 -->
+  <d-col [dSpan]="21">
+    <!-- 页面 -->
     <router-outlet></router-outlet>
   </d-col>
 </d-row>
