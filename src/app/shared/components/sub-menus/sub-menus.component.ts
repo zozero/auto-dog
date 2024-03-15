@@ -1,42 +1,55 @@
-import { Component, OnInit } from '@angular/core';
-import { MyMenuItemType } from '../../../app-data';
+import {  Output, EventEmitter ,Component, OnInit } from '@angular/core';
 import { MyLocalStorageService } from '../../../core/services/my-local-storage/my-local-storage.service';
 import { LayoutModule } from 'ng-devui/layout';
 import { MenuModule } from 'ng-devui/menu';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { projectTable } from '../../../core/services/dexie-db/project-table.service';
+import { ProjectInfo } from '../../../config/config-data';
+import { CommonModule } from '@angular/common';
+import { findIndex } from 'lodash';
+import { HttpSelectComponent } from "../http-select/http-select.component";
 
 @Component({
-  selector: 'app-sub-menus',
-  standalone: true,
-  imports: [LayoutModule, MenuModule, BrowserModule, BrowserAnimationsModule],
-  templateUrl: './sub-menus.component.html',
-  styleUrl: './sub-menus.component.scss',
+    selector: 'app-sub-menus',
+    standalone: true,
+    templateUrl: './sub-menus.component.html',
+    styleUrl: './sub-menus.component.scss',
+    imports: [LayoutModule, MenuModule, CommonModule, HttpSelectComponent]
 })
 export class SubMenusComponent implements OnInit {
+  @Output() sendCurrentSubMenu = new EventEmitter<ProjectInfo>();
   // 子菜单列表，由于所有主菜单的子菜单相同，所以子菜单列表固定
-  subMenuList: MyMenuItemType[] = [];
+  subMenuList: ProjectInfo[] = [];
   // 当前子菜单
-  currentSubMenu!: MyMenuItemType;
+  currentSubMenu!: ProjectInfo;
+  // 当前索引，用户便捷修改列表数据
+  currentIndex:number=0
   constructor(private myLocalStorage: MyLocalStorageService) {}
   ngOnInit(): void {
-    this.myLocalStorage.set('currentSubMenu', this.currentSubMenu.name);
+    void this.getMenus();
+  }
+
+  async getMenus(){
+    this.subMenuList=await projectTable.queryAllProjectInfos();
+    // 获取已保存的菜单
+    const curMuen = this.myLocalStorage.get('currentSubMenu');
+    console.log("🚀 ~ SubMenusComponent ~ getMenus ~ curMuen:", curMuen)
+    if(curMuen){
+      this.currentIndex=findIndex(this.subMenuList,{'name':curMuen})
+      this.currentSubMenu = this.subMenuList[this.currentIndex];
+      console.log("🚀 ~ SubMenusComponent ~ getMenus ~ this.currentSubMenu:", this.currentSubMenu)
+    }
+    else{
+      this.currentIndex=0
+      this.currentSubMenu =this.subMenuList[this.currentIndex];
+    }
   }
   // 子菜单栏某项被点击
-  subMenuClick(subMenu: MyMenuItemType) {
+  subMenuClick(index:number,subMenu: ProjectInfo) {
     this.currentSubMenu = subMenu;
+    this.myLocalStorage.set('currentSubMenu', this.currentSubMenu.name);
+    
+    this.currentIndex=index
+    this.sendCurrentSubMenu.emit(this.currentSubMenu);
   }
-  // 主菜单栏某项被点击
-  menuClick(currentMenu: MyMenuItemType) {
-    console.log(
-      '🚀 ~ SubMenusComponent ~ menuClick ~ currentMenu:',
-      currentMenu
-    );
 
-    // this.subMenuList = currentMenu.subMenuList;
-    //   // 第一次点击菜单时”currentSubMenu“应该未初始话，现在初始化它
-    //   if (!this.currentSubMenu && this.subMenuList && this.subMenuList.length) {
-    //     this.currentSubMenu = this.subMenuList[0];
-    //   }
-  }
 }

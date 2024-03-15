@@ -8,15 +8,6 @@ import { ExecutionSideInfo, SimulatorInfo } from './config/config-data';
 import { MyLocalStorageService } from './core/services/my-local-storage/my-local-storage.service';
 import { myMenuListmyMenuList } from './shared/mock-data/config-mock';
 
-// {
-//   icon: 'icon-more-func',
-//   name: '第七十四',
-// },
-// {
-//   icon: 'icon-more-func',
-//   name: '工作链路',
-// },
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -31,7 +22,7 @@ export class AppComponent {
 
   // 完整的菜单栏
   menuList: MyMenuItemType[] = myMenuListmyMenuList;
-  // 当前的主菜单
+  // 当前的主菜单，默认为配置
   currentMenu: MyMenuItemType = this.menuList[0];
 
 
@@ -41,25 +32,21 @@ export class AppComponent {
     private router: Router,
     private myLocalStorage: MyLocalStorageService
   ) {
-    this.setStoreMenu();
+    this.getStoreMenu();
+    
     this.translate.setDefaultLang('en');
-
     this.systemInfo();
   }
 
-  // 刷新或查询打开时设置当前菜单
-  setOneMenu() {
-    this.myLocalStorage.set('currentMenu', this.currentMenu.name);
-  }
-
   // 设置保存的菜单
-  setStoreMenu() {
+  getStoreMenu() {
+    // 获取已保存的菜单
     const curMuen = this.myLocalStorage.get('currentMenu');
     console.log("🚀 ~ AppComponent ~ setStoreMenu ~ curMuen:", curMuen)
     this.menuList.forEach((d1) => {
       if (d1.name === curMuen) {
         this.currentMenu = d1;
-       
+        this.navigateCurMenu();
       }
     });
   }
@@ -67,6 +54,21 @@ export class AppComponent {
   // 主菜单栏某项被点击
   menuClick(currentMenu: MyMenuItemType) {
     this.currentMenu = currentMenu;
+    this.myLocalStorage.set('currentMenu', this.currentMenu.name);
+  }
+  // 从本地存储中获取位置后跳转过去
+  navigateCurMenu(){
+    this.router
+    .navigate([this.currentMenu.name,])
+    .then(
+      (nav) => {
+        console.log('🚀 ~ AppComponent ~ menuBoxClick ~ nav:', nav);
+        console.log(nav); // true if navigation is successful
+      },
+      (err) => {
+        console.log(err); // when there's an error
+      }
+    );
   }
 
   systemInfo(){

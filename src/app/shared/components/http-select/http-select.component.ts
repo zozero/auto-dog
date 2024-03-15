@@ -6,6 +6,7 @@ import { configTable } from '../../../core/services/dexie-db/config-table.servic
 import { FormsModule } from '@angular/forms';
 import { LayoutModule } from 'ng-devui/layout';
 import { DevUIModule } from 'ng-devui';
+import { projectTable } from '../../../core/services/dexie-db/project-table.service';
 
 @Component({
   selector: 'app-http-select',
@@ -18,7 +19,7 @@ export class HttpSelectComponent {
   simulatorInfoList!: SimulatorInfo[];
   executionSideInfoList!: ExecutionSideInfo[];
   currentSimulatorInfo!: SimulatorInfo;
-  currentExecutionSide!: ExecutionSideInfo;
+  currentExecutionSideInfo!: ExecutionSideInfo;
 
 
   // 更新数据
@@ -41,7 +42,7 @@ export class HttpSelectComponent {
     switch (type) {
       case '执行端':
         await configTable.updateData({
-          currentExecutionSideInfo: this.currentExecutionSide,
+          currentExecutionSideInfo: this.currentExecutionSideInfo,
         });
         break;
       case '模拟器端':
@@ -51,7 +52,7 @@ export class HttpSelectComponent {
         break;
       default:
         await configTable.updateData({
-          currentExecutionSideInfo: this.currentExecutionSide,
+          currentExecutionSideInfo: this.currentExecutionSideInfo,
         });
         await configTable.updateData({
           currentSimulatorInfo: this.currentSimulatorInfo,
@@ -60,6 +61,13 @@ export class HttpSelectComponent {
     }
   }
 
+  async updateData(rowItem: any, field: string) {
+    const data = {
+      [field]: rowItem[field],
+    };
+    await projectTable.updateProjectInfo(rowItem.id as number, data);
+  }
+  
   // 设置当前需要传输的网络地址，即执行端地址和模拟器地址
   // async setHttpDatas() {
   //   console.log('🚀 ~ AppComponent ~ setHttpDatas ~ setHttpDatas:');

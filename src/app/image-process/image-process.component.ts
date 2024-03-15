@@ -5,15 +5,17 @@ import { LayoutModule } from 'ng-devui';
 import { SelectModule } from 'ng-devui/select';
 import { FormsModule } from '@angular/forms';
 import { configTable } from '../core/services/dexie-db/config-table.service';
+import { SubMenusComponent } from "../shared/components/sub-menus/sub-menus.component";
+import { ProjectInfo } from '../config/config-data';
 
 
 
 @Component({
-  selector: 'app-image-process',
-  standalone: true,
-  imports: [ButtonModule,LayoutModule,SelectModule,FormsModule],
-  templateUrl: './image-process.component.html',
-  styleUrl: './image-process.component.scss',
+    selector: 'app-image-process',
+    standalone: true,
+    templateUrl: './image-process.component.html',
+    styleUrl: './image-process.component.scss',
+    imports: [ButtonModule, LayoutModule, SelectModule, FormsModule, SubMenusComponent]
 })
 export class ImageProcessComponent {
  
@@ -38,5 +40,10 @@ export class ImageProcessComponent {
     setTimeout(() => {
       this.showLoading = false;
     }, 1000);
+  }
+
+  getCurrentSubMenu(newItem: ProjectInfo) {
+    console.log("🚀 ~ ImageProcessComponent ~ addItem ~ newItem:", newItem)
+    
   }
 }

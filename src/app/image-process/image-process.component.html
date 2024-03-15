@@ -1,5 +1,8 @@
 <h2>{{ projectName }} 图片处理</h2>
 <d-row>
+  <d-col  [dSpan]="4">
+    <app-sub-menus (sendCurrentSubMenu)="getCurrentSubMenu($event)"></app-sub-menus>
+  </d-col>
   <d-col [dSpan]="8">
     <d-button [showLoading]="showLoading" (btnClick)="toggleLoading()">
       截图

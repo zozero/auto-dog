@@ -7,8 +7,6 @@ import {
   SimulatorInfo,
 } from '../../../config/config-data';
 import { Table } from 'dexie';
-import { executionSideTable } from './execution-side-table.service';
-import { simulatorTable } from './simulator-table.service';
 
 @Injectable({
   providedIn: 'root',
@@ -25,10 +23,7 @@ export class ConfigTableService extends DexieDBService {
   async initConfigData() {
     const one = {
       id: 1,
-      version: '1.0',
-      currentExecutionSideInfo:
-        await executionSideTable.queryExecutionSideFirstInfo(),
-      currentSimulatorInfo: await simulatorTable.querySimulatorFirstInfo(),
+      version: '1.0'
     };
     // 可以原地让它返回为空这样就不需要让整个函数为异步了
     const count = await this.oneTable.count();

@@ -50,6 +50,12 @@ export class ProjectTableService extends DexieDBService {
     return await this.oneTable.toArray();
   }
 
+  // 获取所有数据
+  async queryProjectInfoByName(name:string) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return await this.oneTable.where("name").equalsIgnoreCase(name).first();
+  }
+
   // 删除一条数据
   async deleteProjectInfo(id: number) {
     await this.oneTable.delete(id);
