@@ -15,7 +15,7 @@
                 [showLoading]="showLoading"
                 (btnClick)="toggleLoading()"
               >
-                截图
+                模拟器截屏
               </d-button>
             </d-col>
           </d-row>
@@ -26,9 +26,17 @@
             <d-col>
               <d-button
                 [showLoading]="showLoading"
-                (btnClick)="turnGray()"
+                (btnClick)="resetCanvasImage()"
               >
-                转灰
+              重置
+              </d-button>
+            </d-col>
+            <d-col>
+              <d-button
+                [showLoading]="showLoading"
+                (btnClick)="cropImage()"
+              >
+              截图
               </d-button>
             </d-col>
           </d-row>
@@ -36,7 +44,8 @@
       </d-row>
       <d-row>
         <d-col [dSpan]="24">
-          <img [src]="imageToShow" width="100%" alt="Place image title" />
+          <angular-cropper  #angularCropper [cropperOptions]="cropConfig" [imageUrl]="imageToShow" (export)="angularCropperExport($event)"></angular-cropper>
+          <img  [src]="cropImageData" alt="Place image title" />
         </d-col>
       </d-row>
     </d-col>
