@@ -28,11 +28,11 @@ export const defaultConfigData = {
 export const defaultSimulatorInfo = {
   name: '模拟器1',
   type: '安卓',
-  ipPort: 'http://127.0.0.1:5555',
+  ipPort: '127.0.0.1:5555',
 };
 // 执行端
 export const defaultExecutionSideInfo = {
-  ipPort: 'http://127.0.0.1:28888',
+  ipPort: 'http://127.0.0.1:8888',
 };
 // 项目名
 export const defaultProjectData = {

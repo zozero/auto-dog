@@ -43,6 +43,7 @@ export class SubMenusComponent implements OnInit {
       this.currentIndex=0
       this.currentSubMenu =this.subMenuList[this.currentIndex];
     }
+    
   }
   // 子菜单栏某项被点击
   subMenuClick(index:number,subMenu: ProjectInfo) {
