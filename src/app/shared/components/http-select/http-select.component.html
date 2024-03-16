@@ -1,32 +1,31 @@
-<d-row style="margin-bottom: 12px">
+<!-- 如果数据尚未获取，则不渲染该组件自然而然不会报错了 -->
+<div style="margin-bottom: 12px" *ngIf="currentSubMenu">
   <!-- 执行端信息的选择 -->
   <d-select
-  (click)="selectClickUpdateDatas('执行端')"
-  [placeholder]="'执行端'"
-  [options]="executionSideInfoList"
-  [isSearch]="true"
-  [toggleOnFocus]="true"
-  [filterKey]="'ipPort'"
-  [(ngModel)]="currentExecutionSideInfo"
-  (ngModelChange)="onSelectEditEnd('执行端')"
->
-  <ng-template let-option="option">
-    {{ option.ipPort }}
-  </ng-template>
-</d-select>
+    [placeholder]="'执行端'"
+    [options]="executionSideInfoList"
+    [isSearch]="true"
+    [toggleOnFocus]="true"
+    [filterKey]="'ipPort'"
+    [(ngModel)]="currentSubMenu.executionSideInfo"
+    (ngModelChange)="onSelectEditEnd()"
+  >
+    <ng-template let-option="option">
+      执行端：{{ option.ipPort }}
+    </ng-template>
+  </d-select>
   <!-- 模拟端信息的选择 -->
   <d-select
-  (click)="selectClickUpdateDatas('模拟器端')"
-  [placeholder]="'模拟器端'"
-  [options]="simulatorInfoList"
-  [isSearch]="true"
-  [toggleOnFocus]="true"
-  [filterKey]="'name'"
-  [(ngModel)]="currentSimulatorInfo"
-  (ngModelChange)="onSelectEditEnd('模拟器端')"
->
-  <ng-template let-option="option" let-filterKey="filterKey">
-    {{ option[filterKey] }} {{ option.ipPort }}
-  </ng-template>
-</d-select>
-</d-row>
+    [placeholder]="'模拟器端'"
+    [options]="simulatorInfoList"
+    [isSearch]="true"
+    [toggleOnFocus]="true"
+    [filterKey]="'name'"
+    [(ngModel)]="currentSubMenu.simulatorInfo"
+    (ngModelChange)="onSelectEditEnd()"
+  >
+    <ng-template let-option="option" let-filterKey="filterKey">
+      {{ option[filterKey] }} {{ option.ipPort }}
+    </ng-template>
+  </d-select>
+</div>

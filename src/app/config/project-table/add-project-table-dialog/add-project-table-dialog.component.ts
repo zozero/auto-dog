@@ -13,7 +13,6 @@ import { cloneDeep } from 'lodash';
 import { executionSideTable } from '../../../core/services/dexie-db/execution-side-table.service';
 import { simulatorTable } from '../../../core/services/dexie-db/simulator-table.service';
 import { projectTable } from '../../../core/services/dexie-db/project-table.service';
-import { defaultProjectData } from '../../../shared/mock-data/config-mock';
 
 @Component({
   selector: 'app-add-project-table-dialog',
@@ -30,7 +29,7 @@ import { defaultProjectData } from '../../../shared/mock-data/config-mock';
 })
 export class AddProjectTableDialogComponent {
   // 强制初始一次数据防止报错
-  mydata: ProjectInfo = defaultProjectData;
+  mydata!: ProjectInfo;
 
   executionSideInfoList!: ExecutionSideInfo[];
   simulatorInfoList!: SimulatorInfo[];

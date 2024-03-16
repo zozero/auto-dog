@@ -7,13 +7,14 @@ import { ProjectInfo } from '../../../config/config-data';
 import { CommonModule } from '@angular/common';
 import { findIndex } from 'lodash';
 import { HttpSelectComponent } from "../http-select/http-select.component";
+import { ButtonModule } from 'ng-devui/button';
 
 @Component({
     selector: 'app-sub-menus',
     standalone: true,
     templateUrl: './sub-menus.component.html',
     styleUrl: './sub-menus.component.scss',
-    imports: [LayoutModule, MenuModule, CommonModule, HttpSelectComponent]
+    imports: [LayoutModule, MenuModule, CommonModule, HttpSelectComponent,ButtonModule]
 })
 export class SubMenusComponent implements OnInit {
   @Output() sendCurrentSubMenu = new EventEmitter<ProjectInfo>();

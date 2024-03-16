@@ -1,64 +1,43 @@
-import { Component } from '@angular/core';
-import { ExecutionSideInfo, SimulatorInfo } from '../../../config/config-data';
+import { Component, Input, OnInit } from '@angular/core';
+import {
+  ExecutionSideInfo,
+  ProjectInfo,
+  SimulatorInfo,
+} from '../../../config/config-data';
 import { executionSideTable } from '../../../core/services/dexie-db/execution-side-table.service';
 import { simulatorTable } from '../../../core/services/dexie-db/simulator-table.service';
-import { configTable } from '../../../core/services/dexie-db/config-table.service';
 import { FormsModule } from '@angular/forms';
 import { LayoutModule } from 'ng-devui/layout';
 import { DevUIModule } from 'ng-devui';
 import { projectTable } from '../../../core/services/dexie-db/project-table.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-http-select',
   standalone: true,
-  imports: [FormsModule,LayoutModule,DevUIModule],
+  imports: [FormsModule, LayoutModule, DevUIModule, CommonModule],
   templateUrl: './http-select.component.html',
   styleUrl: './http-select.component.scss',
 })
-export class HttpSelectComponent {
+export class HttpSelectComponent implements OnInit {
   simulatorInfoList!: SimulatorInfo[];
   executionSideInfoList!: ExecutionSideInfo[];
-  currentSimulatorInfo!: SimulatorInfo;
-  currentExecutionSideInfo!: ExecutionSideInfo;
+  @Input() currentSubMenu!: ProjectInfo;
 
+  constructor() {}
+  ngOnInit(): void {
+    void this.getInfoList();
+  }
 
   // 更新数据
-  async selectClickUpdateDatas(type: string) {
-    switch (type) {
-      case '执行端':
-        this.executionSideInfoList =
-          await executionSideTable.queryAllExecutionSideInfos();
-        break;
-      case '模拟器端':
-        this.simulatorInfoList = await simulatorTable.queryAllSimulatorInfos();
-        break;
-      default:
-        break;
-    }
+  async getInfoList() {
+    this.executionSideInfoList =
+      await executionSideTable.queryAllExecutionSideInfos();
+    this.simulatorInfoList = await simulatorTable.queryAllSimulatorInfos();
   }
   // 更新配置数据
-  async onSelectEditEnd(type: string) {
-    console.log('🚀 ~ AppComponent ~ onSelectEditEnd ~ onSelectEditEnd:');
-    switch (type) {
-      case '执行端':
-        await configTable.updateData({
-          currentExecutionSideInfo: this.currentExecutionSideInfo,
-        });
-        break;
-      case '模拟器端':
-        await configTable.updateData({
-          currentSimulatorInfo: this.currentSimulatorInfo,
-        });
-        break;
-      default:
-        await configTable.updateData({
-          currentExecutionSideInfo: this.currentExecutionSideInfo,
-        });
-        await configTable.updateData({
-          currentSimulatorInfo: this.currentSimulatorInfo,
-        });
-        break;
-    }
+  async onSelectEditEnd() {
+    await projectTable.updateProjectInfo(this.currentSubMenu.id as number, this.currentSubMenu);
   }
 
   async updateData(rowItem: any, field: string) {
@@ -67,10 +46,10 @@ export class HttpSelectComponent {
     };
     await projectTable.updateProjectInfo(rowItem.id as number, data);
   }
-  
+
   // 设置当前需要传输的网络地址，即执行端地址和模拟器地址
   // async setHttpDatas() {
   //   console.log('🚀 ~ AppComponent ~ setHttpDatas ~ setHttpDatas:');
- 
+
   // }
 }

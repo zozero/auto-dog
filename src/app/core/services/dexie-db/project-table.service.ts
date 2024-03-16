@@ -3,6 +3,8 @@ import { DexieDBService } from './dexie-db.service';
 import { Table } from 'dexie';
 import { defaultProjectData } from '../../../shared/mock-data/config-mock';
 import { ProjectInfo } from '../../../config/config-data';
+import { executionSideTable } from './execution-side-table.service';
+import { simulatorTable } from './simulator-table.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,12 +17,17 @@ export class ProjectTableService extends DexieDBService {
 
   // 初始化配置数据
   async initProjectInfo() {
+    const currentPronject:ProjectInfo={
+      name:defaultProjectData.name,
+      executionSideInfo:await executionSideTable.queryExecutionSideLastInfo(),
+      simulatorInfo:await simulatorTable.querySimulatorLastInfo()
+    }
     // 可以原地让它返回为空这样就不需要让整个函数为异步了
     // const count=await this.getDataCount(this.executionSideInfoTable);
     const count = await this.oneTable.count();
     // 如果数据时零条就加入一条数据
     if (!count) {
-      await this.addtProjectInfo(defaultProjectData);
+      await this.addtProjectInfo(currentPronject);
     }
   }
 
@@ -51,7 +58,7 @@ export class ProjectTableService extends DexieDBService {
   }
 
   // 获取所有数据
-  async queryProjectInfoByName(name:string) {
+  async queryProjectInfoByName(name:string):Promise<ProjectInfo> {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return await this.oneTable.where("name").equalsIgnoreCase(name).first();
   }

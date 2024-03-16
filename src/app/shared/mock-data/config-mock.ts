@@ -26,7 +26,7 @@ export const defaultConfigData = {
 };
 // 模拟器
 export const defaultSimulatorInfo = {
-  name: '蓝叠模拟器1',
+  name: '模拟器1',
   type: '安卓',
   ipPort: 'http://127.0.0.1:5555',
 };
@@ -37,6 +37,4 @@ export const defaultExecutionSideInfo = {
 // 项目名
 export const defaultProjectData = {
   name: '项目1',
-  executionSideInfo: defaultExecutionSideInfo,
-  simulatorInfo: defaultSimulatorInfo,
 };

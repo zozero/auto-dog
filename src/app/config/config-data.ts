@@ -34,8 +34,8 @@ export interface SimulatorInfo {
 export interface ProjectInfo {
   id?: number;
   name: string;
-  executionSideInfo?: ExecutionSideInfo;
-  simulatorInfo?: SimulatorInfo;
+  executionSideInfo: ExecutionSideInfo;
+  simulatorInfo: SimulatorInfo;
   // 修改的时间
   updateTime?: Date;
   // 记录创建的时间
