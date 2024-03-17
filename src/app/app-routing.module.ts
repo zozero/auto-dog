@@ -29,10 +29,10 @@ const routes: Routes = [
       ),
   },
   {
-    path: '表格编辑',
+    path: '方法编辑',
     loadComponent: () =>
-      import('./csv-edit/csv-edit.component').then(
-        (mod) => mod.CsvEditComponent
+      import('./method-edit/method-edit.component').then(
+        (mod) => mod.MethodEditComponent
       ),
   },
   {

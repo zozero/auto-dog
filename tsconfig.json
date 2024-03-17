@@ -21,6 +21,7 @@
       "es2018",
       "dom"
     ],
+    "skipLibCheck": true,
     "useDefineForClassFields": false
   },
   "exclude": [
