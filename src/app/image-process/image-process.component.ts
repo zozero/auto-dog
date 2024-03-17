@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { ButtonModule } from 'ng-devui/button';
 import { LayoutModule } from 'ng-devui';
 import { SelectModule } from 'ng-devui/select';
@@ -8,10 +7,9 @@ import { SubMenusComponent } from '../shared/components/sub-menus/sub-menus.comp
 import { ProjectInfo } from '../config/config-data';
 import { ExecutionSideHttpService } from '../core/services/https/execution-side-http.service';
 import { CommonModule } from '@angular/common';
-import { MyLocalStorageService } from '../core/services/my-local-storage/my-local-storage.service';
-import { projectTable } from '../core/services/dexie-db/project-table.service';
 // Import angular-cropperjs
 import { AngularCropperjsModule, CropperComponent } from 'angular-cropperjs';
+import { MenuService } from '../core/services/menus/menu.service';
 
 @Component({
   selector: 'app-image-process',
@@ -44,27 +42,13 @@ export class ImageProcessComponent implements OnInit {
   @ViewChild('angularCropper') public angularCropper!: CropperComponent;
 
   constructor(
-    private route: ActivatedRoute,
     private executionSideHttp: ExecutionSideHttpService,
-    private myLocalStorage: MyLocalStorageService
+    private menu: MenuService,
   ) {}
   ngOnInit(): void {
-    void this.initCurrentSubMenu();
-  }
-
-  async initCurrentSubMenu() {
-    // 获取已保存的菜单
-    const curMuen = this.myLocalStorage.get('currentSubMenu');
-    console.log('🚀 ~ SubMenusComponent ~ getMenus ~ curMuen:', curMuen);
-    if (curMuen) {
-      this.currentSubMenu = await projectTable.queryProjectInfoByName(curMuen);
-      console.log(
-        '🚀 ~ SubMenusComponent ~ getMenus ~ this.currentSubMenu:',
-        this.currentSubMenu
-      );
-    } else {
-      this.currentSubMenu = await projectTable.queryProjectFirstInfo();
-    }
+    void this.menu.initCurrentSubMenu().then(data=>{
+      this.currentSubMenu = data;
+    })
   }
 
   toggleLoading() {
@@ -92,16 +76,12 @@ export class ImageProcessComponent implements OnInit {
           reader.readAsDataURL(img);
         }
       });
-
+      this.showLoading = false;
     // setTimeout(() => {
     // }, 1000);
   }
 
   getCurrentSubMenu(currentSubMenu: ProjectInfo) {
-    console.log(
-      '🚀 ~ ImageProcessComponent ~ addItem ~ newItem:',
-      currentSubMenu
-    );
     this.currentSubMenu = currentSubMenu;
   }
 

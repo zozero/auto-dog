@@ -29,6 +29,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: '表格编辑',
+    loadComponent: () =>
+      import('./csv-edit/csv-edit.component').then(
+        (mod) => mod.CsvEditComponent
+      ),
+  },
+  {
     path: '**',
     component: PageNotFoundComponent,
   },

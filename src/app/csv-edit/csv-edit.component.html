@@ -1,0 +1,61 @@
+<div *ngIf="currentSubMenu">
+  <h2>表格编辑 {{ currentSubMenu.name }}</h2>
+  <d-row>
+    <d-col [dSpan]="4">
+      <app-sub-menus
+        (sendCurrentSubMenu)="getCurrentSubMenu($event)"
+      ></app-sub-menus>
+    </d-col>
+    <d-col [dSpan]="20">
+        <d-button
+                (btnClick)="putCsv()"
+              >
+              提交csv文件
+              </d-button>
+      <d-data-table
+        *ngIf="csvData"
+        [dataSource]="csvData"
+        [scrollable]="true"
+        [tableOverflowType]="'overlay'"
+      >
+        <thead dTableHead>
+          <tr dTableRow>
+            <th dHeadCell>序号</th>
+            <th dHeadCell *ngFor="let colOption of csvHeader">
+              {{ colOption }}      
+            </th>
+          </tr>
+        </thead>
+        <tbody dTableBody>
+          <ng-template let-rowItem="rowItem" let-rowIndex="rowIndex">
+            <tr dTableRow>
+              <td dTableCell>{{ rowIndex + 1 }}</td>
+              <td
+                dTableCell
+                [editable]="true"
+                [editableTip]="editableTip"
+                [(editing)]="rowItem[colOption+'Edit']"
+                *ngFor="let colOption of csvHeader;let i=index;"
+              >
+                <span *ngIf="!rowItem[colOption+'Edit']">{{
+                  rowItem[i]
+                }}</span>
+                <div *ngIf="rowItem[colOption+'Edit']" class="edit-padding-fix">
+                  <!-- 引入dCommonsModule的autofocus -->
+                  <input
+                    [dAutoFocus]="true"
+                    class="devui-form-control"
+                    [name]="colOption"
+                    [(ngModel)]="rowItem[i]"
+                    [attr.maxlength]="100"
+                    [attr.minlength]="3"
+                  />
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </tbody>
+      </d-data-table>
+    </d-col>
+  </d-row>
+</div>

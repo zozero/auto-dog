@@ -58,6 +58,7 @@
     "angular-cropperjs": "14.0.1",
     "dexie": "3.2.6",
     "ng-devui": "17.0.0",
+    "ngx-papaparse": "8.0.0",
     "rxjs": "7.8.1",
     "tslib": "2.6.2",
     "zone.js": "0.14.2"
