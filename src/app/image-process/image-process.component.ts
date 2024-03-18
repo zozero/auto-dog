@@ -7,7 +7,7 @@ import { SubMenusComponent } from '../shared/components/sub-menus/sub-menus.comp
 import { ProjectInfo } from '../config/config-data';
 import { ExecutionSideHttpService } from '../core/services/https/execution-side-http.service';
 import { CommonModule } from '@angular/common';
-// Import angular-cropperjs
+// 导入 angular-cropperjs 用于图片处理
 import { AngularCropperjsModule, CropperComponent } from 'angular-cropperjs';
 import { MenuService } from '../core/services/menus/menu.service';
 
@@ -29,26 +29,26 @@ import { MenuService } from '../core/services/menus/menu.service';
 export class ImageProcessComponent implements OnInit {
   currentSubMenu!: ProjectInfo;
   showLoading = false;
-  cropConfig={
+  cropConfig = {
     // 双击后可以拖动图片，再次双击后恢复
     // toggleDragModeOnDblclick:true
     // 根据百分比设置初始截取范围框，根据图片的大小
-    autoCropArea:0.2
-  }
+    autoCropArea: 0.2,
+  };
   imageToShow: any;
-  cropImageData:any;
+  cropImageData: any;
 
   // Get with @ViewChild
   @ViewChild('angularCropper') public angularCropper!: CropperComponent;
 
   constructor(
     private executionSideHttp: ExecutionSideHttpService,
-    private menu: MenuService,
+    private menu: MenuService
   ) {}
   ngOnInit(): void {
-    void this.menu.initCurrentSubMenu().then(data=>{
+    void this.menu.initCurrentSubMenu().then((data) => {
       this.currentSubMenu = data;
-    })
+    });
   }
 
   toggleLoading() {
@@ -75,8 +75,8 @@ export class ImageProcessComponent implements OnInit {
         if (img) {
           reader.readAsDataURL(img);
         }
-      });
-      this.showLoading = false;
+      })
+      .add(() => (this.showLoading = false));
     // setTimeout(() => {
     // }, 1000);
   }
@@ -86,11 +86,15 @@ export class ImageProcessComponent implements OnInit {
   }
 
   cropImage() {
-    this.angularCropper.exportCanvas();
+    if (this.imageToShow) {
+      this.angularCropper.exportCanvas();
+    }
   }
   angularCropperExport(data: any) {
     console.log('🚀 ~ ImageProcessComponent ~ test1 ~ data:', data);
-    this.cropImageData=this.angularCropper.cropper.getCroppedCanvas().toDataURL('image/jpeg');
+    this.cropImageData = this.angularCropper.cropper
+      .getCroppedCanvas()
+      .toDataURL('image/jpeg');
     this.getCropImageInfo();
   }
   getCropImageInfo() {
@@ -100,11 +104,13 @@ export class ImageProcessComponent implements OnInit {
     // this.angularCropper.cropper.getCanvasData()z
     // 获得当前截取的图片的位置，其中x，y是原始大小的图片左上角开始的位置，width，height是截取的图片实际的大小
     // this.angularCropper.cropper.getData()
-    const cropImageInfo=this.angularCropper.cropper.getData()
+    const cropImageInfo = this.angularCropper.cropper.getData();
     console.log(cropImageInfo);
   }
 
-  resetCanvasImage(){
-    this.angularCropper.cropper.reset()
+  resetCanvasImage() {
+    if (this.imageToShow) {
+      this.angularCropper.cropper.reset();
+    }
   }
 }

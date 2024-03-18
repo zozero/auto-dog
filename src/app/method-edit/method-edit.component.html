@@ -8,7 +8,8 @@
       </d-col>
       <d-col [dSpan]="20">
           <d-button
-                  (btnClick)="putCsv()"
+          [showLoading]="btnShowLoading"
+                  (btnClick)="postCsv()"
                 >
                 提交csv文件
                 </d-button>
@@ -20,9 +21,15 @@
         >
           <thead dTableHead>
             <tr dTableRow>
-              <th dHeadCell *ngFor="let colOption of csvHeader" >
-                {{ colOption }}      
+              <th dHeadCell >{{ csvHeader[0] }} </th>
+              <th dHeadCell >
+                {{ csvHeader[1] }}
+
               </th>
+              <th dHeadCell >{{ csvHeader[2] }} </th>
+              <th dHeadCell >{{ csvHeader[3] }} </th>
+              <th dHeadCell >{{ csvHeader[4] }} </th>
+              <th dHeadCell >{{ csvHeader[5] }} </th>
             </tr>
           </thead>
           <tbody dTableBody>
@@ -58,8 +65,3 @@
       </d-col>
     </d-row>
   </div>
-  <d-search
-  style="width: 300px"
-  [placeholder]="'搜索'"
-  [isKeyupSearch]="true"
-></d-search>

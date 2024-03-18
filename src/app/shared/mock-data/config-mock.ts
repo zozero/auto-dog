@@ -1,7 +1,6 @@
 import { MyMenuItemType } from '../../app-data';
 
 export const simulatorType = ['安卓', '其他'];
-export const imageMatchMethodRowName=['序号','图片名','范围','算法','最低相似度','额外补充']
 
 export const myMenuListmyMenuList: MyMenuItemType[] = [
   {
