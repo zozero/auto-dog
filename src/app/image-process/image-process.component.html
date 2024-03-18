@@ -1,4 +1,4 @@
-<div *ngIf="currentSubMenu">
+<div *ngIf="currentSubMenu" class="image-process-container">
   <h2>图片处理 {{ currentSubMenu.name }}</h2>
   <d-row>
     <d-col [dSpan]="4">
@@ -47,7 +47,7 @@
             [imageUrl]="imageToShow"
             (export)="angularCropperExport($event)"
           ></angular-cropper>
-          <img [src]="cropImageData" alt="Place image title" />
+          <!-- <img [src]="cropImageData" alt="Place image title" /> -->
         </d-col>
       </d-row>
     </d-col>

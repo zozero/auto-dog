@@ -1,8 +1,8 @@
 <div class="crop-image-container">
-  <img [attr.src]="data.image" style="max-width: 800px" />
+  <img [attr.src]="imageData.image" style="max-width: 800px" />
   <!-- <div>{{ data.info.x }}</div>
   <div>{{ data.info.y }}</div> -->
-  <form dForm [layout]="layoutDirection" ngForm >
+  <form dForm [layout]="layoutDirection" ngForm>
     <d-form-item>
       <d-form-label [required]="true">匹配方法选择</d-form-label>
       <d-form-control>
@@ -15,11 +15,13 @@
         ></d-select>
       </d-form-control>
     </d-form-item>
+    <app-input-switch
+      [currentItem]="inputList[i]"
+      *ngFor="let item of inputList;let i=index;"
+    ></app-input-switch>
   </form>
-  <div *ngFor="let item of inputList">
-    <app-input-switch [currentItem]="item"></app-input-switch>
+  <div class="modal-footer">
+    <d-button (click)="close()" bsStyle="primary" circled="true">提交</d-button>
+    <d-button (click)="close()" bsStyle="common" circled="true">测试</d-button>
   </div>
-  <!-- <div>name: {{ data.name }}</div>
-    <div>age: {{ data.age }}</div>
-    <div>address: {{ data.address }}</div> -->
 </div>

@@ -8,7 +8,7 @@
       >{{ currentItem["参数名"] }}</d-form-label
     >
     <d-form-control>
-      <input dTextInput autocomplete="off" [name]="methodArgType[1]" />
+      <input dTextInput autocomplete="off" [(ngModel)]="currentItem['默认值']"  />
     </d-form-control>
   </d-form-item>
 
@@ -26,7 +26,7 @@
         dTextInput
         autocomplete="off"
         [name]="methodArgType[2]"
-        [value]="currentItem['默认值']"
+        [(ngModel)]="currentItem['默认值']" 
       />
     </d-form-control>
   </d-form-item>
@@ -69,7 +69,7 @@
     <d-form-label
       [required]="true"
       [hasHelp]="true"
-      [helpTips]="'我忘记了它的作用。'"
+      [helpTips]="'我忘记了它的作用。选零必然不会触发其他机关。'"
       >{{ currentItem["参数名"] }}</d-form-label
     >
     <d-form-control>

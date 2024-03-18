@@ -38,7 +38,6 @@ export class ImageProcessComponent implements OnInit {
   };
   imageToShow: any;
   cropImageData: any;
-  
 
   // Get with @ViewChild
   @ViewChild('angularCropper') public angularCropper!: CropperComponent;
@@ -101,12 +100,16 @@ export class ImageProcessComponent implements OnInit {
       .getCroppedCanvas()
       .toDataURL('image/jpeg');
     const imageInfo:Cropper.Data=this.getCropImageInfo();
-    const imageData={
+    const cropImageInfo={
       image:this.cropImageData,
-      info:imageInfo
+      info:imageInfo,
+      currentMenu:this.currentSubMenu
     }
-    this.showUploadCropImage(imageData);
+    console.log("🚀 ~ ImageProcessComponent ~ angularCropperExport ~ cropImageInfo:", cropImageInfo)
+    
+    this.showUploadCropImage(cropImageInfo);
   }
+  // 显示图片上传的对话框
   showUploadCropImage(imageData:any){
     const config = {
       id: 'crop—image-dialog',
@@ -116,38 +119,41 @@ export class ImageProcessComponent implements OnInit {
       content: CropImageUploadComponent,
       backdropCloseable: true,
       onClose: () => console.log('on dialog closed'),
-      data: imageData,
     };
     
-    const results = this.dialogService.open({
+   const imageUploadDialogHandler = this.dialogService.open({
       ...config,
       showMaximizeBtn: true,
       dialogtype: 'standard',
       showAnimation: false,
+      
+      data: {
+        imageData:imageData,
+        close:()=>{
+            imageUploadDialogHandler.modalInstance.hide();
+        }
+      },
       buttons: [
-        {
-          cssClass: 'primary',
-          text: '确定',
-          disabled: false,
-          handler: ($event: Event) => {
-            console.log("🚀 ~ ImageProcessComponent ~ showUploadCropImage ~ event:", $event)
-            results.modalInstance.hide();
-          },
-        },
-        {
-          id: 'btn-cancel',
-          cssClass: 'common',
-          text: '取消',
-          handler: ($event: Event) => {
-            console.log("🚀 ~ ImageProcessComponent ~ showUploadCropImage ~ $event:", $event)
-            results.modalInstance.hide();
-          },
-        },
+        // {
+        //   cssClass: 'primary',
+        //   text: '确定',
+        //   disabled: false,
+        //   handler: 
+        // },
+        // {
+        //   id: 'btn-cancel',
+        //   cssClass: 'common',
+        //   text: '取消',
+        //   handler: ($event: Event) => {
+        //     console.log("🚀 ~ ImageProcessComponent ~ showUploadCropImage ~ $event:", $event)
+        //     results.modalInstance.hide();
+        //   },
+        // },
       ],
     });
-    console.log(results.modalContentInstance);
 
   }
+
   // 获取裁剪的图片信息
   getCropImageInfo() {
     // 获取当前图片的尺寸(可能被缩小了)
