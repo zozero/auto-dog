@@ -9,7 +9,7 @@ import { Papa, ParseResult } from 'ngx-papaparse';
 import { DataTableModule, EditableTip } from 'ng-devui/data-table';
 import { FormsModule } from '@angular/forms';
 import { InputGroupModule } from 'ng-devui/input-group';
-import { imageMatchMethodRowName } from '../shared/mock-data/match-mock';
+import { imageMatchMethodArgList } from '../shared/mock-data/match-mock';
 import { LoadingModule } from 'ng-devui/loading';
 import { ToastService } from 'ng-devui/toast';
 
@@ -32,7 +32,9 @@ import { ToastService } from 'ng-devui/toast';
 export class MethodEditComponent implements OnInit {
   currentSubMenu!: ProjectInfo;
   csvData!: string[];
-  csvHeader: string[] = imageMatchMethodRowName;
+  csvHeader: string[] = imageMatchMethodArgList.map(d1=>{
+    return d1['参数名'];
+  });
   editableTip = EditableTip.hover;
   // 按钮点击后的载入提示
   btnShowLoading = false;

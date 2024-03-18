@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ButtonModule } from 'ng-devui/button';
-import { LayoutModule } from 'ng-devui';
+import { DialogService, LayoutModule } from 'ng-devui';
 import { SelectModule } from 'ng-devui/select';
 import { FormsModule } from '@angular/forms';
 import { SubMenusComponent } from '../shared/components/sub-menus/sub-menus.component';
@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 // 导入 angular-cropperjs 用于图片处理
 import { AngularCropperjsModule, CropperComponent } from 'angular-cropperjs';
 import { MenuService } from '../core/services/menus/menu.service';
+import { CropImageUploadComponent } from '../shared/components/crop-image-upload/crop-image-upload.component';
 
 @Component({
   selector: 'app-image-process',
@@ -37,13 +38,15 @@ export class ImageProcessComponent implements OnInit {
   };
   imageToShow: any;
   cropImageData: any;
+  
 
   // Get with @ViewChild
   @ViewChild('angularCropper') public angularCropper!: CropperComponent;
 
   constructor(
     private executionSideHttp: ExecutionSideHttpService,
-    private menu: MenuService
+    private menu: MenuService,
+    private dialogService: DialogService
   ) {}
   ngOnInit(): void {
     void this.menu.initCurrentSubMenu().then((data) => {
@@ -88,15 +91,64 @@ export class ImageProcessComponent implements OnInit {
   cropImage() {
     if (this.imageToShow) {
       this.angularCropper.exportCanvas();
+
     }
   }
+  // 导出截图
   angularCropperExport(data: any) {
-    console.log('🚀 ~ ImageProcessComponent ~ test1 ~ data:', data);
+    console.log('🚀 ~ ImageProcessComponent ~ angularCropperExport ~ data:', data);
     this.cropImageData = this.angularCropper.cropper
       .getCroppedCanvas()
       .toDataURL('image/jpeg');
-    this.getCropImageInfo();
+    const imageInfo:Cropper.Data=this.getCropImageInfo();
+    const imageData={
+      image:this.cropImageData,
+      info:imageInfo
+    }
+    this.showUploadCropImage(imageData);
   }
+  showUploadCropImage(imageData:any){
+    const config = {
+      id: 'crop—image-dialog',
+      maxWidth:'900px',
+      maxHeight: '600px',
+      title: '截图数据处理上传',
+      content: CropImageUploadComponent,
+      backdropCloseable: true,
+      onClose: () => console.log('on dialog closed'),
+      data: imageData,
+    };
+    
+    const results = this.dialogService.open({
+      ...config,
+      showMaximizeBtn: true,
+      dialogtype: 'standard',
+      showAnimation: false,
+      buttons: [
+        {
+          cssClass: 'primary',
+          text: '确定',
+          disabled: false,
+          handler: ($event: Event) => {
+            console.log("🚀 ~ ImageProcessComponent ~ showUploadCropImage ~ event:", $event)
+            results.modalInstance.hide();
+          },
+        },
+        {
+          id: 'btn-cancel',
+          cssClass: 'common',
+          text: '取消',
+          handler: ($event: Event) => {
+            console.log("🚀 ~ ImageProcessComponent ~ showUploadCropImage ~ $event:", $event)
+            results.modalInstance.hide();
+          },
+        },
+      ],
+    });
+    console.log(results.modalContentInstance);
+
+  }
+  // 获取裁剪的图片信息
   getCropImageInfo() {
     // 获取当前图片的尺寸(可能被缩小了)
     // this.angularCropper.cropper.getImageData()
@@ -104,10 +156,11 @@ export class ImageProcessComponent implements OnInit {
     // this.angularCropper.cropper.getCanvasData()z
     // 获得当前截取的图片的位置，其中x，y是原始大小的图片左上角开始的位置，width，height是截取的图片实际的大小
     // this.angularCropper.cropper.getData()
-    const cropImageInfo = this.angularCropper.cropper.getData();
-    console.log(cropImageInfo);
+    const cropImageInfo:Cropper.Data = this.angularCropper.cropper.getData();
+    return cropImageInfo;
   }
-
+  
+  // 重置画布内容
   resetCanvasImage() {
     if (this.imageToShow) {
       this.angularCropper.cropper.reset();

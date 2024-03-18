@@ -1,0 +1,83 @@
+<div [ngSwitch]="currentItem['参数名']" class="input-switch-container">
+  <!-- <div *ngSwitchCase="methodArgType[0]">这是序号，它自动添加到最后一行</div> -->
+  <d-form-item *ngSwitchCase="methodArgType[1]">
+    <d-form-label
+      [required]="true"
+      [hasHelp]="true"
+      [helpTips]="'图片的名字，无需后缀，它不能重复。'"
+      >{{ currentItem["参数名"] }}</d-form-label
+    >
+    <d-form-control>
+      <input dTextInput autocomplete="off" [name]="methodArgType[1]" />
+    </d-form-control>
+  </d-form-item>
+
+  <d-form-item *ngSwitchCase="methodArgType[2]">
+    <d-form-label
+      [required]="true"
+      [hasHelp]="true"
+      [helpTips]="
+        '范围内匹配，格式：x y 宽 高，用空格隔开，x和y是搜索时的起始位置，宽和高是搜索的图片的大小。可以是整数和分数，分数意味着按照模拟器屏幕大小的百分比进行计算。也可以直接使用默认值，默认值是根据截图时大小向外扩了100像素。'
+      "
+      >{{ currentItem["参数名"] }}</d-form-label
+    >
+    <d-form-control>
+      <input
+        dTextInput
+        autocomplete="off"
+        [name]="methodArgType[2]"
+        [value]="currentItem['默认值']"
+      />
+    </d-form-control>
+  </d-form-item>
+  <d-form-item *ngSwitchCase="methodArgType[3]">
+    <d-form-label
+      [required]="true"
+      [hasHelp]="true"
+      [helpTips]="
+        '匹配时使用的算法类型，公式可以在opencv里面看，使用默认值即可。'
+      "
+      >{{ currentItem["参数名"] }}</d-form-label
+    >
+    <d-form-control>
+      <d-input-number
+        [(ngModel)]="currentItem['默认值']"
+        class="input-number"
+      ></d-input-number>
+    </d-form-control>
+  </d-form-item>
+  <d-form-item *ngSwitchCase="methodArgType[4]">
+    <d-form-label
+      [required]="true"
+      [hasHelp]="true"
+      [helpTips]="
+        '相似度太低可能会导致匹配错误的位置，太高可能匹配不到，0.8是常用数字。'
+      "
+      >{{ currentItem["参数名"] }}</d-form-label
+    >
+    <d-form-control>
+      <d-input-number
+        [max]="1.0"
+        [min]="0.0"
+        [step]="0.1"
+        [(ngModel)]="currentItem['默认值']"
+        class="input-number"
+      ></d-input-number>
+    </d-form-control>
+  </d-form-item>
+  <d-form-item *ngSwitchCase="methodArgType[5]">
+    <d-form-label
+      [required]="true"
+      [hasHelp]="true"
+      [helpTips]="'我忘记了它的作用。'"
+      >{{ currentItem["参数名"] }}</d-form-label
+    >
+    <d-form-control>
+      <d-input-number
+        [(ngModel)]="currentItem['默认值']"
+        class="input-number"
+      ></d-input-number>
+    </d-form-control>
+  </d-form-item>
+  <!-- <div *ngSwitchDefault>3</div> -->
+</div>
