@@ -5,7 +5,11 @@ export const simulatorType = ['安卓', '其他'];
 export const myMenuListmyMenuList: MyMenuItemType[] = [
   {
     icon: 'icon-more-func',
-    name: '配置',
+    name: '基础配置',
+  },
+  {
+    icon: 'icon-more-func',
+    name: '执行规划',
   },
   {
     icon: 'icon-more-func',
