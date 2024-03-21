@@ -1,0 +1,12 @@
+<div *ngIf="currentProject">
+  <h2>流程规划 {{ currentProject.name }}</h2>
+  <d-row>
+    <d-col [dSpan]="4">
+      <app-project-menus
+        (sendCurrentProject)="getCurrentProject($event)"
+      ></app-project-menus>
+    </d-col>
+    <d-col [dSpan]="20"> </d-col>
+  </d-row>
+</div>
+<div id="container"></div>

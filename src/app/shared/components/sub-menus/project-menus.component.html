@@ -1,0 +1,19 @@
+<app-http-select [currentProject]="currentProject"></app-http-select>
+<!-- 子栏 -->
+<!-- 没有获取currentSubMenu数据之前不渲染该节点 -->
+<div dMenu class="menu-box" *ngIf="currentProject">
+  <div dMenu class="menu">
+    <ng-container *ngFor="let sub of projectList; let i=index;">
+      <div
+        dMenuItem
+        [title]="sub.name"
+        (itemClick)="subMenuClick(i,sub)"
+        [active]="sub.name === currentProject.name"
+      >
+        <span class="devui-menu-item-name over-flow-ellipsis">{{
+          sub.name
+        }}</span>
+      </div>
+    </ng-container>
+  </div>
+</div>

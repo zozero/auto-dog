@@ -2,13 +2,22 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FormLayout, SelectModule, ToastService } from 'ng-devui';
 import { FormModule } from 'ng-devui/form';
-import { matchMethodList } from '../../mock-data/match-mock';
+import {
+  matchMethodList,
+} from '../../../core/mock/match-mock';
 import { CommonModule } from '@angular/common';
 import { InputSwitchComponent } from '../input-switch/input-switch.component';
 import { ButtonModule } from 'ng-devui/button';
 import { cloneDeep } from 'lodash';
 import { ImageHttpService } from '../../../core/services/https/image-http.service';
-import { ImageMatchMethodArgs } from '../../../core/services/https/http-data-type';
+import {
+  matchMethodType,
+} from '../../../core/interface/table-type';
+import { CropImageInfo } from '../../../core/interface/image-type';
+import {
+  ExecutionSideInfo,
+  ProjectInfo,
+} from '../../../core/interface/config-type';
 
 @Component({
   selector: 'app-crop-image-upload',
@@ -25,15 +34,22 @@ import { ImageMatchMethodArgs } from '../../../core/services/https/http-data-typ
   ],
 })
 export class CropImageUploadComponent implements OnInit {
-  // 该数据必然在初始时就有
   @Input() data: any;
-  imageData: any;
+  // 裁剪的图片信息
+  imageData!: CropImageInfo;
+  // 项目信息
+  projectInfo!: ProjectInfo;
+  // 用于关闭弹出宽
+  closeDialog!: () => void;
 
+  // 页面显示参数
   layoutDirection: FormLayout = FormLayout.Vertical;
-  selectOptions: any = matchMethodList;
+
+  matchMethodList: matchMethodType[] = cloneDeep(matchMethodList);
   // 此处最好深度拷贝，不然默认值将被修改。
-  currentImageMethod: any = cloneDeep(matchMethodList[0]);
-  inputList: any[] = this.currentImageMethod['参数列表'];
+  currentImageMethod: matchMethodType = this.matchMethodList[0];
+  // 图片csv表格中的参数
+  // imageArgs: ImageMatchMethodType = this.currentImageMethod['参数'];
 
   constructor(
     private imageHttp: ImageHttpService,
@@ -41,34 +57,29 @@ export class CropImageUploadComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // 传过了的参数立即赋值
     this.imageData = this.data.imageData;
+    this.projectInfo = this.data.projectInfo;
+    this.closeDialog = this.data.close;
+
     this.setCurrentImageMethodData();
   }
 
   submit() {
-    const imageArgs: ImageMatchMethodArgs = {
-      图片名: this.inputList[1].默认值,
-      范围: this.inputList[2].默认值,
-      算法: this.inputList[3].默认值,
-      最低相似度: this.inputList[4].默认值,
-      额外补充: this.inputList[5].默认值,
-    };
-    console.log(
-      '🚀 ~ CropImageUploadComponent ~ submit ~  this.data.imageData.imageBlob:',
-      this.data.imageData.imageBlob
-    );
     const imageFile = new File(
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       [this.data.imageData.imageBlob],
-      imageArgs.图片名 + '.jpg',
+      this.currentImageMethod['参数']['图片名'] + '.jpg',
       { type: 'image/jpg' }
     );
+
     // 上传图片
+    const tmpInfo = this.projectInfo.executionSideInfo as ExecutionSideInfo;
     this.imageHttp
       .postImageMethodUploadImage(
         imageFile,
-        this.imageData.currentMenu.executionSideInfo.ipPort as string,
-        this.imageData.currentMenu.name as string
+        tmpInfo.ipPort,
+        this.projectInfo.name
       )
       .subscribe((data: any) => {
         this.toastService.open({
@@ -82,9 +93,9 @@ export class CropImageUploadComponent implements OnInit {
     // 向csv表格中添加数据
     this.imageHttp
       .postImageMethodAddData(
-        imageArgs,
-        this.imageData.currentMenu.executionSideInfo.ipPort as string,
-        this.imageData.currentMenu.name as string
+        this.currentImageMethod['参数'],
+        tmpInfo.ipPort,
+        this.projectInfo.name
       )
       .subscribe((data: any) => {
         this.toastService.open({
@@ -95,46 +106,39 @@ export class CropImageUploadComponent implements OnInit {
         this.data.close();
       });
   }
+
   // 设置当前输入列表的数据，每一次点击截取的时候都需要重新计算一遍
   setCurrentImageMethodData() {
     // 如果参数列表中有J“范围”参数就直接计算范围
-    this.currentImageMethod['参数列表'].map((d2: any) => {
-      // 范围是左上和右下的坐标
-      if (d2['参数名'] === '范围') {
-        const baseNum = 50;
-        // 四舍五入的计算
-        // 不要超出屏幕的范围
-        let x1 = Math.round((this.imageData.info.x as number) - baseNum);
-        if (x1 < 0) {
-          x1 = 0;
-        }
-        let y1 = Math.round((this.imageData.info.y as number) - baseNum);
-        if (y1 < 0) {
-          y1 = 0;
-        }
-        let x2 =
-          x1 + Math.round((this.imageData.info.width as number) + baseNum);
-        if (x2 > this.imageData.rowImageInfo.width) {
-          x2 = this.imageData.rowImageInfo.width;
-        }
-        let y2 =
-          y1 + Math.round((this.imageData.info.height as number) + baseNum);
-        if (y2 > this.imageData.rowImageInfo.height) {
-          y2 = this.imageData.rowImageInfo.height;
-        }
-        d2['默认值'] = x1 + ' ' + y1 + ' ' + x2 + ' ' + y2;
-      } else {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-        return d2;
-      }
-    });
+    // 范围是左上和右下的坐标
+    const baseNum = 50;
+    // 四舍五入的计算
+    // 不要超出屏幕的范围
+    let x1 = Math.round(this.imageData.info.x - baseNum);
+    if (x1 < 0) {
+      x1 = 0;
+    }
+    let y1 = Math.round(this.imageData.info.y - baseNum);
+    if (y1 < 0) {
+      y1 = 0;
+    }
+    let x2 = x1 + Math.round(this.imageData.info.width + baseNum);
+    if (x2 > this.imageData.rowImageInfo.width) {
+      x2 = this.imageData.rowImageInfo.width;
+    }
+    let y2 = y1 + Math.round(this.imageData.info.height + baseNum);
+    if (y2 > this.imageData.rowImageInfo.height) {
+      y2 = this.imageData.rowImageInfo.height;
+    }
+
+    this.currentImageMethod['参数']['范围'] = x1 + ' ' + y1 + ' ' + x2 + ' ' + y2;
   }
 
   changeImageMethod() {
-    this.inputList = this.currentImageMethod['参数列表'];
-    console.log(
-      '🚀 ~ CropImageUploadComponent ~ changeImageMethod ~ this.inputList:',
-      this.inputList
-    );
+    // this.inputList = this.currentImageMethod['参数列表'];
+    // console.log(
+    //   '🚀 ~ CropImageUploadComponent ~ changeImageMethod ~ this.inputList:',
+    //   this.inputList
+    // );
   }
 }

@@ -1,5 +1,5 @@
 <!-- 如果数据尚未获取，则不渲染该组件自然而然不会报错了 -->
-<div style="margin-bottom: 12px" *ngIf="currentSubMenu">
+<div style="margin-bottom: 12px" *ngIf="currentProject">
   <!-- 执行端信息的选择 -->
   <d-select
     [placeholder]="'执行端'"
@@ -7,7 +7,7 @@
     [isSearch]="true"
     [toggleOnFocus]="true"
     [filterKey]="'ipPort'"
-    [(ngModel)]="currentSubMenu.executionSideInfo"
+    [(ngModel)]="currentProject.executionSideInfo"
     (ngModelChange)="onSelectEditEnd()"
   >
     <ng-template let-option="option">
@@ -21,7 +21,7 @@
     [isSearch]="true"
     [toggleOnFocus]="true"
     [filterKey]="'name'"
-    [(ngModel)]="currentSubMenu.simulatorInfo"
+    [(ngModel)]="currentProject.simulatorInfo"
     (ngModelChange)="onSelectEditEnd()"
   >
     <ng-template let-option="option" let-filterKey="filterKey">

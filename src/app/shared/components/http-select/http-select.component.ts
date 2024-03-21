@@ -1,9 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import {
-  ExecutionSideInfo,
-  ProjectInfo,
-  SimulatorInfo,
-} from '../../../config/config-data';
+
 import { executionSideTable } from '../../../core/services/dexie-db/execution-side-table.service';
 import { simulatorTable } from '../../../core/services/dexie-db/simulator-table.service';
 import { FormsModule } from '@angular/forms';
@@ -11,6 +7,7 @@ import { LayoutModule } from 'ng-devui/layout';
 import { DevUIModule } from 'ng-devui';
 import { projectTable } from '../../../core/services/dexie-db/project-table.service';
 import { CommonModule } from '@angular/common';
+import { ExecutionSideInfo, ProjectInfo, SimulatorInfo } from '../../../core/interface/config-type';
 
 @Component({
   selector: 'app-http-select',
@@ -22,7 +19,7 @@ import { CommonModule } from '@angular/common';
 export class HttpSelectComponent implements OnInit {
   simulatorInfoList!: SimulatorInfo[];
   executionSideInfoList!: ExecutionSideInfo[];
-  @Input() currentSubMenu!: ProjectInfo;
+  @Input() currentProject!: ProjectInfo;
 
   constructor() {}
   ngOnInit(): void {
@@ -37,7 +34,7 @@ export class HttpSelectComponent implements OnInit {
   }
   // 更新配置数据
   async onSelectEditEnd() {
-    await projectTable.updateProjectInfo(this.currentSubMenu.id as number, this.currentSubMenu);
+    await projectTable.updateProjectInfo(this.currentProject.id as number, this.currentProject);
   }
 
   async updateData(rowItem: any, field: string) {

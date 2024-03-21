@@ -1,7 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ImageMatchMethodArgs } from './http-data-type';
-
+import { ImageMatchMethodType } from '../../interface/table-type';
 @Injectable({
   providedIn: 'root',
 })
@@ -9,9 +8,9 @@ export class ImageHttpService {
   constructor(private http: HttpClient) {}
 
   postImageMethodUploadImage(
-    img:File,
-    executionSideUrl:string,
-    projectName:string,
+    img: File,
+    executionSideUrl: string | undefined,
+    projectName: string
   ) {
     // eslint-disable-next-line prefer-const
     let headers = new HttpHeaders();
@@ -20,21 +19,25 @@ export class ImageHttpService {
     const options = {
       headers: headers,
       params: {
-        项目名:projectName,
+        项目名: projectName,
       },
     };
 
     // eslint-disable-next-line prefer-const
     let formData = new FormData();
     formData.append('图片', img);
-    return this.http.post(executionSideUrl + '/图片匹配' + '/上传截图', formData, options);
+    return this.http.post(
+      executionSideUrl + '/图片匹配' + '/上传截图',
+      formData,
+      options
+    );
     // return this.http.post(executionSideUrl + '/', formData, options);
   }
   postImageMethodAddData(
-    imageArgs: ImageMatchMethodArgs,
-    executionSideUrl:string,
-    projectName:string,
-    ){
+    imageArgs: ImageMatchMethodType,
+    executionSideUrl: string,
+    projectName: string
+  ) {
     // eslint-disable-next-line prefer-const
     let headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
@@ -42,10 +45,14 @@ export class ImageHttpService {
     const options = {
       headers: headers,
       params: {
-        项目名:projectName,
+        项目名: projectName,
       },
     };
-    
-    return this.http.post(executionSideUrl + '/图片匹配' + '/添加数据', imageArgs, options);
+
+    return this.http.post(
+      executionSideUrl + '/图片匹配' + '/添加数据',
+      imageArgs,
+      options
+    );
   }
 }

@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { ElectronService } from './core/services';
 import { TranslateService } from '@ngx-translate/core';
 import { APP_CONFIG } from '../environments/environment';
-import {  MyMenuItemType } from './app-data';
+import {  AppMenuItemType } from './core/interface/app-type';
 import { Router } from '@angular/router';
-import { ExecutionSideInfo, SimulatorInfo } from './config/config-data';
 import { MyLocalStorageService } from './core/services/my-local-storage/my-local-storage.service';
-import { myMenuListmyMenuList } from './shared/mock-data/config-mock';
+import { ExecutionSideInfo, SimulatorInfo } from './core/interface/config-type';
+import { myMenuListmyMenuList } from './core/mock/app-mock';
 
 @Component({
   selector: 'app-root',
@@ -21,9 +21,9 @@ export class AppComponent {
   currentExecutionSide!: ExecutionSideInfo;
 
   // 完整的菜单栏
-  menuList: MyMenuItemType[] = myMenuListmyMenuList;
+  menuList: AppMenuItemType[] = myMenuListmyMenuList;
   // 当前的主菜单，默认为配置
-  currentMenu: MyMenuItemType = this.menuList[0];
+  currentMenu: AppMenuItemType = this.menuList[0];
 
 
   constructor(
@@ -52,7 +52,7 @@ export class AppComponent {
   }
 
   // 主菜单栏某项被点击
-  menuClick(currentMenu: MyMenuItemType) {
+  menuClick(currentMenu: AppMenuItemType) {
     this.currentMenu = currentMenu;
     this.myLocalStorage.set('currentMenu', this.currentMenu.name);
   }

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 
 import { DexieDBService } from './dexie-db.service';
-import { ExecutionSideInfo } from '../../../config/config-data';
+import { ExecutionSideInfo } from '../../interface/config-type';
 import { Table } from 'dexie';
-import { defaultExecutionSideInfo } from '../../../shared/mock-data/config-mock';
+import { defaultExecutionSideInfo } from '../../mock/config-mock';
 
 @Injectable({
   providedIn: 'root',

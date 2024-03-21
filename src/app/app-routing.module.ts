@@ -12,26 +12,26 @@ const routes: Routes = [
   {
     path: '基础配置',
     loadComponent: () =>
-      import('./config/config.component').then((mod) => mod.ConfigComponent),
+      import('./pages/config/config.component').then((mod) => mod.ConfigComponent),
   },
   {
     path: '图片处理',
     loadComponent: () =>
-      import('./image-process/image-process.component').then(
+      import('./pages/image-process/image-process.component').then(
         (mod) => mod.ImageProcessComponent
       ),
   },
   {
     path: '流程规划',
     loadComponent: () =>
-      import('./workflow-planed/workflow-planed.component').then(
+      import('./pages/workflow-planed/workflow-planed.component').then(
         (mod) => mod.WorkflowPlanedComponent
       ),
   },
   {
     path: '方法编辑',
     loadComponent: () =>
-      import('./method-edit/method-edit.component').then(
+      import('./pages/method-edit/method-edit.component').then(
         (mod) => mod.MethodEditComponent
       ),
   },

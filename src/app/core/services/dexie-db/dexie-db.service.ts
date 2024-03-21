@@ -5,7 +5,7 @@ import {
   ExecutionSideInfo,
   ProjectInfo,
   SimulatorInfo,
-} from '../../../config/config-data';
+} from '../../interface/config-type';
 
 @Injectable({
   providedIn: 'root',

@@ -5,7 +5,7 @@ import {
   ConfigData,
   ExecutionSideInfo,
   SimulatorInfo,
-} from '../../../config/config-data';
+} from '../../interface/config-type';
 import { Table } from 'dexie';
 
 @Injectable({

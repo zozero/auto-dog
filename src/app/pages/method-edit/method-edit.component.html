@@ -1,0 +1,27 @@
+<div *ngIf="currentProject">
+    <h2>方法表格编辑 {{ currentProject.name }}</h2>
+    <d-row>
+      <d-col [dSpan]="4">
+        <app-project-menus
+          (sendCurrentProject)="getCurrentProject($event)"
+        ></app-project-menus>
+      </d-col>
+      <d-col [dSpan]="20">
+        <section>
+          <d-tabs type="wrapped" [(activeTab)]="tabActiveId" (activeTabChange)="activeTabChange($event)">
+            <d-tab *ngFor="let item of imageMethodList" [id]="item['名称']" [title]="item['名称']"></d-tab>
+          </d-tabs>
+        </section>
+          <!-- <d-button
+          [showLoading]="btnShowLoading"
+                  (btnClick)="postCsv()"
+                >
+                提交csv文件
+                </d-button> -->
+                <container-element [ngSwitch]="tabActiveId">
+                  <app-image-match-table *ngSwitchCase="imageMethodList[0]['名称']" [projectInfo]="currentProject"></app-image-match-table>
+                </container-element>
+          
+      </d-col>
+    </d-row>
+  </div>

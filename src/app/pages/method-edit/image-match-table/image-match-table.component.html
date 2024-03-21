@@ -1,0 +1,53 @@
+<d-data-table
+          *ngIf="csvData"
+          [dataSource]="csvData"
+          [scrollable]="true"
+          [tableOverflowType]="'overlay'"
+        >
+          <thead dTableHead>
+            <tr dTableRow>
+              <th dHeadCell >索引</th>
+              <th dHeadCell >{{ csvHeader[0] }}</th>
+              <th dHeadCell >
+                {{ csvHeader[1] }}
+              </th>
+              <th dHeadCell >{{ csvHeader[2] }}</th>
+              <th dHeadCell >{{ csvHeader[3] }}</th>
+              <th dHeadCell >{{ csvHeader[4] }}</th>
+              <th dHeadCell >{{ csvHeader[5] }}</th>
+            </tr>
+          </thead>
+          <tbody dTableBody>
+            <ng-template let-rowItem="rowItem" let-rowIndex="rowIndex">
+              <tr dTableRow>
+                <td dTableCell [rowItem]="rowItem" [field]="'index'">
+                  <span>{{ rowIndex + 1 }}</span>
+                </td>
+                <td
+                  dTableCell
+                  [editable]="true"
+                  [editableTip]="editableTip"
+                  [(editing)]="rowItem[colOption+'Edit']"
+                  *ngFor="let colOption of csvHeader;let i=index;"
+                >
+                  <span *ngIf="!rowItem[colOption+'Edit']">{{
+                    rowItem[i]
+                  }}</span>
+                  <!-- <app-input-switch *ngIf="rowItem[colOption+'Edit']"  [currentItem]="imageMatch"></app-input-switch> -->
+                  <!-- <div *ngIf="rowItem[colOption+'Edit']" class="edit-padding-fix"> -->
+                    
+                    <!-- 引入dCommonsModule的autofocus -->
+                    <!-- <input
+                      [dAutoFocus]="true"
+                      class="devui-form-control"
+                      [name]="colOption"
+                      [(ngModel)]="rowItem[i]"
+                      [attr.maxlength]="100"
+                      [attr.minlength]="3"
+                    /> -->
+                  <!-- </div> -->
+                </td>
+              </tr>
+            </ng-template>
+          </tbody>
+        </d-data-table>

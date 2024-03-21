@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { DexieDBService } from './dexie-db.service';
 import { Table } from 'dexie';
-import { defaultProjectData } from '../../../shared/mock-data/config-mock';
-import { ProjectInfo } from '../../../config/config-data';
+import { defaultProjectData } from '../../mock/config-mock';
 import { executionSideTable } from './execution-side-table.service';
 import { simulatorTable } from './simulator-table.service';
+import { ProjectInfo } from '../../interface/config-type';
 
 @Injectable({
   providedIn: 'root',
