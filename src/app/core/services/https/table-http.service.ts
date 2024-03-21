@@ -14,9 +14,16 @@ export class TableHttpService {
     });
   }
   // 获取csv文件
-  getCsvFile(executionSideHttp: string, csvFilePath: string) {
-    return this.http.get(executionSideHttp + '/csv', {
-      params: { 文件路径: csvFilePath },
+  getCsvFile(
+    executionSideHttp: string,
+    projectName: string,
+    csvFileName: string
+  ) {
+    return this.http.get(executionSideHttp + '/表格'+'/方法', {
+      params: {
+        项目名: projectName,
+        文件名: csvFileName+'.csv',
+      },
       responseType: 'blob',
     });
   }
@@ -35,6 +42,4 @@ export class TableHttpService {
     formData.append('csv文件', csvFile);
     return this.http.post(executionSideUrl + '/csv', formData, options);
   }
-
-   
 }

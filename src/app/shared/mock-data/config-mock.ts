@@ -21,6 +21,10 @@ export const myMenuListmyMenuList: MyMenuItemType[] = [
   },
   {
     icon: 'icon-more-func',
+    name: '图片展馆',
+  },
+  {
+    icon: 'icon-more-func',
     name: '方法编辑',
   },
   {

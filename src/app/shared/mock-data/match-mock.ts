@@ -25,15 +25,15 @@ export const imageMatchMethodArgList = [
   },
 ];
 
-export const imageMethodList = [
+export const matchMethodList = [
   {
     编码: 'A',
-    名称: '图片匹配方法',
+    名称: '图片匹配',
     参数列表: imageMatchMethodArgList,
   },
   {
     编码: 'B',
-    名称: '图片二值化匹配方法',
+    名称: '图片二值化匹配',
     参数列表: [],
   },
 ];

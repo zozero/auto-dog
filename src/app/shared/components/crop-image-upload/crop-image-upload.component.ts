@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FormLayout, SelectModule, ToastService } from 'ng-devui';
 import { FormModule } from 'ng-devui/form';
-import { imageMethodList } from '../../mock-data/match-mock';
+import { matchMethodList } from '../../mock-data/match-mock';
 import { CommonModule } from '@angular/common';
 import { InputSwitchComponent } from '../input-switch/input-switch.component';
 import { ButtonModule } from 'ng-devui/button';
@@ -30,9 +30,9 @@ export class CropImageUploadComponent implements OnInit {
   imageData: any;
 
   layoutDirection: FormLayout = FormLayout.Vertical;
-  selectOptions: any = imageMethodList;
+  selectOptions: any = matchMethodList;
   // 此处最好深度拷贝，不然默认值将被修改。
-  currentImageMethod: any = cloneDeep(imageMethodList[0]);
+  currentImageMethod: any = cloneDeep(matchMethodList[0]);
   inputList: any[] = this.currentImageMethod['参数列表'];
 
   constructor(

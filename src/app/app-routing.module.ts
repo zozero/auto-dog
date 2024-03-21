@@ -6,11 +6,11 @@ import { PageNotFoundComponent } from './shared/components';
 const routes: Routes = [
   {
     path: '',
-    redirectTo:'配置',
+    redirectTo:'基础配置',
     pathMatch: 'full'
   },
   {
-    path: '配置',
+    path: '基础配置',
     loadComponent: () =>
       import('./config/config.component').then((mod) => mod.ConfigComponent),
   },

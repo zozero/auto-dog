@@ -31,32 +31,33 @@ export class WorkflowPlanedComponent implements OnInit {
       this.currentSubMenu = data;
 
       // this.test();
-      this.test2();
+      // this.test2();
     });
   }
+  
   getCurrentSubMenu(currentSubMenu: ProjectInfo) {
     this.currentSubMenu = currentSubMenu;
   }
-  test() {
-    this.tableHttp
-      .getCsvFile(
-        this.currentSubMenu.executionSideInfo.ipPort,
-        this.currentSubMenu.name
-      )
-      .subscribe((csv) => {
-        console.log('🚀 ~ WorkflowPlanedComponent ~ ).subscribe ~ csv:', csv);
-        const csvParseOptions = {
-          complete: (results: any, file: any) => {
-            console.log('Parsed: ', results, file);
-          },
-          encoding: 'gbk',
-          header: true,
-          download: true,
-        };
-        this.papa.parse(csv, csvParseOptions);
-        // Add your options here
-      });
-  }
+  // test() {
+  //   this.tableHttp
+  //     .getCsvFile(
+  //       this.currentSubMenu.executionSideInfo.ipPort,
+  //       this.currentSubMenu.name
+  //     )
+  //     .subscribe((csv) => {
+  //       console.log('🚀 ~ WorkflowPlanedComponent ~ ).subscribe ~ csv:', csv);
+  //       const csvParseOptions = {
+  //         complete: (results: any, file: any) => {
+  //           console.log('Parsed: ', results, file);
+  //         },
+  //         encoding: 'gbk',
+  //         header: true,
+  //         download: true,
+  //       };
+  //       this.papa.parse(csv, csvParseOptions);
+  //       // Add your options here
+  //     });
+  // }
 
   test2() {
     /**
