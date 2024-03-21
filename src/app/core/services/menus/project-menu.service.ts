@@ -6,7 +6,7 @@ import { ProjectInfo } from '../../interface/config-type';
 @Injectable({
   providedIn: 'root',
 })
-export class MenuService {
+export class ProjectMenuService {
   constructor(private myLocalStorage: MyLocalStorageService) {}
   async initCurrentProject() {
     let currentProject: ProjectInfo;

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TableHttpService } from '../../core/services/https/table-http.service';
-import { MenuService } from '../../core/services/menus/menu.service';
+import { ProjectMenuService } from '../../core/services/menus/project-menu.service';
 import { DevUIModule, LayoutModule, LoadingService } from 'ng-devui';
 import { CommonModule } from '@angular/common';
 import { ProjectMenusComponent } from '../../shared/components/sub-menus/project-menus.component';
@@ -52,7 +52,7 @@ export class MethodEditComponent implements OnInit {
 
   constructor(
     private tableHttp: TableHttpService,
-    private menu: MenuService,
+    private menu: ProjectMenuService,
     private loadingService: LoadingService,
     private toastService: ToastService 
   ) {}

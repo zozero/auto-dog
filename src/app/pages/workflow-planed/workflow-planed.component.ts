@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TableHttpService } from '../../core/services/https/table-http.service';
 import { ProjectInfo } from '../../core/interface/config-type';
-import { MenuService } from '../../core/services/menus/menu.service';
+import { ProjectMenuService } from '../../core/services/menus/project-menu.service';
 import { LayoutModule } from 'ng-devui';
 import { CommonModule } from '@angular/common';
 import { ProjectMenusComponent } from '../../shared/components/sub-menus/project-menus.component';
@@ -22,7 +22,7 @@ export class WorkflowPlanedComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private tableHttp: TableHttpService,
-    private menu: MenuService,
+    private menu: ProjectMenuService,
     private papa: Papa,
     @Inject(DOCUMENT) private document: Document
   ) {}

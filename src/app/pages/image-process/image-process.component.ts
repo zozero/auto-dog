@@ -8,7 +8,7 @@ import { ProjectInfo } from '../../core/interface/config-type';
 import { CommonModule } from '@angular/common';
 // 导入 angular-cropperjs 用于图片处理
 import { AngularCropperjsModule, CropperComponent } from 'angular-cropperjs';
-import { MenuService } from '../../core/services/menus/menu.service';
+import { ProjectMenuService } from '../../core/services/menus/project-menu.service';
 import { CropImageUploadComponent } from '../../shared/components/crop-image-upload/crop-image-upload.component';
 import { TableHttpService } from '../../core/services/https/table-http.service';
 import { CropImageInfo, RowImageInfo, imageInfo } from '../../core/interface/image-type';
@@ -51,7 +51,7 @@ export class ImageProcessComponent implements OnInit {
 
   constructor(
     private tableHttp: TableHttpService,
-    private menu: MenuService,
+    private menu: ProjectMenuService,
     private dialogService: DialogService
   ) {}
   ngOnInit(): void {
