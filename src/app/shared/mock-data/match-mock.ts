@@ -44,5 +44,5 @@ export const methodArgType = [
   '范围',
   '算法',
   '最低相似度',
-  '额外补充',
+  '补充判断',
 ];

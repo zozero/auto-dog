@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ExecutionSideHttpService } from '../core/services/https/execution-side-http.service';
+import { TableHttpService } from '../core/services/https/table-http.service';
 import { ProjectInfo } from '../config/config-data';
 import { MenuService } from '../core/services/menus/menu.service';
 import { LayoutModule } from 'ng-devui';
@@ -21,7 +21,7 @@ export class WorkflowPlanedComponent implements OnInit {
   currentSubMenu!: ProjectInfo;
   constructor(
     private route: ActivatedRoute,
-    private executionSideHttp: ExecutionSideHttpService,
+    private tableHttp: TableHttpService,
     private menu: MenuService,
     private papa: Papa,
     @Inject(DOCUMENT) private document: Document
@@ -38,7 +38,7 @@ export class WorkflowPlanedComponent implements OnInit {
     this.currentSubMenu = currentSubMenu;
   }
   test() {
-    this.executionSideHttp
+    this.tableHttp
       .getCsvFile(
         this.currentSubMenu.executionSideInfo.ipPort,
         this.currentSubMenu.name

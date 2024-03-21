@@ -24,17 +24,20 @@
         <d-col [dSpan]="12">
           <d-row [dJustify]="'end'"
             >
-            <section class="btn-group">
-              <d-button bsStyle="common"> Back </d-button>
-              <d-button bsStyle="primary"> Go </d-button>
-              <d-button bsStyle="common"> Cancel </d-button>
-              <d-button  bsStyle="primary" (btnClick)="resetCanvasImage()">
-                重置
-              </d-button>
-              <d-button  bsStyle="common" (btnClick)="cropImage()">
-                截图
-              </d-button>
-            </section>
+            <d-col>
+              <section class="btn-group">
+                <d-button bsStyle="common"> Back </d-button>
+                <d-button bsStyle="primary"> Go </d-button>
+                <d-button bsStyle="common"> Cancel </d-button>
+                <d-button  bsStyle="primary" (btnClick)="resetCanvasImage()">
+                  重置
+                </d-button>
+                <d-button  bsStyle="common" (btnClick)="cropImage()">
+                  截图
+                </d-button>
+              </section>
+            </d-col>
+            
            
           </d-row>
         </d-col>

@@ -1,7 +1,7 @@
 
 
 import { Component, OnInit } from '@angular/core';
-import { ExecutionSideHttpService } from '../core/services/https/execution-side-http.service';
+import { ExecutionSideHttpService } from '../core/services/https/table-http.service';
 import { ProjectInfo } from '../config/config-data';
 import { MenuService } from '../core/services/menus/menu.service';
 import { DevUIModule, LayoutModule } from 'ng-devui';

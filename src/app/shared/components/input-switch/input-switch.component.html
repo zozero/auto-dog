@@ -17,7 +17,7 @@
       [required]="true"
       [hasHelp]="true"
       [helpTips]="
-        '范围内匹配，格式：x y 宽 高，用空格隔开，x和y是搜索时的起始位置，宽和高是搜索的图片的大小。可以是整数和分数，分数意味着按照模拟器屏幕大小的百分比进行计算。也可以直接使用默认值，默认值是根据截图时大小向外扩了100像素。'
+        '截取范围是左上和右下的坐标，格式：x1 y1 x2 y2，用空格隔开，x1和y1是搜索时的起始位置，可以是整数（包括负数，意味着反过来加减）和分数，分数意味着按照模拟器屏幕大小的百分比进行计算。也可以直接使用默认值，默认值是根据截图时大小向外扩了100像素。'
       "
       >{{ currentItem["参数名"] }}</d-form-label
     >
@@ -67,13 +67,16 @@
   </d-form-item>
   <d-form-item *ngSwitchCase="methodArgType[5]">
     <d-form-label
+      
       [required]="true"
       [hasHelp]="true"
-      [helpTips]="'我忘记了它的作用。选零必然不会触发其他机关。'"
+      [helpTips]="'0表示不会触发增加使用图片之间结构相似度算法。1表示会使用，建议0。'"
       >{{ currentItem["参数名"] }}</d-form-label
     >
     <d-form-control>
       <d-input-number
+        [max]="1"
+        [min]="0"
         [(ngModel)]="currentItem['默认值']"
         class="input-number"
       ></d-input-number>

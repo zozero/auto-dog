@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ExecutionSideHttpService } from './execution-side-http.service';
+import { TableHttpService } from './table-http.service';
 
 describe('ExecutionSideHttpService', () => {
-  let service: ExecutionSideHttpService;
+  let service: TableHttpService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ExecutionSideHttpService);
+    service = TestBed.inject(TableHttpService);
   });
 
   it('should be created', () => {

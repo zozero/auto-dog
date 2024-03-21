@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ExecutionSideHttpService } from '../core/services/https/execution-side-http.service';
+import { TableHttpService } from '../core/services/https/table-http.service';
 import { ProjectInfo } from '../config/config-data';
 import { MenuService } from '../core/services/menus/menu.service';
 import { DevUIModule, LayoutModule, LoadingService } from 'ng-devui';
@@ -40,7 +40,7 @@ export class MethodEditComponent implements OnInit {
   btnShowLoading = false;
 
   constructor(
-    private executionSideHttp: ExecutionSideHttpService,
+    private tableHttp: TableHttpService,
     private menu: MenuService,
     private papa: Papa,
     private loadingService: LoadingService,
@@ -73,7 +73,7 @@ export class MethodEditComponent implements OnInit {
   }
   // 从执行端获得csv文件，后续可能需要区分文件名
   getcsvFile() {
-    this.executionSideHttp
+    this.tableHttp
       .getCsvFile(
         this.currentSubMenu.executionSideInfo.ipPort,
         this.currentSubMenu.name
@@ -134,7 +134,7 @@ export class MethodEditComponent implements OnInit {
 
     const csvFile = new File([csvBlob], 'foo.csv', { type: 'text/csv' });
     console.log('🚀 ~ CsvEditComponent ~ putCsv ~ csvFile:', csvFile);
-    this.executionSideHttp
+    this.tableHttp
       .postCsvFile(
         this.currentSubMenu.executionSideInfo.ipPort,
         this.currentSubMenu.name,

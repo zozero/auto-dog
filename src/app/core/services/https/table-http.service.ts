@@ -3,12 +3,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 @Injectable({
   providedIn: 'root',
 })
-export class ExecutionSideHttpService {
+export class TableHttpService {
   constructor(private http: HttpClient) {}
 
   // 截图
   interceptImage(executionSideHttp: string, simulatorHttp: string) {
-    return this.http.get(executionSideHttp + '/simulatorScreen', {
+    return this.http.get(executionSideHttp + '/模拟器屏幕', {
       params: { 模拟器的ip和端口: simulatorHttp },
       responseType: 'blob',
     });
@@ -35,4 +35,6 @@ export class ExecutionSideHttpService {
     formData.append('csv文件', csvFile);
     return this.http.post(executionSideUrl + '/csv', formData, options);
   }
+
+   
 }
