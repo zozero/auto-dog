@@ -50,3 +50,5 @@ export const defaultExecutionSideInfo = {
 export const defaultProjectData = {
   name: '项目1',
 };
+
+export const defaultEncode="gbk"

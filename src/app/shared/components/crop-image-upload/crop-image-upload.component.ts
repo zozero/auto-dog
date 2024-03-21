@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { FormLayout, SelectModule } from 'ng-devui';
+import { FormLayout, SelectModule, ToastService } from 'ng-devui';
 import { FormModule } from 'ng-devui/form';
 import { imageMethodList } from '../../mock-data/match-mock';
 import { CommonModule } from '@angular/common';
@@ -35,7 +35,10 @@ export class CropImageUploadComponent implements OnInit {
   currentImageMethod: any = cloneDeep(imageMethodList[0]);
   inputList: any[] = this.currentImageMethod['参数列表'];
 
-  constructor(private imageHttp: ImageHttpService) {}
+  constructor(
+    private imageHttp: ImageHttpService,
+    private toastService: ToastService
+  ) {}
 
   ngOnInit(): void {
     this.imageData = this.data.imageData;
@@ -67,9 +70,15 @@ export class CropImageUploadComponent implements OnInit {
         this.imageData.currentMenu.executionSideInfo.ipPort as string,
         this.imageData.currentMenu.name as string
       )
-      .subscribe((data) => {
-        console.log(data);
+      .subscribe((data: any) => {
+        this.toastService.open({
+          value: [{ severity: 'success', summary: '摘要', content: data }],
+        });
+      })
+      .add(() => {
+        this.data.close();
       });
+
     // 向csv表格中添加数据
     this.imageHttp
       .postImageMethodAddData(
@@ -77,8 +86,12 @@ export class CropImageUploadComponent implements OnInit {
         this.imageData.currentMenu.executionSideInfo.ipPort as string,
         this.imageData.currentMenu.name as string
       )
-      .subscribe((data) => {
-        console.log(data);
+      .subscribe((data: any) => {
+        this.toastService.open({
+          value: [{ severity: 'success', summary: '摘要', content: data }],
+        });
+      })
+      .add(() => {
         this.data.close();
       });
   }

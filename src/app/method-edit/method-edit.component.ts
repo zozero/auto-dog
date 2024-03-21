@@ -12,6 +12,7 @@ import { InputGroupModule } from 'ng-devui/input-group';
 import { imageMatchMethodArgList } from '../shared/mock-data/match-mock';
 import { LoadingModule } from 'ng-devui/loading';
 import { ToastService } from 'ng-devui/toast';
+import { defaultEncode } from '../shared/mock-data/config-mock';
 
 @Component({
   selector: 'app-method-edit',
@@ -99,7 +100,7 @@ export class MethodEditComponent implements OnInit {
             // this.filterListMulti=JSON.parse(JSON.stringify(arr))
             console.log(this.csvHeader, this.csvData);
           },
-          encoding: 'gbk',
+          encoding: defaultEncode,
           // header:true,
           download: true,
         };
