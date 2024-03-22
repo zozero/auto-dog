@@ -10,7 +10,7 @@
           [options]="matchMethodList"
           name="名称"
           [filterKey]="'名称'"
-          (valueChange)="changeImageMethod()"
+          [(ngModel)]="currentMethod"
         ></d-select>
       </d-form-control>
     </d-form-item>
@@ -22,7 +22,7 @@
     ></app-input-switch>
     </ng-container> -->
   </form>
-  <app-image-match-form [range]="range"></app-image-match-form>
+  <app-image-match-form #imageMatchForm [range]="range" *ngIf="currentMethod['名称']==='图片匹配'"></app-image-match-form>
   <div class="modal-footer">
     <d-button (click)="submit()" bsStyle="primary" circled="true"
       >提交</d-button

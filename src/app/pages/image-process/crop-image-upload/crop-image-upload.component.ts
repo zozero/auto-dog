@@ -1,41 +1,39 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FormLayout, SelectModule, ToastService } from 'ng-devui';
 import { FormModule } from 'ng-devui/form';
 import { matchMethodList } from '../../../core/mock/match-mock';
 import { CommonModule } from '@angular/common';
-import { InputSwitchComponent } from '../../../shared/components/input-switch/input-switch.component';
 import { ButtonModule } from 'ng-devui/button';
 import { cloneDeep } from 'lodash';
 import { ImageHttpService } from '../../../core/services/https/image-http.service';
 import {
-  ImageArgType,
   MatchMethodType,
 } from '../../../core/interface/table-type';
 import {
-  ExecutionSideInfo,
   ProjectInfo,
 } from '../../../core/interface/config-type';
 import { CropImageInfo } from '../../../core/interface/image-type';
 import { ImageMatchFormComponent } from "../../../shared/components/form/image-match-form/image-match-form.component";
 
 @Component({
-    selector: 'app-crop-image-upload',
-    standalone: true,
-    templateUrl: './crop-image-upload.component.html',
-    styleUrl: './crop-image-upload.component.scss',
-    imports: [
-        FormModule,
-        FormsModule,
-        SelectModule,
-        CommonModule,
-        InputSwitchComponent,
-        ButtonModule,
-        ImageMatchFormComponent
-    ]
+  selector: 'app-crop-image-upload',
+  standalone: true,
+  templateUrl: './crop-image-upload.component.html',
+  styleUrl: './crop-image-upload.component.scss',
+  imports: [
+    FormModule,
+    FormsModule,
+    SelectModule,
+    CommonModule,
+    ButtonModule,
+    ImageMatchFormComponent
+  ]
 })
 export class CropImageUploadComponent implements OnInit {
   @Input() data: any;
+  // 图片组件的表单视图
+  @ViewChild('imageMatchForm') public imageMatchForm!: ImageMatchFormComponent;
   // 裁剪的图片信息
   imageData!: CropImageInfo;
   // 项目信息
@@ -46,6 +44,8 @@ export class CropImageUploadComponent implements OnInit {
   layoutDirection: FormLayout = FormLayout.Vertical;
   // 用于选择方法类型，从而使用不同表单
   matchMethodList: MatchMethodType[] = cloneDeep(matchMethodList);
+  // 当前图片匹配方法
+  currentMethod: MatchMethodType = this.matchMethodList[0]
   // 发送给匹配方法表单的树
   range: string = '';
 
@@ -53,7 +53,7 @@ export class CropImageUploadComponent implements OnInit {
     private imageHttp: ImageHttpService,
     private toastService: ToastService
   ) {
-    
+
   }
 
   ngOnInit(): void {
@@ -65,49 +65,44 @@ export class CropImageUploadComponent implements OnInit {
   }
 
 
-
   submit() {
-    // console.log(
-    //   '🚀 ~ CropImageUploadComponent ~ setImageArgList ~ argList:',
-    //   this.imageArgList
-    // );
-    return;
-    // const imageFile = new File(
-    //   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    //   [this.data.imageData.imageBlob],
-    //   this.currentImageMethod['参数']['图片名'] + '.jpg',
-    //   { type: 'image/jpg' }
-    // );
+    switch (this.currentMethod['名称']) {
+      case '图片匹配':{
+        const imageFile = new File(
+          [this.data.imageData.imageBlob as Blob],
+          this.imageMatchForm.args['图片名'] + '.jpg',
+          { type: 'image/jpg' }
+        );
 
-    // // 上传图片
-    // const tmpInfo = this.projectInfo.executionSideInfo as ExecutionSideInfo;
-    // this.imageHttp
-    //   .postUploadImage(imageFile, tmpInfo.ipPort, this.projectInfo.name)
-    //   .subscribe((data: any) => {
-    //     this.toastService.open({
-    //       value: [{ severity: 'success', summary: '摘要', content: data }],
-    //     });
-    //   })
-    //   .add(() => {
-    //     this.data.close();
-    //   });
+        // 上传图片
+        this.imageHttp
+          .postUploadImage(imageFile, this.projectInfo.executionSideInfo?.ipPort as string, this.projectInfo.name)
+          .subscribe((data: any) => {
+            this.toastService.open({
+              value: [{ severity: 'success', summary: '摘要', content: data }],
+            });
 
-    // // 向csv表格中添加数据
-    // this.imageHttp
-    //   .postMethodAddData(
-    //     this.currentImageMethod['参数'],
-    //     tmpInfo.ipPort,
-    //     this.projectInfo.name,
-    //     this.currentImageMethod['名称']
-    //   )
-    //   .subscribe((data: any) => {
-    //     this.toastService.open({
-    //       value: [{ severity: 'success', summary: '摘要', content: data }],
-    //     });
-    //   })
-    //   .add(() => {
-    //     this.data.close();
-    //   });
+          })
+          .add(() => {
+            this.data.close();
+          });
+
+        // 向csv表格中添加数据
+        this.imageHttp
+          .postMethodAddData(
+            this.imageMatchForm.args,
+            this.projectInfo.executionSideInfo?.ipPort as string,
+            this.projectInfo.name,
+            this.currentMethod['名称']
+          )
+          .subscribe((data: any) => {
+            this.toastService.open({
+              value: [{ severity: 'success', summary: '摘要', content: data }],
+            });
+          })
+      }
+      break
+    }
   }
 
   // 设置当前输入列表的数据，每一次点击截取的时候都需要重新计算一遍
@@ -138,7 +133,4 @@ export class CropImageUploadComponent implements OnInit {
       x1 + ' ' + y1 + ' ' + x2 + ' ' + y2;
   }
 
-  changeImageMethod() {
-    // this.imageArgList = [];
-  }
 }
