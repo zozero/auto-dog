@@ -1,12 +1,28 @@
 <div class="table-content">
   <d-button bsStyle="primary" (btnClick)="putCsvFile()">Open modal</d-button>
-  <d-data-table *ngIf="csvData" [dataSource]="csvData" [size]="'md'" [fixHeader]="true" [scrollable]="true"
+  <d-data-table *ngIf="csvData" [dataSource]="csvFilterList" [size]="'md'" [fixHeader]="true" [scrollable]="true" dLoading [loading]="loadingTip"
     tableHeight="100%" [virtualMinBufferPx]="10" [virtualMaxBufferPx]="20" [tableOverflowType]="'overlay'">
     <thead dTableHead>
       <tr dTableRow>
         <th dHeadCell>索引</th>
-        <th dHeadCell>{{ csvHeader[0] }}</th>
-        <th dHeadCell>{{ csvHeader[1] }}</th>
+        <th dHeadCell
+        [sortable]="true"
+        [showSortIcon]="false"
+        (sortChange)="onSortChange($event, 0)"
+
+        [filterList]="ordinalFilterList"
+        [filterable]="true"
+        [filterMultiple]="true"
+        [filterBoxWidth]="'200px'"
+        (filterChange)="filterChangeRadio($event,0)"
+        >{{ csvHeader[0] }}</th>
+        <th dHeadCell
+        [filterList]="imgNameFilterList"
+        [filterable]="true"
+        [filterMultiple]="true"
+        [filterBoxWidth]="'200px'"
+        (filterChange)="filterChangeRadio($event,1)"
+        >{{ csvHeader[1] }}</th>
         <th dHeadCell>{{ csvHeader[2] }}</th>
         <th dHeadCell>{{ csvHeader[3] }}</th>
         <th dHeadCell>{{ csvHeader[4] }}</th>
@@ -29,7 +45,6 @@
               {{ rowItem[1] }}
             </span>
             <div *ngIf="rowItem[csvHeader[1]+'Edit']" class="edit-padding-fix">
-              <!-- 引入dCommonsModule的autofocus -->
               <input [dAutoFocus]="true" class="devui-form-control" [name]="csvHeader[1]" [(ngModel)]="rowItem[1]" 
                 [attr.maxlength]="100" [attr.minlength]="1" />
             </div>
@@ -41,15 +56,45 @@
               {{ rowItem[2] }}
             </span>
             <div *ngIf="rowItem[csvHeader[2]+'Edit']" class="edit-padding-fix">
-              <!-- 引入dCommonsModule的autofocus -->
               <input [dAutoFocus]="true" class="devui-form-control" [name]="csvHeader[2]" [(ngModel)]="rowItem[2]" 
                 [attr.maxlength]="100" [attr.minlength]="1" />
             </div>
           </td>
 
+          <td dTableCell [editable]="true" [editableTip]="editableTip" [(editing)]="rowItem[csvHeader[3]+'Edit']"
+            [field]="csvHeader[3]" [rowItem]="rowItem">
+            <span *ngIf="!rowItem[csvHeader[3]+'Edit']">
+              {{ rowItem[3] }}
+            </span>
+            <div *ngIf="rowItem[csvHeader[3]+'Edit']" class="edit-padding-fix">
+              <d-input-number [dAutoFocus]="true"   [min]="0" [name]="csvHeader[3]" [(ngModel)]="rowItem[3]"></d-input-number>
+            </div>
+          </td>
+
+
+          <td dTableCell [editable]="true" [editableTip]="editableTip" [(editing)]="rowItem[csvHeader[4]+'Edit']"
+            [field]="csvHeader[4]" [rowItem]="rowItem">
+            <span *ngIf="!rowItem[csvHeader[4]+'Edit']">
+              {{ rowItem[4] }}
+            </span>
+            <div *ngIf="rowItem[csvHeader[4]+'Edit']" class="edit-padding-fix">
+              <d-input-number [dAutoFocus]="true"  [max]="1.0" [min]="0.0" [step]="0.1" [name]="csvHeader[4]" [(ngModel)]="rowItem[4]"></d-input-number>
+            </div>
+          </td>
+
+          <td dTableCell [editable]="true" [editableTip]="editableTip" [(editing)]="rowItem[csvHeader[5]+'Edit']"
+            [field]="csvHeader[5]" [rowItem]="rowItem">
+            <span *ngIf="!rowItem[csvHeader[5]+'Edit']">
+              {{ rowItem[5] }}
+            </span>
+            <div *ngIf="rowItem[csvHeader[5]+'Edit']" class="edit-padding-fix">
+              <d-input-number [dAutoFocus]="true"   [max]="1" [min]="0.0" [name]="csvHeader[5]" [(ngModel)]="rowItem[5]"></d-input-number>
+            </div>
+          </td>
 
         </tr>
       </ng-template>
     </tbody>
   </d-data-table>
+
 </div>
