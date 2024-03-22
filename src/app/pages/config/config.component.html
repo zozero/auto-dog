@@ -6,14 +6,14 @@
     </d-alert>
   </div>
   <div class="config-list">
-    <app-execution-side-table
-      [dataList]="executionSideInfoList"
-    ></app-execution-side-table>
+    <app-execution-side-table [dataList]="executionSideInfoList"></app-execution-side-table>
+    <br />
     <app-simulator-table [dataList]="simulatorInfoList"></app-simulator-table>
+    <br />
     <app-project-table [dataList]="projectInfoList"></app-project-table>
   </div>
   <hr />
-  <div>
+  <div style="padding-top: 20px;">
     <p>版本信息：{{ version }}</p>
   </div>
 </div>

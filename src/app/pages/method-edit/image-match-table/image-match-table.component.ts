@@ -8,9 +8,8 @@ import { matchMethodList } from '../../../core/mock/match-mock';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Papa, ParseResult } from 'ngx-papaparse';
 import { CommonModule } from '@angular/common';
-import { InputSwitchComponent } from "../../../shared/components/input-switch/input-switch.component";
 import { cloneDeep } from 'lodash';
-import { ExecutionSideInfo, ProjectInfo } from '../../../core/interface/config-type';
+import { ProjectInfo } from '../../../core/interface/config-type';
 import { defaultEncode } from '../../../core/mock/app-mock';
 import { MatchMethodType } from '../../../core/interface/table-type';
 
@@ -24,8 +23,7 @@ import { MatchMethodType } from '../../../core/interface/table-type';
         FormsModule,
         InputGroupModule,
         DevUIModule,
-        CommonModule,
-        InputSwitchComponent
+        CommonModule
     ]
 })
 export class ImageMatchTableComponent implements OnInit {
@@ -49,10 +47,9 @@ export class ImageMatchTableComponent implements OnInit {
   }
   // 从执行端获得csv文件，后续可能需要区分文件名
   getcsvFile() {
-    const tmpInfo=this.projectInfo.executionSideInfo as ExecutionSideInfo
     this.tableHttp
       .getCsvFile(
-        tmpInfo.ipPort,
+        this.projectInfo.executionSideInfo?.ipPort as string,
         this.projectInfo.name,
         this.imageMatch['名称']
       )
@@ -68,6 +65,8 @@ export class ImageMatchTableComponent implements OnInit {
             // 丢掉第一行数据
             arr.shift();
             this.csvData = arr;
+            // 删除掉最后一行的空数据
+            this.csvData.pop()
             console.log("🚀 ~ ImageMatchTableComponent ~ .subscribe ~ this.csvData:", this.csvData)
             // this.filterListMulti=JSON.parse(JSON.stringify(arr))
           },

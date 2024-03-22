@@ -1,15 +1,16 @@
 .config-conent {
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-
+  
   .config-list {
-    width: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-    max-height: 80%;
-    
+    height: 70vh;
+  
+  }
+  .config-list:nth-child(1){
+    height: 30%;
+  }
+  .config-list:nth-child(2){
+    height: 30%;
+  }
+  .config-list:nth-child(3){
+    height: 30%;
   }
 }
