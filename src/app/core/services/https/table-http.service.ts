@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { BinaryImageMatchMethodType, ImageMatchMethodType } from '../../interface/table-type';
 @Injectable({
   providedIn: 'root',
 })
 export class TableHttpService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // 截图
   interceptImage(executionSideHttp: string, simulatorHttp: string) {
@@ -19,27 +20,56 @@ export class TableHttpService {
     projectName: string,
     csvFileName: string
   ) {
-    return this.http.get(executionSideHttp + '/表格'+'/方法', {
+    return this.http.get(executionSideHttp + '/方法' + '/表格', {
       params: {
         项目名: projectName,
-        文件名: csvFileName+'.csv',
+        文件名: csvFileName + '.csv',
       },
       responseType: 'blob',
     });
   }
-  // 上传csv文件
-  postCsvFile(executionSideUrl: string, csvFilePath: string, csvFile: File) {
+  // 添加csv数据
+  postMethodAddData(
+    imageArgs: ImageMatchMethodType | BinaryImageMatchMethodType,
+    executionSideUrl: string,
+    projectName: string,
+    methodName: string
+  ) {
     // eslint-disable-next-line prefer-const
     let headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
     headers.append('Accept', 'application/json');
     const options = {
       headers: headers,
-      params: { 文件路径: csvFilePath },
+      params: {
+        项目名: projectName,
+        方法名: methodName
+      },
+    };
+
+    return this.http.post(
+      executionSideUrl + '/方法' + '/添加表格数据',
+      imageArgs,
+      options
+    );
+  }
+
+  // 覆盖csv数据
+  putCsvFile(executionSideUrl: string, projectName: string, methodName: string, csvFile: File) {
+    // eslint-disable-next-line prefer-const
+    let headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
+    headers.append('Accept', 'application/json');
+    const options = {
+      headers: headers,
+      params: {
+        项目名: projectName,
+        方法名: methodName
+      },
     };
     // eslint-disable-next-line prefer-const
     let formData = new FormData();
     formData.append('csv文件', csvFile);
-    return this.http.post(executionSideUrl + '/csv', formData, options);
+    return this.http.put(executionSideUrl + '/方法' + '/覆盖表格文件', formData, options);
   }
 }

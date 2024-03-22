@@ -1,44 +1,55 @@
 <div class="table-content">
-  <d-data-table *ngIf="csvData" [dataSource]="csvData" [size]="'md'" [fixHeader]="true" [scrollable]="true"  tableHeight="100%"
-    
-  [virtualMinBufferPx]="10"
-  [virtualMaxBufferPx]="20"
-      [tableOverflowType]="'overlay'">
-      <thead dTableHead>
+  <d-button bsStyle="primary" (btnClick)="putCsvFile()">Open modal</d-button>
+  <d-data-table *ngIf="csvData" [dataSource]="csvData" [size]="'md'" [fixHeader]="true" [scrollable]="true"
+    tableHeight="100%" [virtualMinBufferPx]="10" [virtualMaxBufferPx]="20" [tableOverflowType]="'overlay'">
+    <thead dTableHead>
+      <tr dTableRow>
+        <th dHeadCell>索引</th>
+        <th dHeadCell>{{ csvHeader[0] }}</th>
+        <th dHeadCell>{{ csvHeader[1] }}</th>
+        <th dHeadCell>{{ csvHeader[2] }}</th>
+        <th dHeadCell>{{ csvHeader[3] }}</th>
+        <th dHeadCell>{{ csvHeader[4] }}</th>
+        <th dHeadCell>{{ csvHeader[5] }}</th>
+      </tr>
+    </thead>
+    <tbody dTableBody>
+      <ng-template let-rowItem="rowItem" let-rowIndex="rowIndex">
         <tr dTableRow>
-          <th dHeadCell>索引</th>
-          <th dHeadCell>{{ csvHeader[0] }}</th>
-          <th dHeadCell>
-            {{ csvHeader[1] }}
-          </th>
-          <th dHeadCell>{{ csvHeader[2] }}</th>
-          <th dHeadCell>{{ csvHeader[3] }}</th>
-          <th dHeadCell>{{ csvHeader[4] }}</th>
-          <th dHeadCell>{{ csvHeader[5] }}</th>
-        </tr>
-      </thead>
-      <tbody dTableBody>
-        <ng-template let-rowItem="rowItem" let-rowIndex="rowIndex">
-          <tr dTableRow>
-            <td dTableCell [rowItem]="rowItem" [field]="'index'">
-              <span>{{ rowIndex + 1 }}</span>
-            </td>
-            <td dTableCell [editable]="true" [editableTip]="editableTip" [(editing)]="rowItem[colOption+'Edit']"
-              [field]="colOption" [rowItem]="rowItem" *ngFor="let colOption of csvHeader;let i=index;">
-              <span *ngIf="!rowItem[colOption+'Edit']">
-                {{ rowItem[i] }}
-              </span>
-              <div *ngIf="rowItem[colOption+'Edit']" class="edit-padding-fix">
-                <!-- 引入dCommonsModule的autofocus -->
-                <input [dAutoFocus]="true" class="devui-form-control" [name]="colOption" [(ngModel)]="rowItem[i]"
-                  [attr.maxlength]="100" [attr.minlength]="3" />
-              </div>
-              <!-- 引入dCommonsModule的autofocus -->
+          <td dTableCell [rowItem]="rowItem" [field]="'index'">
+            <span>{{ rowIndex + 1 }}</span>
+          </td>
+          <td dTableCell [rowItem]="rowItem" [field]="csvHeader[0]">
+            <span>{{ rowItem[0] }}</span>
+          </td>
 
-              <!-- </div> -->
-            </td>
-          </tr>
-        </ng-template>
-      </tbody>
-    </d-data-table>
+          <td dTableCell [editable]="true" [editableTip]="editableTip" [(editing)]="rowItem[csvHeader[1]+'Edit']"
+            [field]="csvHeader[1]" [rowItem]="rowItem">
+            <span *ngIf="!rowItem[csvHeader[1]+'Edit']">
+              {{ rowItem[1] }}
+            </span>
+            <div *ngIf="rowItem[csvHeader[1]+'Edit']" class="edit-padding-fix">
+              <!-- 引入dCommonsModule的autofocus -->
+              <input [dAutoFocus]="true" class="devui-form-control" [name]="csvHeader[1]" [(ngModel)]="rowItem[1]" 
+                [attr.maxlength]="100" [attr.minlength]="1" />
+            </div>
+          </td>
+
+          <td dTableCell [editable]="true" [editableTip]="editableTip" [(editing)]="rowItem[csvHeader[2]+'Edit']"
+            [field]="csvHeader[2]" [rowItem]="rowItem">
+            <span *ngIf="!rowItem[csvHeader[2]+'Edit']">
+              {{ rowItem[2] }}
+            </span>
+            <div *ngIf="rowItem[csvHeader[2]+'Edit']" class="edit-padding-fix">
+              <!-- 引入dCommonsModule的autofocus -->
+              <input [dAutoFocus]="true" class="devui-form-control" [name]="csvHeader[2]" [(ngModel)]="rowItem[2]" 
+                [attr.maxlength]="100" [attr.minlength]="1" />
+            </div>
+          </td>
+
+
+        </tr>
+      </ng-template>
+    </tbody>
+  </d-data-table>
 </div>

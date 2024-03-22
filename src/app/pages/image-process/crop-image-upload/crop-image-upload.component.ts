@@ -6,15 +6,12 @@ import { matchMethodList } from '../../../core/mock/match-mock';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'ng-devui/button';
 import { cloneDeep } from 'lodash';
-import { ImageHttpService } from '../../../core/services/https/image-http.service';
-import {
-  MatchMethodType,
-} from '../../../core/interface/table-type';
-import {
-  ProjectInfo,
-} from '../../../core/interface/config-type';
+import { MatchMethodType } from '../../../core/interface/table-type';
+import { ProjectInfo } from '../../../core/interface/config-type';
 import { CropImageInfo } from '../../../core/interface/image-type';
 import { ImageMatchFormComponent } from "../../../shared/components/form/image-match-form/image-match-form.component";
+import { TableHttpService } from '../../../core/services/https/table-http.service';
+import { ImageHttpService } from '../../../core/services/https/image-http.service';
 
 @Component({
   selector: 'app-crop-image-upload',
@@ -50,6 +47,7 @@ export class CropImageUploadComponent implements OnInit {
   range: string = '';
 
   constructor(
+    private tableHttp: TableHttpService,
     private imageHttp: ImageHttpService,
     private toastService: ToastService
   ) {
@@ -67,9 +65,9 @@ export class CropImageUploadComponent implements OnInit {
 
   submit() {
     switch (this.currentMethod['名称']) {
-      case '图片匹配':{
+      case '图片匹配': {
         const imageFile = new File(
-          [this.data.imageData.imageBlob as Blob],
+          [this.imageData.blob],
           this.imageMatchForm.args['图片名'] + '.jpg',
           { type: 'image/jpg' }
         );
@@ -88,7 +86,7 @@ export class CropImageUploadComponent implements OnInit {
           });
 
         // 向csv表格中添加数据
-        this.imageHttp
+        this.tableHttp
           .postMethodAddData(
             this.imageMatchForm.args,
             this.projectInfo.executionSideInfo?.ipPort as string,
@@ -101,7 +99,7 @@ export class CropImageUploadComponent implements OnInit {
             });
           })
       }
-      break
+        break
     }
   }
 
