@@ -1,83 +1,81 @@
-<div [ngSwitch]="currentItem['参数名']" class="input-switch-container">
-  <!-- <div *ngSwitchCase="methodArgType[0]">这是序号，它自动添加到最后一行</div> -->
-  <d-form-item *ngSwitchCase="methodArgType[1]">
+<div [ngSwitch]="argName" class="input-switch-container">
+  <!-- <div *ngSwitchCase="methodArgList[0]">这是序号，它自动添加到最后一行</div> -->
+  <d-form-item *ngSwitchCase="methodArgList[1]['参数名']">
     <d-form-label
       [required]="true"
       [hasHelp]="true"
       [helpTips]="'图片的名字，无需后缀，它不能重复。'"
-      >{{ currentItem["参数名"] }}</d-form-label
+      >{{ argName }}</d-form-label
     >
     <d-form-control>
-      <input dTextInput autocomplete="off" [(ngModel)]="currentItem['默认值']"  />
+      <input dTextInput autocomplete="off" [(ngModel)]="argValue"  />
     </d-form-control>
   </d-form-item>
 
-  <d-form-item *ngSwitchCase="methodArgType[2]">
+  <d-form-item *ngSwitchCase="methodArgList[2]['参数名']">
     <d-form-label
       [required]="true"
       [hasHelp]="true"
       [helpTips]="
-        '截取范围是左上和右下的坐标，格式：x1 y1 x2 y2，用空格隔开，x1和y1是搜索时的起始位置，可以是整数（包括负数，意味着反过来加减）和分数，分数意味着按照模拟器屏幕大小的百分比进行计算。也可以直接使用默认值，默认值是根据截图时大小向外扩了100像素。'
+        '截取范围是左上和右下的坐标，格式：x1 y1 x2 y2，用空格隔开，x1和y1是搜索时的起始位置，可以是整数（包括负数，意味着反过来加减）和分数，分数意味着按照模拟器屏幕大小的百分比进行计算。也可以直接使用参数值，参数值是根据截图时大小向外扩了100像素。'
       "
-      >{{ currentItem["参数名"] }}</d-form-label
-    >
+      >{{ argName }}</d-form-label>
     <d-form-control>
       <input
         dTextInput
         autocomplete="off"
-        [name]="methodArgType[2]"
-        [(ngModel)]="currentItem['默认值']" 
+        [(ngModel)]="argValue" 
       />
     </d-form-control>
   </d-form-item>
-  <d-form-item *ngSwitchCase="methodArgType[3]">
+  <d-form-item *ngSwitchCase="methodArgList[3]['参数名']">
     <d-form-label
       [required]="true"
       [hasHelp]="true"
       [helpTips]="
-        '匹配时使用的算法类型，公式可以在opencv里面看，使用默认值即可。'
+        '匹配时使用的算法类型，公式可以在opencv里面看，使用参数值即可。'
       "
-      >{{ currentItem["参数名"] }}</d-form-label
+      >{{ argName }}</d-form-label
     >
     <d-form-control>
       <d-input-number
-        [(ngModel)]="currentItem['默认值']"
+        [(ngModel)]="argValue"
         class="input-number"
       ></d-input-number>
     </d-form-control>
   </d-form-item>
-  <d-form-item *ngSwitchCase="methodArgType[4]">
+  <d-form-item *ngSwitchCase="methodArgList[4]['参数名']">
     <d-form-label
       [required]="true"
       [hasHelp]="true"
       [helpTips]="
         '相似度太低可能会导致匹配错误的位置，太高可能匹配不到，0.8是常用数字。'
       "
-      >{{ currentItem["参数名"] }}</d-form-label
+      >{{ argName }}</d-form-label
     >
     <d-form-control>
       <d-input-number
         [max]="1.0"
         [min]="0.0"
         [step]="0.1"
-        [(ngModel)]="currentItem['默认值']"
+        [(ngModel)]="argValue"
         class="input-number"
       ></d-input-number>
     </d-form-control>
   </d-form-item>
-  <d-form-item *ngSwitchCase="methodArgType[5]">
+  <d-form-item *ngSwitchCase="methodArgList[5]['参数名']">
     <d-form-label
       
       [required]="true"
       [hasHelp]="true"
       [helpTips]="'0表示不会触发增加使用图片之间结构相似度算法。1表示会使用，建议0。'"
-      >{{ currentItem["参数名"] }}</d-form-label
+      >{{ argName }}</d-form-label
     >
     <d-form-control>
       <d-input-number
         [max]="1"
         [min]="0"
-        [(ngModel)]="currentItem['默认值']"
+        [(ngModel)]="argValue"
         class="input-number"
       ></d-input-number>
     </d-form-control>

@@ -10,17 +10,22 @@
           [options]="matchMethodList"
           name="名称"
           [filterKey]="'名称'"
-          [(ngModel)]="currentImageMethod"
           (valueChange)="changeImageMethod()"
         ></d-select>
       </d-form-control>
     </d-form-item>
-    <app-input-switch
-      [currentItem]="item"
-      *ngFor="let item in currentImageMethod['参数'];let i=index;"
+    
+    <!-- <ng-container *ngIf="len(imageArgList)!=0">
+      <app-input-switch
+      [currentArg]="item"
+      *ngFor="let item of imageArgList; let i = index"
     ></app-input-switch>
+    </ng-container> -->
   </form>
+  <app-image-match-form [range]="range"></app-image-match-form>
   <div class="modal-footer">
-    <d-button (click)="submit()" bsStyle="primary" circled="true">提交</d-button>
+    <d-button (click)="submit()" bsStyle="primary" circled="true"
+      >提交</d-button
+    >
   </div>
 </div>

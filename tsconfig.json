@@ -22,7 +22,11 @@
       "dom"
     ],
     "skipLibCheck": true,
-    "useDefineForClassFields": false
+    "useDefineForClassFields": false,
+    // 忽略它厦门那一条
+    // "ignoreDeprecations": "5.0",
+    // 可以使用字符串键找到值
+    // "suppressImplicitAnyIndexErrors": true,
   },
   "exclude": [
     "node_modules"

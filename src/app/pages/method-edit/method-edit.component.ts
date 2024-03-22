@@ -10,7 +10,7 @@ import { ImageMatchTableComponent } from "./image-match-table/image-match-table.
 import { TabsModule } from 'ng-devui/tabs';
 import { matchMethodList } from '../../core/mock/match-mock';
 import { ProjectInfo } from '../../core/interface/config-type';
-import { matchMethodType } from '../../core/interface/table-type';
+import { MatchMethodType } from '../../core/interface/table-type';
 
 @Component({
     selector: 'app-method-edit',
@@ -31,7 +31,7 @@ export class MethodEditComponent implements OnInit {
   currentProject!: ProjectInfo;
   // 按钮点击后的载入提示
   // showLoading = false;
-  imageMethodList:matchMethodType[] =matchMethodList
+  imageMethodList:MatchMethodType[] =matchMethodList
 
   tabActiveId: string | number =matchMethodList[0]["名称"];
   activeTabData:any;

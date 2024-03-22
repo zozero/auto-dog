@@ -1,3 +1,4 @@
+<d-button (btnClick)="test2()"> click me! </d-button>
 <d-data-table
           *ngIf="csvData"
           [dataSource]="csvData"
@@ -33,7 +34,7 @@
                   <span *ngIf="!rowItem[colOption+'Edit']">{{
                     rowItem[i]
                   }}</span>
-                  <!-- <app-input-switch *ngIf="rowItem[colOption+'Edit']"  [currentItem]="imageMatch"></app-input-switch> -->
+                  <app-input-switch *ngIf="rowItem[colOption+'Edit']"  [argName]="colOption"  [argValue]="rowItem[i]"></app-input-switch>
                   <!-- <div *ngIf="rowItem[colOption+'Edit']" class="edit-padding-fix"> -->
                     
                     <!-- 引入dCommonsModule的autofocus -->

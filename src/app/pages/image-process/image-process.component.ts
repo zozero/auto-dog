@@ -9,9 +9,9 @@ import { CommonModule } from '@angular/common';
 // 导入 angular-cropperjs 用于图片处理
 import { AngularCropperjsModule, CropperComponent } from 'angular-cropperjs';
 import { ProjectMenuService } from '../../core/services/menus/project-menu.service';
-import { CropImageUploadComponent } from '../../shared/components/crop-image-upload/crop-image-upload.component';
+import { CropImageUploadComponent } from './crop-image-upload/crop-image-upload.component';
 import { TableHttpService } from '../../core/services/https/table-http.service';
-import { CropImageInfo, RowImageInfo, imageInfo } from '../../core/interface/image-type';
+import { CropImageInfo, RowImageInfo, ImageInfo } from '../../core/interface/image-type';
 
 @Component({
   selector: 'app-image-process',
@@ -106,7 +106,7 @@ export class ImageProcessComponent implements OnInit {
     console.log("🚀 ~ ImageProcessComponent ~ angularCropperExport ~ this.cropImageData :", this.cropImageBlobUrl )
     console.log("🚀 ~ ImageProcessComponent ~ angularCropperExport ~ this.imageBlob :", this.cropImageBlob)
     
-    const imageInfo: imageInfo= this.getCropImageInfo();
+    const imageInfo: ImageInfo= this.getCropImageInfo();
     const rowImageInfo = this.getNaturalSize();
     const cropImageInfo:CropImageInfo = {
       url: this.cropImageBlobUrl,
@@ -168,7 +168,7 @@ export class ImageProcessComponent implements OnInit {
     // this.angularCropper.cropper.getCanvasData()z
     // 获得当前截取的图片的位置，其中x，y是原始大小的图片左上角开始的位置，width，height是截取的图片实际的大小
     // this.angularCropper.cropper.getData()
-    const cropImageInfo: imageInfo = this.angularCropper.cropper.getData();
+    const cropImageInfo: ImageInfo = this.angularCropper.cropper.getData();
     return cropImageInfo;
   }
 

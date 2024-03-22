@@ -34,7 +34,7 @@ export class AppComponent {
   ) {
     this.getStoreMenu();
     
-    this.translate.setDefaultLang('en');
+    this.translate.setDefaultLang('zh');
     this.systemInfo();
   }
 

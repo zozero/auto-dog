@@ -12,7 +12,7 @@ import { InputSwitchComponent } from "../../../shared/components/input-switch/in
 import { cloneDeep } from 'lodash';
 import { ExecutionSideInfo, ProjectInfo } from '../../../core/interface/config-type';
 import { defaultEncode } from '../../../core/mock/app-mock';
-import { matchMethodType } from '../../../core/interface/table-type';
+import { MatchMethodType } from '../../../core/interface/table-type';
 
 @Component({
     selector: 'app-image-match-table',
@@ -30,8 +30,8 @@ import { matchMethodType } from '../../../core/interface/table-type';
 })
 export class ImageMatchTableComponent implements OnInit {
   csvData!: string[];
-  imageMatch:matchMethodType = cloneDeep(matchMethodList[0]);
-  csvHeader!:string[]
+  imageMatch:MatchMethodType = cloneDeep(matchMethodList[0]);
+  csvHeader!:string[];
   // 生成新的匹配方法组件命令
   // ng g c method-edit/method-table/imagwMatchTable
   // 它就是子菜单
@@ -42,9 +42,11 @@ export class ImageMatchTableComponent implements OnInit {
     console.log("imageMatch",this.imageMatch)
     this.getcsvFile();
     
-    this.csvHeader=Object.keys(this.imageMatch['参数'])
   }
-
+  test2(){
+   
+    console.log(this.csvData)
+  }
   // 从执行端获得csv文件，后续可能需要区分文件名
   getcsvFile() {
     const tmpInfo=this.projectInfo.executionSideInfo as ExecutionSideInfo
@@ -61,19 +63,13 @@ export class ImageMatchTableComponent implements OnInit {
             console.log('Parsed: ', results, file);
             // eslint-disable-next-line prefer-const
             let arr = results.data;
+            this.csvHeader=arr[0]
+            console.log("🚀 ~ ImageMatchTableComponent ~ .subscribe ~ this.csvHeader:", this.csvHeader)
+            // 丢掉第一行数据
             arr.shift();
             this.csvData = arr;
-            // this.filterListMulti=arr.map((da:string[])=>{
-            //   return {
-            //     name:da[1],
-            //     value:da[1]
-            //   }
-            // })
-            // console.log("this.filterListMulti=",this.filterListMulti)
-
-            //  console.log( )
+            console.log("🚀 ~ ImageMatchTableComponent ~ .subscribe ~ this.csvData:", this.csvData)
             // this.filterListMulti=JSON.parse(JSON.stringify(arr))
-            console.log(this.csvHeader, this.csvData);
           },
           encoding: defaultEncode,
           // header:true,

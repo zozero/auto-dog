@@ -1,7 +1,7 @@
 export interface CropImageInfo {
   url: string;
   blob: Blob;
-  info: imageInfo;
+  info: ImageInfo;
   rowImageInfo: RowImageInfo;
 }
 
@@ -10,7 +10,7 @@ export interface RowImageInfo {
   height: number;
 }
 
-export interface imageInfo {
+export interface ImageInfo {
   x: number;
   y: number;
   width: number;
@@ -19,3 +19,4 @@ export interface imageInfo {
   scaleX: number;
   scaleY: number;
 }
+
