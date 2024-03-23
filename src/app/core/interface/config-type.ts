@@ -40,3 +40,9 @@ export interface ProjectInfo {
   // 记录创建的时间
   createTime?: Date;
 }
+
+
+export interface MessageTipType{
+  state:boolean
+  tip:string
+}

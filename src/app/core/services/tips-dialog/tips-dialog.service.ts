@@ -33,4 +33,30 @@ export class TipsDialogService {
     });
     return results;
   }
+
+    // 各种请求数据错误提示框
+    openErrorDialog(info: string) {
+      const config = {
+        id: 'dialog-service',
+        width: '346px',
+        maxHeight: '600px',
+        zIndex: 1050,
+        backdropCloseable: true,
+        html: true,
+      };
+      const results = this.dialogService.open({
+        ...config,
+        dialogtype: 'failed',
+        content: info,
+        buttons: [
+          {
+            cssClass: 'primary',
+            text: '确定',
+            handler: () => {
+              results.modalInstance.hide();
+            },
+          },
+        ],
+      });
+    }
 }

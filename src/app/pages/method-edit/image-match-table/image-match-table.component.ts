@@ -11,7 +11,8 @@ import { cloneDeep, filter, orderBy } from 'lodash';
 import { ProjectInfo } from '../../../core/interface/config-type';
 import { defaultEncode } from '../../../core/mock/app-mock';
 import { MatchMethodType } from '../../../core/interface/table-type';
-import { DialogService, ModalModule } from 'ng-devui/modal';
+import { ModalModule } from 'ng-devui/modal';
+import { TipsDialogService } from '../../../core/services/tips-dialog/tips-dialog.service';
 
 @Component({
   selector: 'app-image-match-table',
@@ -48,8 +49,9 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
     private papa: Papa,
     private tableHttp: TableHttpService,
     private toastService: ToastService,
-    private dialogService: DialogService,
+    private dialogService: TipsDialogService,
     private loadingService: LoadingService,
+    
   ) { }
   ngOnInit(): void {
     // this.getcsvFile();
@@ -110,14 +112,14 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
             const csvParseOptions = {
               complete: (results: ParseResult) => {
                 const tmp: string = JSON.parse(results.data[0] as string)['detail']
-                this.openErrorDialog(tmp)
+                this.dialogService.openErrorDialog(tmp)
               },
               encoding: 'utf8',
             }
             this.papa.parse(err.error as Blob, csvParseOptions);
           }
           else {
-            this.openErrorDialog('可能没有开启服务器。')
+            this.dialogService.openErrorDialog('可能没有开启服务器。')
           }
           // 关闭载入提示
           loadTip.loadingInstance.close();
@@ -129,31 +131,7 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
       });
   }
 
-  // 请求数据错误提示框
-  openErrorDialog(info: string) {
-    const config = {
-      id: 'dialog-service',
-      width: '346px',
-      maxHeight: '600px',
-      zIndex: 1050,
-      backdropCloseable: true,
-      html: true,
-    };
-    const results = this.dialogService.open({
-      ...config,
-      dialogtype: 'failed',
-      content: info,
-      buttons: [
-        {
-          cssClass: 'primary',
-          text: '确定',
-          handler: () => {
-            results.modalInstance.hide();
-          },
-        },
-      ],
-    });
-  }
+ 
   // 设置序号筛选列表
   setOrdinalFilterList() {
     // 初始化为空
@@ -210,10 +188,10 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
           },
           error: (err: any) => {
             if (err.status != 0) {
-              this.openErrorDialog('未知原因错误')
+              this.dialogService.openErrorDialog('未知原因错误')
 
             }else{
-              this.openErrorDialog('可能没有开启服务器。')
+              this.dialogService.openErrorDialog('可能没有开启服务器。')
             }
             // 关闭载入提示
             loadTip.loadingInstance.close();

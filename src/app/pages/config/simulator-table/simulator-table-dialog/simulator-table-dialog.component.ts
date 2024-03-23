@@ -9,6 +9,7 @@ import { cloneDeep } from 'lodash';
 import { defaultSimulatorInfo, simulatorType } from '../../../../core/mock/config-mock';
 import { TipsDialogService } from '../../../../core/services/tips-dialog/tips-dialog.service';
 import { simulatorTable } from '../../../../core/services/dexie-db/simulator-table.service';
+import { CheckConfigService } from '../../../../core/services/checks/check-config.service';
 
 @Component({
   selector: 'app-simulator-table-dialog',
@@ -27,7 +28,10 @@ export class SimulatorTableDialogComponent {
   mydata: SimulatorInfo = defaultSimulatorInfo;
   simulatorType = simulatorType;
 
-  constructor(private dialogService: TipsDialogService) {
+  constructor(
+    private dialogService: TipsDialogService,
+    private check: CheckConfigService
+  ) {
     void this.setInitData();
   }
 
@@ -37,24 +41,33 @@ export class SimulatorTableDialogComponent {
   }
 
   async addData() {
-    return await simulatorTable
-      .addSimulatorInfo(cloneDeep(this.mydata))
-      .catch((err: any) => {
-        const filed = this.matchFile(err.message as string);
-        switch (filed) {
-          case 'ipPort':
-            this.dialogService.openToEqualDialog('ip:端口');
-            break;
-          case 'name':
-            this.dialogService.openToEqualDialog('名称');
-            break;
-          default:
-            break;
-        }
-        // this.openDialog();
-        return 0;
-      });
+    // 如果没有通过检查就返回
+    const result = this.check.checkPort(this.mydata.ipPort)
+    if (!result.state) {
+      this.dialogService.openErrorDialog(result.tip);
+      return 0
+    } else {
+      return await simulatorTable
+        .addSimulatorInfo(cloneDeep(this.mydata))
+        .catch((err: any) => {
+          const filed = this.matchFile(err.message as string);
+          switch (filed) {
+            case 'ipPort':
+              this.dialogService.openToEqualDialog('ip:端口');
+              break;
+            case 'name':
+              this.dialogService.openToEqualDialog('名称');
+              break;
+            default:
+              break;
+          }
+          // this.openDialog();
+          return 0;
+        });
+    }
+
   }
+
 
   // 判断错误信息具体是哪一个
   matchFile(text: string) {

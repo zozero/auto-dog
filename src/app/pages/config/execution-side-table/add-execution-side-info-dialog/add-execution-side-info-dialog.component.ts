@@ -6,6 +6,7 @@ import { cloneDeep } from 'lodash';
 import { defaultExecutionSideInfo } from '../../../../core/mock/config-mock';
 import { TipsDialogService } from '../../../../core/services/tips-dialog/tips-dialog.service';
 import { executionSideTable } from '../../../../core/services/dexie-db/execution-side-table.service';
+import { CheckConfigService } from '../../../../core/services/checks/check-config.service';
 
 @Component({
   selector: 'app-add-execution-side-info-dialog',
@@ -17,7 +18,10 @@ import { executionSideTable } from '../../../../core/services/dexie-db/execution
 export class AddExecutionSideInfoDialogComponent {
   mydata: ExecutionSideInfo = defaultExecutionSideInfo;
 
-  constructor(private dialogService: TipsDialogService) {
+  constructor(
+    private dialogService: TipsDialogService,
+    private check: CheckConfigService
+  ) {
     void this.setInitData();
   }
 
@@ -27,16 +31,19 @@ export class AddExecutionSideInfoDialogComponent {
   }
 
   async addData() {
-    return await executionSideTable
-      .addtExecutionSideInfo(cloneDeep(this.mydata))
-      .catch((err) => {
-        console.log(
-          '🚀 ~ AddExecutionSideInfoDialogComponent ~ addData ~ err:',
-          err
-        );
-        this.openDialog();
-        return 0;
-      });
+    // 如果没有通过检查就返回
+    const result = this.check.checkPort(this.mydata.ipPort)
+    if (!result.state) {
+      this.dialogService.openErrorDialog(result.tip);
+      return 0
+    } else {
+      return await executionSideTable
+        .addtExecutionSideInfo(cloneDeep(this.mydata))
+        .catch(() => {
+          this.openDialog();
+          return 0;
+        });
+    }
   }
 
   openDialog() {

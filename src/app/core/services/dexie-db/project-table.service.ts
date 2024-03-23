@@ -13,6 +13,7 @@ export class ProjectTableService extends DexieDBService {
   oneTable: Table = this.projectInfoTable;
   constructor() {
     super();
+   
   }
 
   // 初始化配置数据
@@ -33,6 +34,7 @@ export class ProjectTableService extends DexieDBService {
 
   // 添加一条数据
   async addtProjectInfo(data: ProjectInfo) {
+    
     await this.tableAddData(this.oneTable, data);
   }
   // 更新数据
