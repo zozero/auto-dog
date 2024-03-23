@@ -65,14 +65,14 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
   getcsvFile() {
     // 数据载入提示
     const loadTip = this.loadingService.open();
-    this.tableHttp
-      .getCsvFile(
+    this.tableHttp.getCsvFile(
         this.projectInfo.executionSideInfo?.ipPort as string,
         this.projectInfo.name,
         this.imageMatch['名称']
       )
       .subscribe({
         next: (csv) => {
+          
           const csvParseOptions = {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             complete: (results: ParseResult, _file: any) => {
@@ -104,7 +104,7 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
           this.ordinalFilterList = []
           this.imgNameFilterList = []
 
-          console.log("err", err);
+          // console.log("err", err);
           // 状态为零可能是服务器没开
           if (err.status != 0) {
             const csvParseOptions = {
@@ -115,7 +115,6 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
               encoding: 'utf8',
             }
             this.papa.parse(err.error as Blob, csvParseOptions);
-
           }
           else {
             this.openErrorDialog('可能没有开启服务器。')
@@ -129,6 +128,7 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
         }
       });
   }
+
   // 请求数据错误提示框
   openErrorDialog(info: string) {
     const config = {
@@ -182,32 +182,52 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
 
   // 保存csv文件到执行端，这里直接覆盖了
   putCsvFile() {
+    // 准备数据
     // eslint-disable-next-line prefer-const
     let csvArr = [this.csvHeader].concat(this.csvData);
     // 这里必须要加空一行必然可能导致执行的pandas无法正常加数据
     csvArr.push([''])
     const csvStr = this.papa.unparse(csvArr);
-
     const csvBlob = new Blob([csvStr], { type: 'text/csv' });
-
     const csvFile = new File([csvBlob], 'foo.csv', { type: 'text/csv' });
-    console.log('🚀 ~ CsvEditComponent ~ putCsv ~ csvFile:', csvFile);
-    this.loadingTip = this.tableHttp
+    
+    // 数据载入提示
+    const loadTip = this.loadingService.open();
+    // 发送请求
+    this.tableHttp
       .putCsvFile(
         this.projectInfo.executionSideInfo?.ipPort as string,
         this.projectInfo.name,
         this.imageMatch['名称'],
         csvFile
       )
-      .subscribe((data: any) => {
-        this.toastService.open({
-          value: [{ severity: 'success', summary: '摘要', content: data }],
-        });
-      })
+      .subscribe(
+        {
+          next:(data: any) => {
+            this.toastService.open({
+              value: [{ severity: 'success', summary: '摘要', content: data }],
+            })
+          },
+          error: (err: any) => {
+            if (err.status != 0) {
+              this.openErrorDialog('未知原因错误')
+
+            }else{
+              this.openErrorDialog('可能没有开启服务器。')
+            }
+            // 关闭载入提示
+            loadTip.loadingInstance.close();
+          },
+          complete: () => {
+            // 关闭载入提示
+            loadTip.loadingInstance.close();
+          }
+        }
+      );
     return true
   }
 
-
+  // 排序方式改变
   onSortChange(event: SortEventArg, field: number) {
     if (event.direction === SortDirection.ASC) {
       // 转成数字才能按照数字排序
@@ -222,8 +242,8 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
     }
   }
 
-
-  filterChangeRadio($event: FilterConfig[], key: number) {
+  // 多选过滤改变
+  filterChangeMutil($event: FilterConfig[], key: number) {
     if ($event.length === this.csvData.length) {
       this.csvFilterList = this.csvData
     }
