@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BinaryImageMatchMethodType, ImageMatchMethodType } from '../../interface/table-type';
+import { BinaryImageMatchMethodType, ImageMatchMethodType, StepTableType } from '../../interface/table-type';
 @Injectable({
   providedIn: 'root',
 })
@@ -22,6 +22,7 @@ export class TableHttpService {
       transferCache: false
     });
   }
+
   // 添加csv数据
   postMethodAddData(
     imageArgs: ImageMatchMethodType | BinaryImageMatchMethodType,
@@ -129,9 +130,8 @@ export class TableHttpService {
       transferCache: false
     });
   }
-
   
-  // 覆盖csv数据
+  // 覆盖步骤csv数据
   putStepCsvFile(executionSideUrl: string, projectName: string, fileName: string, csvFile: File) {
     // eslint-disable-next-line prefer-const
     let headers = new HttpHeaders();
@@ -148,5 +148,31 @@ export class TableHttpService {
     let formData = new FormData();
     formData.append('csv文件', csvFile);
     return this.http.put(executionSideUrl + '/步骤' + '/覆盖', formData, options);
+  }
+
+  // 添加csv数据
+  postStepAddData(
+    executionSideUrl: string,
+    projectName: string,
+    fileName: string,
+    stepArgs: StepTableType
+  ) {
+    // eslint-disable-next-line prefer-const
+    let headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
+    headers.append('Accept', 'application/json');
+    const options = {
+      headers: headers,
+      params: {
+        项目名: projectName,
+        文件名: fileName
+      },
+    };
+
+    return this.http.post(
+      executionSideUrl + '/步骤' + '/添加',
+      stepArgs,
+      options
+    );
   }
 }

@@ -1,5 +1,5 @@
 <div *ngIf="currentProject">
-  <h2>方法表格编辑 {{ currentProject.name }}</h2>
+  <h2>步骤表格编辑 {{ currentProject.name }}</h2>
   <d-row>
     <d-col [dSpan]="4">
       <app-project-menus (sendCurrentProject)="getCurrentProject($event)"></app-project-menus>

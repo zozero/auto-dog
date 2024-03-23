@@ -151,50 +151,98 @@ export class StepTableComponent implements OnInit, OnChanges {
  
    // 保存csv文件到执行端，这里直接覆盖了
    addStepData() {
-     // 打开载入效果
-     this.btnShowLoading=true
-     // 准备数据
-     // eslint-disable-next-line prefer-const
-     let csvArr = [this.csvHeader].concat(this.csvData);
-     // 这里必须要加空一行必然可能导致执行的pandas无法正常加数据
-     csvArr.push([''])
-     const csvStr = this.papa.unparse(csvArr);
-     const csvBlob = new Blob([csvStr], { type: 'text/csv' });
-     const csvFile = new File([csvBlob], 'something.csv', { type: 'text/csv' });
+    
+    //  // 打开载入效果
+    //  this.btnShowLoading=true
+    //  // 准备数据
+    //  // eslint-disable-next-line prefer-const
+    //  let csvArr = [this.csvHeader].concat(this.csvData);
+    //  // 这里必须要加空一行必然可能导致执行的pandas无法正常加数据
+    //  csvArr.push([''])
+    //  const csvStr = this.papa.unparse(csvArr);
+    //  const csvBlob = new Blob([csvStr], { type: 'text/csv' });
+    //  const csvFile = new File([csvBlob], 'something.csv', { type: 'text/csv' });
  
-     // 发送请求
-     this.tableHttp
-       .putMethodCsvFile(
-         this.projectInfo.executionSideInfo?.ipPort as string,
-         this.projectInfo.name,
-         this.fileName as string,
-         csvFile
-       )
-       .subscribe(
-         {
-           next:(data: any) => {
-             this.toastService.open({
-               value: [{ severity: 'success', summary: '摘要', content: data }],
-             })
-           },
-           error: (err: any) => {
-             if (err.status != 0) {
-               this.tipsService.openErrorDialog('未知原因错误')
+    //  // 发送请求
+    //  this.tableHttp
+    //    .putStepCsvFile(
+    //      this.projectInfo.executionSideInfo?.ipPort as string,
+    //      this.projectInfo.name,
+    //      this.fileName as string,
+    //      csvFile
+    //    )
+    //    .subscribe(
+    //      {
+    //        next:(data: any) => {
+    //          this.toastService.open({
+    //            value: [{ severity: 'success', summary: '摘要', content: data }],
+    //          })
+    //        },
+    //        error: (err: any) => {
+    //          if (err.status != 0) {
+    //            this.tipsService.openErrorDialog('未知原因错误')
  
-             }else{
-               this.tipsService.openErrorDialog('可能没有开启服务器。')
-             }
-             // 关闭载入效果
-             this.btnShowLoading=false
-           },
-           complete: () => {
-             // 关闭载入效果
-             this.btnShowLoading=false
-           }
-         }
-       );
-     return true
+    //          }else{
+    //            this.tipsService.openErrorDialog('可能没有开启服务器。')
+    //          }
+    //          // 关闭载入效果
+    //          this.btnShowLoading=false
+    //        },
+    //        complete: () => {
+    //          // 关闭载入效果
+    //          this.btnShowLoading=false
+    //        }
+    //      }
+    //    );
+    //  return true
    }
+
+   // 保存csv文件到执行端，这里直接覆盖了
+   saveStepData() {
+    // 打开载入效果
+    this.btnShowLoading=true
+    // 准备数据
+    // eslint-disable-next-line prefer-const
+    let csvArr = [this.csvHeader].concat(this.csvData);
+    // 这里必须要加空一行必然可能导致执行的pandas无法正常加数据
+    csvArr.push([''])
+    const csvStr = this.papa.unparse(csvArr);
+    const csvBlob = new Blob([csvStr], { type: 'text/csv' });
+    const csvFile = new File([csvBlob], 'something.csv', { type: 'text/csv' });
+
+    // 发送请求
+    this.tableHttp
+      .putStepCsvFile(
+        this.projectInfo.executionSideInfo?.ipPort as string,
+        this.projectInfo.name,
+        this.fileName as string,
+        csvFile
+      )
+      .subscribe(
+        {
+          next:(data: any) => {
+            this.toastService.open({
+              value: [{ severity: 'success', summary: '摘要', content: data }],
+            })
+          },
+          error: (err: any) => {
+            if (err.status != 0) {
+              this.tipsService.openErrorDialog('未知原因错误')
+
+            }else{
+              this.tipsService.openErrorDialog('可能没有开启服务器。')
+            }
+            // 关闭载入效果
+            this.btnShowLoading=false
+          },
+          complete: () => {
+            // 关闭载入效果
+            this.btnShowLoading=false
+          }
+        }
+      );
+    return true
+  }
  
    // 排序方式改变
    onSortChange(event: SortEventArg, field: number) {

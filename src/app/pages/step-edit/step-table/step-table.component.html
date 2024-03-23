@@ -1,5 +1,5 @@
 <div class="table-content" *ngIf="csvData.length>0">
-    <d-button style="padding-right: 6px;"  bsStyle="primary" [showLoading]="btnShowLoading" (btnClick)="addStepData()">保存</d-button>
+    <d-button style="padding-right: 6px;"  bsStyle="primary" [showLoading]="btnShowLoading" (btnClick)="saveStepData()">保存</d-button>
     <d-button  bsStyle="common" [showLoading]="btnShowLoading" (btnClick)="addStepData()">添加</d-button>
     <d-data-table [dataSource]="csvFilterList" [size]="'md'" [fixHeader]="true" [scrollable]="true"
       dLoading [loading]="loadingTip" [backdrop]="true" [loadingStyle]="'infinity'" 
