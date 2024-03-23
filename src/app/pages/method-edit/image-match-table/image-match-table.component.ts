@@ -4,15 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { InputGroupModule } from 'ng-devui/input-group';
 import { DevUIModule, LoadingService, LoadingType, ToastService } from 'ng-devui';
 import { TableHttpService } from '../../../core/services/https/table-http.service';
-import { matchMethodList } from '../../../core/mock/match-mock';
 import { Papa, ParseResult } from 'ngx-papaparse';
 import { CommonModule } from '@angular/common';
-import { cloneDeep, filter, orderBy } from 'lodash';
 import { ProjectInfo } from '../../../core/interface/config-type';
 import { defaultEncode } from '../../../core/mock/app-mock';
-import { MatchMethodType } from '../../../core/interface/table-type';
 import { ModalModule } from 'ng-devui/modal';
 import { TipsDialogService } from '../../../core/services/tips-dialog/tips-dialog.service';
+import { filter, orderBy } from 'lodash';
 
 @Component({
   selector: 'app-image-match-table',
@@ -35,7 +33,6 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
   csvData: string[] = [];
   // 专用于过滤的csv列表
   csvFilterList: string[] = [];
-  imageMatch: MatchMethodType = cloneDeep(matchMethodList[0]);
   csvHeader!: string[];
   // 序号筛选列表
   ordinalFilterList: FilterConfig[] = []
@@ -52,7 +49,7 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
     private papa: Papa,
     private tableHttp: TableHttpService,
     private toastService: ToastService,
-    private dialogService: TipsDialogService,
+    private tipsDialog: TipsDialogService,
     private loadingService: LoadingService,
     
   ) { }
@@ -73,7 +70,7 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
     this.tableHttp.getMethodCsvFile(
         this.projectInfo.executionSideInfo?.ipPort as string,
         this.projectInfo.name,
-        this.imageMatch['名称']
+        '图片匹配'
       )
       .subscribe({
         next: (csv) => {
@@ -99,6 +96,7 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
             encoding: defaultEncode,
             // header:true,
             download: true,
+            newline:undefined
           };
           this.papa.parse(csv, csvParseOptions);
           // Add your options here
@@ -109,21 +107,17 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
           this.ordinalFilterList = []
           this.imgNameFilterList = []
 
+          this.tipsDialog.responseErrorState(err.status as number)
           // console.log("err", err);
           // 状态为零可能是服务器没开
-          if (err.status != 0) {
-            const csvParseOptions = {
-              complete: (results: ParseResult) => {
-                const tmp: string = JSON.parse(results.data[0] as string)['detail']
-                this.dialogService.openErrorDialog(tmp)
-              },
-              encoding: 'utf8',
-            }
-            this.papa.parse(err.error as Blob, csvParseOptions);
-          }
-          else {
-            this.dialogService.openErrorDialog('可能没有开启服务器。')
-          }
+          // const csvParseOptions = {
+          //   complete: (results: ParseResult) => {
+          //     const tmp: string = JSON.parse(results.data[0] as string)['detail']
+          //     this.tipsDialog.openErrorDialog(tmp)
+          //   },
+          //   encoding: 'utf8',
+          // }
+          // this.papa.parse(err.error as Blob, csvParseOptions);
           // 关闭载入提示
           loadTip.loadingInstance.close();
         },
@@ -179,7 +173,7 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
       .putMethodCsvFile(
         this.projectInfo.executionSideInfo?.ipPort as string,
         this.projectInfo.name,
-        this.imageMatch['名称'],
+        '图片匹配',
         csvFile
       )
       .subscribe(
@@ -190,12 +184,7 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
             })
           },
           error: (err: any) => {
-            if (err.status != 0) {
-              this.dialogService.openErrorDialog('未知原因错误')
-
-            }else{
-              this.dialogService.openErrorDialog('可能没有开启服务器。')
-            }
+            this.tipsDialog.responseErrorState(err.status as number)
             // 关闭载入效果
             this.btnShowLoading=false
           },

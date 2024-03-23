@@ -1,33 +1,20 @@
 <div *ngIf="currentProject">
-    <h2>方法表格编辑 {{ currentProject.name }}</h2>
-    <d-row>
-      <d-col [dSpan]="4">
-        <app-project-menus
-          (sendCurrentProject)="getCurrentProject($event)"
-        ></app-project-menus>
-      </d-col>
-      <d-col [dSpan]="20" style="padding-left: 6px;padding-right: 6px;">
-        <section>
-          <d-tabs
-          type="tabs"
-          [scrollMode]="'auto'"
-          [addable]="true"
-          [closeable]="true"
-          [(activeTab)]="tabActiveId"
-          (addOrDeleteTabChange)="addOrDelStepTable($event)"
-        >
+  <h2>方法表格编辑 {{ currentProject.name }}</h2>
+  <d-row>
+    <d-col [dSpan]="4">
+      <app-project-menus (sendCurrentProject)="getCurrentProject($event)"></app-project-menus>
+    </d-col>
+    <d-col [dSpan]="20" style="padding-left: 6px;padding-right: 6px;">
+      <section>
+        <d-tabs type="wrapped" [scrollMode]="'auto'" [addable]="true" [closeable]="true" [(activeTab)]="tabActiveId"
+          (addOrDeleteTabChange)="addOrDelStepTable($event)">
           <d-tab *ngFor="let item of stepFileList" [id]="item" [title]="item"></d-tab>
         </d-tabs>
 
-          <!-- <d-tabs type="wrapped" [(activeTab)]="tabActiveId" (activeTabChange)="activeTabChange($event)">
-            <d-tab *ngFor="let item of stepFileList" [id]="item" [title]="item"></d-tab>
-          </d-tabs> -->
-        </section>
-        <container-element [ngSwitch]="tabActiveId">
-          <!-- <app-step-table *ngSwitchCase="imageMethodList[0]['名称']" [projectInfo]="currentProject"></app-step-table> -->
-          <app-step-table *ngSwitchCase="stepFileList[0]" [projectInfo]="currentProject"></app-step-table>
-        </container-element>
-      </d-col>
-    </d-row>
-  </div>
- 
+      </section>
+      <ng-container *ngIf="stepFileList.length>0">
+        <app-step-table  [fileName]="tabActiveId"  [projectInfo]="currentProject" ></app-step-table>
+      </ng-container>
+    </d-col>
+  </d-row>
+</div>

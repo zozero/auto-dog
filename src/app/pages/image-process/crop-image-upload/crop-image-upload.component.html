@@ -1,31 +1,15 @@
 <div class="crop-image-container">
   <img [attr.src]="imageData.url" style="max-width: 800px" />
-  <!-- <div>{{ data.info.x }}</div>
-  <div>{{ data.info.y }}</div> -->
   <form dForm [layout]="layoutDirection" ngForm>
     <d-form-item>
       <d-form-label [required]="true">匹配方法选择</d-form-label>
       <d-form-control>
-        <d-select
-          [options]="matchMethodList"
-          name="名称"
-          [filterKey]="'名称'"
-          [(ngModel)]="currentMethod"
-        ></d-select>
+        <d-select [options]="matchMethodList" name="名称" [filterKey]="'名称'" [(ngModel)]="currentMethod"></d-select>
       </d-form-control>
     </d-form-item>
-    
-    <!-- <ng-container *ngIf="len(imageArgList)!=0">
-      <app-input-switch
-      [currentArg]="item"
-      *ngFor="let item of imageArgList; let i = index"
-    ></app-input-switch>
-    </ng-container> -->
   </form>
   <app-image-match-form #imageMatchForm [range]="range" *ngIf="currentMethod['名称']==='图片匹配'"></app-image-match-form>
   <div class="modal-footer">
-    <d-button (click)="submit()" bsStyle="primary" circled="true"
-      >提交</d-button
-    >
+    <d-button (click)="submit()" bsStyle="primary" circled="true">提交</d-button>
   </div>
 </div>

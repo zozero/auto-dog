@@ -3,6 +3,7 @@ import { StepTableType } from "../interface/table-type";
 
 
 export const defaultStepData: StepTableType = {
+    序号:0,
     名称:'',
     界面编码:'',
     方法编码:'',

@@ -36,7 +36,6 @@ export class ImageMatchFormComponent implements OnInit {
   }
   ngOnInit(): void {
     this.args['范围'] = this.range;
-    console.log('🚀 ~ InputSwitchComponent ~ currentArg:', this.args);
   }
   
 }

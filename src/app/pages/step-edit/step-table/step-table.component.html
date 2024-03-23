@@ -1,6 +1,7 @@
 <div class="table-content" *ngIf="csvData.length>0">
-    <d-button  bsStyle="success" [showLoading]="btnShowLoading" (btnClick)="addStepData()">添加</d-button>
-    <!-- <d-data-table [dataSource]="csvFilterList" [size]="'md'" [fixHeader]="true" [scrollable]="true"
+    <d-button style="padding-right: 6px;"  bsStyle="primary" [showLoading]="btnShowLoading" (btnClick)="addStepData()">保存</d-button>
+    <d-button  bsStyle="common" [showLoading]="btnShowLoading" (btnClick)="addStepData()">添加</d-button>
+    <d-data-table [dataSource]="csvFilterList" [size]="'md'" [fixHeader]="true" [scrollable]="true"
       dLoading [loading]="loadingTip" [backdrop]="true" [loadingStyle]="'infinity'" 
       tableHeight="100%" [virtualMinBufferPx]="10" [virtualMaxBufferPx]="20" [tableOverflowType]="'overlay'">
       <thead dTableHead>
@@ -18,7 +19,7 @@
           (filterChange)="filterChangeMutil($event,0)"
           >{{ csvHeader[0] }}</th>
           <th dHeadCell
-          [filterList]="imgNameFilterList"
+          [filterList]="stepNameFilterList"
           [filterable]="true"
           [filterMultiple]="true"
           [filterBoxWidth]="'200px'"
@@ -28,6 +29,8 @@
           <th dHeadCell>{{ csvHeader[3] }}</th>
           <th dHeadCell>{{ csvHeader[4] }}</th>
           <th dHeadCell>{{ csvHeader[5] }}</th>
+          <th dHeadCell>{{ csvHeader[6] }}</th>
+          <th dHeadCell>{{ csvHeader[7] }}</th>
         </tr>
       </thead>
       <tbody dTableBody>
@@ -58,7 +61,7 @@
               </span>
               <div *ngIf="rowItem[csvHeader[2]+'Edit']" class="edit-padding-fix">
                 <input [dAutoFocus]="true" class="devui-form-control" [name]="csvHeader[2]" [(ngModel)]="rowItem[2]" 
-                  [attr.maxlength]="100" [attr.minlength]="1" />
+                  [attr.maxlength]="100"/>
               </div>
             </td>
   
@@ -68,7 +71,7 @@
                 {{ rowItem[3] }}
               </span>
               <div *ngIf="rowItem[csvHeader[3]+'Edit']" class="edit-padding-fix">
-                <d-input-number [dAutoFocus]="true"   [min]="0" [name]="csvHeader[3]" [(ngModel)]="rowItem[3]"></d-input-number>
+                 <input class="devui-form-control" [attr.maxlength]="100" [dAutoFocus]="true"   [min]="0" [name]="csvHeader[3]" [(ngModel)]="rowItem[3]">
               </div>
             </td>
   
@@ -79,7 +82,7 @@
                 {{ rowItem[4] }}
               </span>
               <div *ngIf="rowItem[csvHeader[4]+'Edit']" class="edit-padding-fix">
-                <d-input-number [dAutoFocus]="true"  [max]="1.0" [min]="0.0" [step]="0.1" [name]="csvHeader[4]" [(ngModel)]="rowItem[4]"></d-input-number>
+                 <input class="devui-form-control" [attr.maxlength]="100" [dAutoFocus]="true" [name]="csvHeader[4]" [(ngModel)]="rowItem[4]">
               </div>
             </td>
   
@@ -89,13 +92,31 @@
                 {{ rowItem[5] }}
               </span>
               <div *ngIf="rowItem[csvHeader[5]+'Edit']" class="edit-padding-fix">
-                <d-input-number [dAutoFocus]="true"   [max]="1" [min]="0.0" [name]="csvHeader[5]" [(ngModel)]="rowItem[5]"></d-input-number>
+                 <input class="devui-form-control" [attr.maxlength]="100" [dAutoFocus]="true"  [name]="csvHeader[5]" [(ngModel)]="rowItem[5]">
               </div>
             </td>
-  
+
+            <td dTableCell [editable]="true" [editableTip]="editableTip" [(editing)]="rowItem[csvHeader[6]+'Edit']"
+            [field]="csvHeader[6]" [rowItem]="rowItem">
+            <span *ngIf="!rowItem[csvHeader[6]+'Edit']">
+              {{ rowItem[6] }}
+            </span>
+            <div *ngIf="rowItem[csvHeader[6]+'Edit']" class="edit-padding-fix">
+              <d-input-number [dAutoFocus]="true"   [min]="0" [name]="csvHeader[6]" [(ngModel)]="rowItem[6]"></d-input-number>
+            </div>
+          </td>
+
+          <td dTableCell [editable]="true" [editableTip]="editableTip" [(editing)]="rowItem[csvHeader[7]+'Edit']"
+          [field]="csvHeader[7]" [rowItem]="rowItem">
+          <span *ngIf="!rowItem[csvHeader[7]+'Edit']">
+            {{ rowItem[7] }}
+          </span>
+          <div *ngIf="rowItem[csvHeader[7]+'Edit']" class="edit-padding-fix">
+            <d-input-number [dAutoFocus]="true" [min]="0.3" [step]="0.1" [name]="csvHeader[7]" [(ngModel)]="rowItem[7]"></d-input-number>
+          </div>
+        </td>
           </tr>
         </ng-template>
       </tbody>
     </d-data-table>
-   -->
   </div>
