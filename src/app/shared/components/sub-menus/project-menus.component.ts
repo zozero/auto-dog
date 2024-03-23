@@ -33,11 +33,9 @@ export class ProjectMenusComponent implements OnInit {
     this.projectList=await projectTable.queryAllProjectInfos();
     // 获取已保存的菜单
     const curMuen = this.myLocalStorage.get('currentProjectName');
-    console.log("🚀 ~ SubMenusComponent ~ getMenus ~ curMuen:", curMuen)
     if(curMuen){
       this.currentIndex=findIndex(this.projectList,{'name':curMuen})
       this.currentProject = this.projectList[this.currentIndex];
-      console.log("🚀 ~ SubMenusComponent ~ getMenus ~ this.currentProject:", this.currentProject)
     }
     else{
       this.currentIndex=0

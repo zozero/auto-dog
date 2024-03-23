@@ -1,6 +1,6 @@
 <div class="table-content">
   <d-button bsStyle="primary" (btnClick)="putCsvFile()">Open modal</d-button>
-  <d-data-table *ngIf="csvData" [dataSource]="csvFilterList" [size]="'md'" [fixHeader]="true" [scrollable]="true"
+  <d-data-table *ngIf="csvData.length>0" [dataSource]="csvFilterList" [size]="'md'" [fixHeader]="true" [scrollable]="true"
     dLoading [loading]="loadingTip" [backdrop]="true" [loadingStyle]="'infinity'" 
     tableHeight="100%" [virtualMinBufferPx]="10" [virtualMaxBufferPx]="20" [tableOverflowType]="'overlay'">
     <thead dTableHead>

@@ -52,9 +52,6 @@ export class MethodEditComponent implements OnInit {
       .initCurrentProject()
       .then((data) => {
         this.currentProject = data;
-        console.log("🚀 ~ MethodEditComponent ~ getCurrentProject ~ data:", data)
-        
-        // this.getcsvFile();
       })
       .then(() => {
         // 关闭载入提示
@@ -65,10 +62,7 @@ export class MethodEditComponent implements OnInit {
 
   // 从子菜单组件中发送信息到这里，用于修改当前子菜单的信息。
   getCurrentProject(currentProject: ProjectInfo) {
-    console.log("🚀 ~ MethodEditComponent ~ getCurrentProject ~ currentProject:", currentProject)
-    
     this.currentProject = currentProject;
-
   }
  
   activeTabChange(tab:any) {
