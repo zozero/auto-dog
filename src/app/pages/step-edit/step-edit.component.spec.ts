@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SetpEditComponent } from './setp-edit.component';
+import { StepEditComponent as StepEditComponent } from './step-edit.component';
 
-describe('SetpEditComponent', () => {
-  let component: SetpEditComponent;
-  let fixture: ComponentFixture<SetpEditComponent>;
+describe('StepEditComponent', () => {
+  let component: StepEditComponent;
+  let fixture: ComponentFixture<StepEditComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SetpEditComponent]
+      imports: [StepEditComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(SetpEditComponent);
+    fixture = TestBed.createComponent(StepEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

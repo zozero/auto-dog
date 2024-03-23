@@ -29,8 +29,7 @@ import { MatchMethodType } from '../../core/interface/table-type';
 })
 export class MethodEditComponent implements OnInit {
   currentProject!: ProjectInfo;
-  // 按钮点击后的载入提示
-  // showLoading = false;
+
   imageMethodList:MatchMethodType[] =matchMethodList
 
   tabActiveId: string | number =matchMethodList[0]["名称"];

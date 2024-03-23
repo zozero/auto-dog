@@ -29,6 +29,9 @@ import { TipsDialogService } from '../../../core/services/tips-dialog/tips-dialo
   ]
 })
 export class ImageMatchTableComponent implements OnInit, OnChanges {
+    // 按钮点击后的载入提示
+  btnShowLoading = false;
+  // 表格数据
   csvData: string[] = [];
   // 专用于过滤的csv列表
   csvFilterList: string[] = [];
@@ -67,7 +70,7 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
   getcsvFile() {
     // 数据载入提示
     const loadTip = this.loadingService.open();
-    this.tableHttp.getCsvFile(
+    this.tableHttp.getMethodCsvFile(
         this.projectInfo.executionSideInfo?.ipPort as string,
         this.projectInfo.name,
         this.imageMatch['名称']
@@ -160,6 +163,8 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
 
   // 保存csv文件到执行端，这里直接覆盖了
   putCsvFile() {
+    // 打开载入效果
+    this.btnShowLoading=true
     // 准备数据
     // eslint-disable-next-line prefer-const
     let csvArr = [this.csvHeader].concat(this.csvData);
@@ -167,13 +172,11 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
     csvArr.push([''])
     const csvStr = this.papa.unparse(csvArr);
     const csvBlob = new Blob([csvStr], { type: 'text/csv' });
-    const csvFile = new File([csvBlob], 'foo.csv', { type: 'text/csv' });
-    
-    // 数据载入提示
-    const loadTip = this.loadingService.open();
+    const csvFile = new File([csvBlob], 'something.csv', { type: 'text/csv' });
+
     // 发送请求
     this.tableHttp
-      .putCsvFile(
+      .putMethodCsvFile(
         this.projectInfo.executionSideInfo?.ipPort as string,
         this.projectInfo.name,
         this.imageMatch['名称'],
@@ -193,12 +196,12 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
             }else{
               this.dialogService.openErrorDialog('可能没有开启服务器。')
             }
-            // 关闭载入提示
-            loadTip.loadingInstance.close();
+            // 关闭载入效果
+            this.btnShowLoading=false
           },
           complete: () => {
-            // 关闭载入提示
-            loadTip.loadingInstance.close();
+            // 关闭载入效果
+            this.btnShowLoading=false
           }
         }
       );

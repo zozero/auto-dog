@@ -6,6 +6,14 @@ import { Injectable } from '@angular/core';
 export class ImageHttpService {
   constructor(private http: HttpClient) {}
 
+  // 截图
+  interceptImage(executionSideHttp: string, simulatorHttp: string) {
+    return this.http.get(executionSideHttp + '/模拟器屏幕', {
+      params: { 模拟器的ip和端口: simulatorHttp },
+      responseType: 'blob',
+    });
+  }
+  
   postUploadImage(
     img: File,
     executionSideUrl: string | undefined,

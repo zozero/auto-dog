@@ -38,8 +38,8 @@ const routes: Routes = [
   {
     path: '步骤编辑',
     loadComponent: () =>
-      import('./pages/setp-edit/setp-edit.component').then(
-        (mod) => mod.SetpEditComponent
+      import('./pages/step-edit/step-edit.component').then(
+        (mod) => mod.StepEditComponent
       ),
   },
   {

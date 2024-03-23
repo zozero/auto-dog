@@ -10,8 +10,8 @@ import { CommonModule } from '@angular/common';
 import { AngularCropperjsModule, CropperComponent } from 'angular-cropperjs';
 import { ProjectMenuService } from '../../core/services/menus/project-menu.service';
 import { CropImageUploadComponent } from './crop-image-upload/crop-image-upload.component';
-import { TableHttpService } from '../../core/services/https/table-http.service';
 import { CropImageInfo, RowImageInfo, ImageInfo } from '../../core/interface/image-type';
+import { ImageHttpService } from '../../core/services/https/image-http.service';
 
 @Component({
   selector: 'app-image-process',
@@ -50,7 +50,7 @@ export class ImageProcessComponent implements OnInit {
   @ViewChild('angularCropper') public angularCropper!: CropperComponent;
 
   constructor(
-    private tableHttp: TableHttpService,
+    private imageHttp: ImageHttpService,
     private menu: ProjectMenuService,
     private dialogService: DialogService
   ) {}
@@ -62,7 +62,7 @@ export class ImageProcessComponent implements OnInit {
 
   toggleLoading() {
     this.showLoading = true;
-    this.tableHttp
+    this.imageHttp
       .interceptImage(
         this.currentProject.executionSideInfo?.ipPort as string,
         this.currentProject.simulatorInfo?.ipPort as string

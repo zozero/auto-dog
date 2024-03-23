@@ -7,15 +7,8 @@ import { BinaryImageMatchMethodType, ImageMatchMethodType } from '../../interfac
 export class TableHttpService {
   constructor(private http: HttpClient) { }
 
-  // 截图
-  interceptImage(executionSideHttp: string, simulatorHttp: string) {
-    return this.http.get(executionSideHttp + '/模拟器屏幕', {
-      params: { 模拟器的ip和端口: simulatorHttp },
-      responseType: 'blob',
-    });
-  }
   // 获取csv文件
-  getCsvFile(
+  getMethodCsvFile(
     executionSideHttp: string,
     projectName: string,
     csvFileName: string
@@ -49,14 +42,14 @@ export class TableHttpService {
     };
 
     return this.http.post(
-      executionSideUrl + '/方法' + '/添加表格数据',
+      executionSideUrl + '/方法' + '/添加',
       imageArgs,
       options
     );
   }
 
   // 覆盖csv数据
-  putCsvFile(executionSideUrl: string, projectName: string, methodName: string, csvFile: File) {
+  putMethodCsvFile(executionSideUrl: string, projectName: string, methodName: string, csvFile: File) {
     // eslint-disable-next-line prefer-const
     let headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
@@ -71,6 +64,25 @@ export class TableHttpService {
     // eslint-disable-next-line prefer-const
     let formData = new FormData();
     formData.append('csv文件', csvFile);
-    return this.http.put(executionSideUrl + '/方法' + '/覆盖表格文件', formData, options);
+    return this.http.put(executionSideUrl + '/方法' + '/覆盖', formData, options);
   }
+
+    // 创建步骤表格
+    putCreateStepCsvFile(executionSideUrl: string, projectName: string, fileName: string, csvFile: File) {
+      // eslint-disable-next-line prefer-const
+      let headers = new HttpHeaders();
+      headers.append('Content-Type', 'multipart/form-data');
+      headers.append('Accept', 'application/json');
+      const options = {
+        headers: headers,
+        params: {
+          项目名: projectName,
+          文件名: fileName
+        },
+      };
+      // eslint-disable-next-line prefer-const
+      let formData = new FormData();
+      formData.append('csv文件', csvFile);
+      return this.http.put(executionSideUrl + '/步骤' + '/创建', formData, options);
+    }
 }
