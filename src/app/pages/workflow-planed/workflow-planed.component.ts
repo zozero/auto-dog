@@ -42,8 +42,8 @@ export class WorkflowPlanedComponent implements OnInit {
   // test() {
   //   this.tableHttp
   //     .getCsvFile(
-  //       this.currentSubMenu.executionSideInfo.ipPort,
-  //       this.currentSubMenu.name
+  //       this.currentProject.executionSideInfo.ipPort,
+  //       this.currentProject.name
   //     )
   //     .subscribe((csv) => {
   //       console.log('🚀 ~ WorkflowPlanedComponent ~ ).subscribe ~ csv:', csv);

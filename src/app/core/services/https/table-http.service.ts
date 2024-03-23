@@ -23,9 +23,10 @@ export class TableHttpService {
     return this.http.get(executionSideHttp + '/方法' + '/表格', {
       params: {
         项目名: projectName,
-        文件名: csvFileName + '.csv',
+        文件名: csvFileName + '.csv'
       },
       responseType: 'blob',
+      transferCache:false
     });
   }
   // 添加csv数据

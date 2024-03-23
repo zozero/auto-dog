@@ -6,35 +6,32 @@ import { CommonModule } from '@angular/common';
 import { ProjectMenusComponent } from '../../shared/components/sub-menus/project-menus.component';
 import { LoadingModule } from 'ng-devui/loading';
 import { ToastService } from 'ng-devui/toast';
-import { ImageMatchTableComponent } from "./image-match-table/image-match-table.component";
 import { TabsModule } from 'ng-devui/tabs';
 import { matchMethodList } from '../../core/mock/match-mock';
 import { ProjectInfo } from '../../core/interface/config-type';
 import { MatchMethodType } from '../../core/interface/table-type';
 
 @Component({
-    selector: 'app-method-edit',
-    standalone: true,
-    templateUrl: './method-edit.component.html',
-    styleUrl: './method-edit.component.scss',
-    imports: [
-        LayoutModule,
-        CommonModule,
-        ProjectMenusComponent,
-        DevUIModule,
-        LoadingModule,
-        ImageMatchTableComponent,
-        TabsModule
-    ]
+  selector: 'app-setp-edit',
+  standalone: true,
+  imports: [
+    LayoutModule,
+    CommonModule,
+    ProjectMenusComponent,
+    DevUIModule,
+    LoadingModule,
+    TabsModule
+  ],
+  templateUrl: './setp-edit.component.html',
+  styleUrl: './setp-edit.component.scss'
 })
-export class MethodEditComponent implements OnInit {
+export class SetpEditComponent implements OnInit  {
   currentProject!: ProjectInfo;
   // 按钮点击后的载入提示
   // showLoading = false;
   imageMethodList:MatchMethodType[] =matchMethodList
 
   tabActiveId: string | number =matchMethodList[0]["名称"];
-
   constructor(
     private tableHttp: TableHttpService,
     private menu: ProjectMenuService,
@@ -52,8 +49,6 @@ export class MethodEditComponent implements OnInit {
       .initCurrentProject()
       .then((data) => {
         this.currentProject = data;
-        console.log("🚀 ~ MethodEditComponent ~ getCurrentProject ~ data:", data)
-        
         // this.getcsvFile();
       })
       .then(() => {
@@ -62,28 +57,8 @@ export class MethodEditComponent implements OnInit {
 
       });
   }
-
-  // 从子菜单组件中发送信息到这里，用于修改当前子菜单的信息。
-  getCurrentProject(currentProject: ProjectInfo) {
-    console.log("🚀 ~ MethodEditComponent ~ getCurrentProject ~ currentProject:", currentProject)
-    
-    this.currentProject = currentProject;
-
-  }
- 
-  activeTabChange(tab:any) {
-    console.log(tab);
-  }
-  // 过滤使用，暂时没打算添加
-  // onFirstFilterChange($event: any) {
-  //   console.log(
-  //     '🚀 ~ MethodEditComponent ~ onFirstFilterChange ~ event:',
-  //     $event
-  //   );
-  //   this.csvData =  this.csvData.filter((data:string)=>{
-  //     return data[1]===$event[0].value
-  //   })
-  // }
-
- 
+    // 从子菜单组件中发送信息到这里，用于修改当前子菜单的信息。
+    getCurrentProject(currentProject: ProjectInfo) {
+      this.currentProject = currentProject;
+    }
 }

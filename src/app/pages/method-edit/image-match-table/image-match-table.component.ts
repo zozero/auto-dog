@@ -54,7 +54,8 @@ export class ImageMatchTableComponent implements OnInit {
 
   // 从执行端获得csv文件，后续可能需要区分文件名
   getcsvFile() {
-    this.tableHttp
+    console.log("🚀 ~ ImageMatchTableComponent ~ getcsvFile ~ this.projectInfo:", this.projectInfo)
+    this.loadingTip=this.tableHttp
       .getCsvFile(
         this.projectInfo.executionSideInfo?.ipPort as string,
         this.projectInfo.name,
@@ -72,8 +73,8 @@ export class ImageMatchTableComponent implements OnInit {
             arr.shift();
             this.csvData = arr;
             // 删除掉最后一行的空数据
-            this.csvData.pop()
-            this.csvFilterList=this.csvData
+            this.csvData.pop();
+            this.csvFilterList=this.csvData;
             // 设置筛选数据
             this.setOrdinalFilterList()
             this.setImgNameFilterList()
@@ -87,6 +88,7 @@ export class ImageMatchTableComponent implements OnInit {
         // Add your options here
       });
   }
+  
   // 设置序号筛选列表
   setOrdinalFilterList() {
     this.csvData.forEach((data) => {
@@ -119,7 +121,7 @@ export class ImageMatchTableComponent implements OnInit {
 
     const csvFile = new File([csvBlob], 'foo.csv', { type: 'text/csv' });
     console.log('🚀 ~ CsvEditComponent ~ putCsv ~ csvFile:', csvFile);
-    this.tableHttp
+    this.loadingTip=this.tableHttp
       .putCsvFile(
         this.projectInfo.executionSideInfo?.ipPort as string,
         this.projectInfo.name,
@@ -148,6 +150,7 @@ export class ImageMatchTableComponent implements OnInit {
       this.csvFilterList= this.csvData
     }
   }
+
 
   filterChangeRadio($event: FilterConfig[],key:number) {
     if($event.length===this.csvData.length){

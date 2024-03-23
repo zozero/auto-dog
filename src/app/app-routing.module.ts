@@ -36,6 +36,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: '步骤编辑',
+    loadComponent: () =>
+      import('./pages/setp-edit/setp-edit.component').then(
+        (mod) => mod.SetpEditComponent
+      ),
+  },
+  {
     path: '**',
     component: PageNotFoundComponent,
   },

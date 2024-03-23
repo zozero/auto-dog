@@ -32,12 +32,12 @@ export class ProjectMenusComponent implements OnInit {
   async getProjectList(){
     this.projectList=await projectTable.queryAllProjectInfos();
     // 获取已保存的菜单
-    const curMuen = this.myLocalStorage.get('currentSubMenu');
+    const curMuen = this.myLocalStorage.get('currentProjectName');
     console.log("🚀 ~ SubMenusComponent ~ getMenus ~ curMuen:", curMuen)
     if(curMuen){
       this.currentIndex=findIndex(this.projectList,{'name':curMuen})
       this.currentProject = this.projectList[this.currentIndex];
-      console.log("🚀 ~ SubMenusComponent ~ getMenus ~ this.currentSubMenu:", this.currentProject)
+      console.log("🚀 ~ SubMenusComponent ~ getMenus ~ this.currentProject:", this.currentProject)
     }
     else{
       this.currentIndex=0
@@ -48,7 +48,7 @@ export class ProjectMenusComponent implements OnInit {
   // 子菜单栏某项被点击
   subMenuClick(index:number,subMenu: ProjectInfo) {
     this.currentProject = subMenu;
-    this.myLocalStorage.set('currentSubMenu', this.currentProject.name);
+    this.myLocalStorage.set('currentProjectName', this.currentProject.name);
     
     this.currentIndex=index
     this.sendCurrentProject.emit(this.currentProject);
