@@ -97,15 +97,8 @@ export class ImageProcessComponent implements OnInit {
   }
   // 导出截图，当执行图片导出时，组件会自动触发该函数
    angularCropperExport(data: any) {
-    console.log(
-      '🚀 ~ ImageProcessComponent ~ angularCropperExport ~ data:',
-      data
-    );
     this.cropImageBlob=data.blob
     this.cropImageBlobUrl =  URL.createObjectURL(this.cropImageBlob);
-    console.log("🚀 ~ ImageProcessComponent ~ angularCropperExport ~ this.cropImageData :", this.cropImageBlobUrl )
-    console.log("🚀 ~ ImageProcessComponent ~ angularCropperExport ~ this.imageBlob :", this.cropImageBlob)
-    
     const imageInfo: ImageInfo= this.getCropImageInfo();
     const rowImageInfo = this.getNaturalSize();
     const cropImageInfo:CropImageInfo = {

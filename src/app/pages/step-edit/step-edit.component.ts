@@ -149,7 +149,7 @@ export class StepEditComponent implements OnInit {
     const results = this.dialogService.open({
       ...config,
       dialogtype: 'warning',
-      content: "确定要删除吗?",
+      content: "确定要删除吗?右上角关闭等于取消。",
       buttons: [
         {
           cssClass: 'primary',

@@ -13,4 +13,9 @@ export const defaultStepData: StepTableType = {
     循环间隔:1.0,
 };
 
-export const defaultEncode="gbk"
+
+export const defaultMethodEncode=['A']
+export const defaultBehaviorEncode=['A','B']
+export const defaultDirectionEncode=['X','Y']
+
+export const defaultZJEncode=['Z','J']
