@@ -10,55 +10,57 @@ import { TipsDialogService } from '../../../core/services/tips-dialog/tips-dialo
 import { filter, orderBy } from 'lodash';
 import { defaultEncode } from '../../../core/mock/app-mock';
 import { TaskTableFormComponent } from "../../../shared/components/form/task-table-form/task-table-form.component";
+import { DownloadFileService } from '../../../core/services/https/download-file.service';
 
 @Component({
-    selector: 'app-task-table',
-    standalone: true,
-    templateUrl: './task-table.component.html',
-    styleUrl: './task-table.component.scss',
-    imports: [
-        DataTableModule,
-        FormsModule,
-        InputGroupModule,
-        DevUIModule,
-        CommonModule,
-        ModalModule,
-        TaskTableFormComponent
-    ]
+  selector: 'app-task-table',
+  standalone: true,
+  templateUrl: './task-table.component.html',
+  styleUrl: './task-table.component.scss',
+  imports: [
+    DataTableModule,
+    FormsModule,
+    InputGroupModule,
+    DevUIModule,
+    CommonModule,
+    ModalModule,
+    TaskTableFormComponent
+  ]
 })
-export class TaskTableComponent implements OnInit, OnChanges  {
- // 按钮点击后的载入提示
- btnShowLoading = false;
- // 表格数据
- csvData: string[] = [];
- // 专用于过滤的csv列表
- csvFilterList: string[] = [];
- csvHeader!: string[];
- // 序号筛选列表
- ordinalFilterList: FilterConfig[] = []
- // 步骤名称刷选列表
- taskNameFilterList: FilterConfig[] = []
- // 数据的载入提示
- loadingTip!: LoadingType;
- @Input() projectInfo!: ProjectInfo;
- @Input() fileName!: string | number;
+export class TaskTableComponent implements OnInit, OnChanges {
+  // 按钮点击后的载入提示
+  btnShowLoading = false;
+  // 表格数据
+  csvData: string[] = [];
+  // 专用于过滤的csv列表
+  csvFilterList: string[] = [];
+  csvHeader!: string[];
+  // 序号筛选列表
+  ordinalFilterList: FilterConfig[] = []
+  // 步骤名称刷选列表
+  taskNameFilterList: FilterConfig[] = []
+  // 数据的载入提示
+  loadingTip!: LoadingType;
+  @Input() projectInfo!: ProjectInfo;
+  @Input() fileName!: string | number;
 
- @ViewChild('dialogContent', { static: true }) dialogContent!: TemplateRef<any>;
- editableTip = EditableTip.hover;
+  @ViewChild('dialogContent', { static: true }) dialogContent!: TemplateRef<any>;
+  editableTip = EditableTip.hover;
   constructor(
     private papa: Papa,
     private tableHttp: TableHttpService,
     private toastService: ToastService,
     private tipsService: TipsDialogService,
     private dialogService: DialogService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private downloadFileService: DownloadFileService
 
   ) { }
 
   ngOnInit(): void {
     // this.getcsvFile();
     console.log("TaskTableComponent");
-    
+
   }
   ngOnChanges(changes: SimpleChanges) {
     if ('projectInfo' in changes) {
@@ -199,7 +201,7 @@ export class TaskTableComponent implements OnInit, OnChanges  {
             })
           },
           error: (err: any) => {
-            this.tipsService.responseErrorState(err.status as number )
+            this.tipsService.responseErrorState(err.status as number)
             // 关闭载入效果
             this.btnShowLoading = false
           },
@@ -249,12 +251,22 @@ export class TaskTableComponent implements OnInit, OnChanges  {
     }
 
   }
-  
+
   // 删除数据
   deleteData(index: number) {
     this.csvData.splice(index, 1);
     this.saveTaskData()
 
+  }
+
+  // 导出为csv文件
+  exportCsvFile() {
+    // 打开载入效果
+    this.btnShowLoading = true
+    const csvUrl = this.projectInfo.executionSideInfo?.ipPort + '/任务' + '/表格?' + '项目名=' + this.projectInfo.name + '&文件名=' + this.fileName
+    this.downloadFileService.exportCsvFile(csvUrl);
+    // 关闭载入效果
+    this.btnShowLoading = false
   }
 
 }

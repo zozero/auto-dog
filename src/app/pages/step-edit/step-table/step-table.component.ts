@@ -14,6 +14,7 @@ import { TipsDialogService } from '../../../core/services/tips-dialog/tips-dialo
 import { StepTableFormComponent } from "../../../shared/components/form/step-table-form/step-table-form.component";
 import { ExecutionHttpService } from '../../../core/services/https/execution-http.service';
 import { TestStepDataType } from '../../../core/interface/table-type';
+import { DownloadFileService } from '../../../core/services/https/download-file.service';
 
 @Component({
   selector: 'app-step-table',
@@ -57,7 +58,8 @@ export class StepTableComponent implements OnInit, OnChanges {
     private tipsService: TipsDialogService,
     private dialogService: DialogService,
     private loadingService: LoadingService,
-    private executionHttpService: ExecutionHttpService
+    private executionHttpService: ExecutionHttpService,
+    private downloadFileService: DownloadFileService
 
   ) { }
   ngOnInit(): void {
@@ -203,7 +205,7 @@ export class StepTableComponent implements OnInit, OnChanges {
             })
           },
           error: (err: any) => {
-            this.tipsService.responseErrorState(err.status as number )
+            this.tipsService.responseErrorState(err.status as number)
             // 关闭载入效果
             this.btnShowLoading = false
           },
@@ -276,7 +278,7 @@ export class StepTableComponent implements OnInit, OnChanges {
         })
       },
       error: (err: any) => {
-        this.tipsService.responseErrorState(err.status as number )
+        this.tipsService.responseErrorState(err.status as number)
         // 关闭载入效果
         this.btnShowLoading = false
       },
@@ -284,14 +286,22 @@ export class StepTableComponent implements OnInit, OnChanges {
         // 关闭载入效果
         this.btnShowLoading = false
       }
-    
+
     })
   }
   // 删除数据
   deleteData(index: number) {
     this.csvData.splice(index, 1);
     this.saveStepData()
-
   }
 
+  // 导出为csv文件
+  exportCsvFile() {
+    // 打开载入效果
+    this.btnShowLoading = true
+    const csvUrl = this.projectInfo.executionSideInfo?.ipPort + '/步骤' + '/表格?' + '项目名=' + this.projectInfo.name + '&文件名=' + this.fileName
+    this.downloadFileService.exportCsvFile(csvUrl);
+    // 关闭载入效果
+    this.btnShowLoading = false
+  }
 }

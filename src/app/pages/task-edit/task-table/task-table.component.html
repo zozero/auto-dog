@@ -1,7 +1,8 @@
 <div class="table-content">
   <d-button *ngIf="csvData.length>0" style="padding-right: 6px;" bsStyle="primary" [showLoading]="btnShowLoading"
     (btnClick)="saveTaskData()">保存</d-button>
-  <d-button bsStyle="common" (btnClick)="addTaskData()">添加</d-button>
+  <d-button style="padding-right: 6px;" bsStyle="common" (btnClick)="addTaskData()">添加</d-button>
+  <d-button *ngIf="csvData.length>0" bsStyle="common" [showLoading]="btnShowLoading" (btnClick)="exportCsvFile()">导出</d-button>
   <d-data-table  *ngIf="csvData.length>0" [dataSource]="csvFilterList" [size]="'md'" [fixHeader]="true" [scrollable]="true" dLoading
     [loading]="loadingTip" [backdrop]="true" [loadingStyle]="'infinity'" tableHeight="100%" [virtualMinBufferPx]="10"
     [virtualMaxBufferPx]="20" [tableOverflowType]="'overlay'">

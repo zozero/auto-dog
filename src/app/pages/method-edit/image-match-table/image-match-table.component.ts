@@ -11,6 +11,7 @@ import { defaultEncode } from '../../../core/mock/app-mock';
 import { ModalModule } from 'ng-devui/modal';
 import { TipsDialogService } from '../../../core/services/tips-dialog/tips-dialog.service';
 import { filter, orderBy } from 'lodash';
+import { DownloadFileService } from '../../../core/services/https/download-file.service';
 
 @Component({
   selector: 'app-image-match-table',
@@ -51,6 +52,7 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
     private toastService: ToastService,
     private tipsDialog: TipsDialogService,
     private loadingService: LoadingService,
+    private downloadFileService:DownloadFileService
     
   ) { }
   ngOnInit(): void {
@@ -231,7 +233,13 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
    
   }
 
+  // 导出为csv文件
   exportCsvFile(){
-    
+    // 打开载入效果
+    this.btnShowLoading = true
+    const csvUrl=this.projectInfo.executionSideInfo?.ipPort+'/方法' + '/表格?'+'项目名='+this.projectInfo.name+'&文件名='+'图片匹配'
+    this.downloadFileService.exportCsvFile(csvUrl);
+    // 关闭载入效果
+    this.btnShowLoading = false
   }
 }
