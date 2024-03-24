@@ -7,7 +7,6 @@ import { InputGroupModule } from 'ng-devui/input-group';
 import { TableHttpService } from '../../../core/services/https/table-http.service';
 import { Papa, ParseResult } from 'ngx-papaparse';
 import { TipsDialogService } from '../../../core/services/tips-dialog/tips-dialog.service';
-import { ExecutionHttpService } from '../../../core/services/https/execution-http.service';
 import { filter, orderBy } from 'lodash';
 import { defaultEncode } from '../../../core/mock/app-mock';
 import { TaskTableFormComponent } from "../../../shared/components/form/task-table-form/task-table-form.component";
@@ -52,13 +51,14 @@ export class TaskTableComponent implements OnInit, OnChanges  {
     private toastService: ToastService,
     private tipsService: TipsDialogService,
     private dialogService: DialogService,
-    private loadingService: LoadingService,
-    private executionHttpService: ExecutionHttpService
+    private loadingService: LoadingService
 
   ) { }
 
   ngOnInit(): void {
-    this.getcsvFile();
+    // this.getcsvFile();
+    console.log("TaskTableComponent");
+    
   }
   ngOnChanges(changes: SimpleChanges) {
     if ('projectInfo' in changes) {
@@ -100,7 +100,6 @@ export class TaskTableComponent implements OnInit, OnChanges  {
             },
             encoding: defaultEncode,
             // header:true,
-            download: true,
             newline: undefined
           };
           this.papa.parse(csv, csvParseOptions);

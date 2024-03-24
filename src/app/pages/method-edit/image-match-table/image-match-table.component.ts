@@ -95,7 +95,6 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
             },
             encoding: defaultEncode,
             // header:true,
-            download: true,
             newline:undefined
           };
           this.papa.parse(csv, csvParseOptions);
@@ -108,16 +107,6 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
           this.imgNameFilterList = []
 
           this.tipsDialog.responseErrorState(err.status as number)
-          // console.log("err", err);
-          // 状态为零可能是服务器没开
-          // const csvParseOptions = {
-          //   complete: (results: ParseResult) => {
-          //     const tmp: string = JSON.parse(results.data[0] as string)['detail']
-          //     this.tipsDialog.openErrorDialog(tmp)
-          //   },
-          //   encoding: 'utf8',
-          // }
-          // this.papa.parse(err.error as Blob, csvParseOptions);
           // 关闭载入提示
           loadTip.loadingInstance.close();
         },
@@ -240,5 +229,9 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
     this.csvData.splice(index,1);
     this.putCsvFile()
    
+  }
+
+  exportCsvFile(){
+    
   }
 }

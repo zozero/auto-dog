@@ -1,5 +1,6 @@
 <div class="table-content" *ngIf="csvData.length>0">
-  <d-button  bsStyle="primary" [showLoading]="btnShowLoading" (btnClick)="putCsvFile()">保存</d-button>
+  <d-button  bsStyle="primary" style="margin-right: 6px;" [showLoading]="btnShowLoading" (btnClick)="putCsvFile()">保存</d-button>
+  <d-button  bsStyle="common" [showLoading]="btnShowLoading" (btnClick)="exportCsvFile()">导出</d-button>
   <d-data-table [dataSource]="csvFilterList" [size]="'md'" [fixHeader]="true" [scrollable]="true"
     dLoading [loading]="loadingTip" [backdrop]="true" [loadingStyle]="'infinity'" 
     tableHeight="100%" [virtualMinBufferPx]="10" [virtualMaxBufferPx]="20" [tableOverflowType]="'overlay'">

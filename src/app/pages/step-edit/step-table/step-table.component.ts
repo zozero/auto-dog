@@ -61,7 +61,8 @@ export class StepTableComponent implements OnInit, OnChanges {
 
   ) { }
   ngOnInit(): void {
-    this.getcsvFile();
+    // this.getcsvFile();
+    console.log("StepTableComponent");
   }
   ngOnChanges(changes: SimpleChanges) {
     if ('projectInfo' in changes) {
@@ -103,7 +104,6 @@ export class StepTableComponent implements OnInit, OnChanges {
             },
             encoding: defaultEncode,
             // header:true,
-            download: true,
             newline: undefined
           };
           this.papa.parse(csv, csvParseOptions);
