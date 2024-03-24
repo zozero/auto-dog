@@ -12,6 +12,8 @@ import { defaultEncode } from '../../../core/mock/app-mock';
 import { DialogService, ModalModule } from 'ng-devui/modal';
 import { TipsDialogService } from '../../../core/services/tips-dialog/tips-dialog.service';
 import { StepTableFormComponent } from "../../../shared/components/form/step-table-form/step-table-form.component";
+import { ExecutionHttpService } from '../../../core/services/https/execution-http.service';
+import { TestStepDataType } from '../../../core/interface/table-type';
 
 @Component({
   selector: 'app-step-table',
@@ -58,6 +60,7 @@ export class StepTableComponent implements OnInit, OnChanges {
     private tipsService: TipsDialogService,
     private dialogService: DialogService,
     private loadingService: LoadingService,
+    private executionHttpService: ExecutionHttpService
 
   ) { }
   ngOnInit(): void {
@@ -260,11 +263,48 @@ export class StepTableComponent implements OnInit, OnChanges {
 
   }
   // 测试数据的可行性
+  testStep(index: number) {
+    // 打开载入效果
+    this.btnShowLoading = true
+    // 准备数据
+    const stepData: TestStepDataType = {
+      模拟器的ip和端口: this.projectInfo.simulatorInfo?.ipPort as string,
+      项目名: this.projectInfo.name,
+      名称: this.fileName as string,
+      编号: parseInt(this.csvData[index][0])
+    }
+    console.log("🚀 ~ StepTableComponent ~ testStep ~ stepData:", stepData)
+    this.executionHttpService.postTestStepData(
+      this.projectInfo.executionSideInfo?.ipPort as string,
+      stepData
+    ).subscribe({
+      next: (data: any) => {
+        this.toastService.open({
+          value: [{ severity: 'success', summary: '摘要', content: data }],
+        })
+      },
+      error: (err: any) => {
+        if (err.status != 0) {
+          this.tipsService.openErrorDialog('未知原因错误')
+
+        } else {
+          this.tipsService.openErrorDialog('可能没有开启服务器。')
+        }
+        // 关闭载入效果
+        this.btnShowLoading = false
+      },
+      complete: () => {
+        // 关闭载入效果
+        this.btnShowLoading = false
+      }
+    
+    })
+  }
   // 删除数据
-  deleteData(index:number){
-    this.csvData.splice(index,1);
+  deleteData(index: number) {
+    this.csvData.splice(index, 1);
     this.saveStepData()
-   
+
   }
 
 }

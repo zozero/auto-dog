@@ -38,3 +38,12 @@ export interface StepTableType {
   循环次数: number;
   循环间隔: number;
 }
+
+
+
+export interface TestStepDataType {
+  模拟器的ip和端口:string;
+  项目名: string;
+  名称: string;
+  编号: number;
+}

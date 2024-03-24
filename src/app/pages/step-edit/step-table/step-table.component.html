@@ -19,7 +19,7 @@
         <th dHeadCell>{{ csvHeader[5] }}</th>
         <th dHeadCell>{{ csvHeader[6] }}</th>
         <th dHeadCell>{{ csvHeader[7] }}</th>
-        <th dHeadCell>操作</th>
+        <th dHeadCell >操作</th>
       </tr>
     </thead>
     <tbody dTableBody>
@@ -110,10 +110,9 @@
             </div>
           </td>
           
-          <td dTableCell>
-            <d-button bsStyle="text" (btnClick)="deleteData(rowIndex)"
-              >删除</d-button
-            >
+          <td dTableCell >
+            <d-button bsStyle="text" [showLoading]="btnShowLoading" style="margin-right: 8px" (btnClick)="testStep(rowIndex)">测试</d-button>
+            <d-button bsStyle="text" (btnClick)="deleteData(rowIndex)">删除</d-button>
           </td>
         </tr>
       </ng-template>
