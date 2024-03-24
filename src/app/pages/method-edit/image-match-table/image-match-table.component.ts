@@ -235,5 +235,10 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
     }
 
   }
-
+  // 删除数据
+  deleteData(index:number){
+    this.csvData.splice(index,1);
+    this.putCsvFile()
+   
+  }
 }

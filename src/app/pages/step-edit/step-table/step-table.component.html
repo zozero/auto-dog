@@ -19,6 +19,7 @@
         <th dHeadCell>{{ csvHeader[5] }}</th>
         <th dHeadCell>{{ csvHeader[6] }}</th>
         <th dHeadCell>{{ csvHeader[7] }}</th>
+        <th dHeadCell>操作</th>
       </tr>
     </thead>
     <tbody dTableBody>
@@ -107,6 +108,12 @@
               <d-input-number [dAutoFocus]="true" [min]="0.3" [step]="0.1" [name]="csvHeader[7]"
                 [(ngModel)]="rowItem[7]"></d-input-number>
             </div>
+          </td>
+          
+          <td dTableCell>
+            <d-button bsStyle="text" (btnClick)="deleteData(rowIndex)"
+              >删除</d-button
+            >
           </td>
         </tr>
       </ng-template>

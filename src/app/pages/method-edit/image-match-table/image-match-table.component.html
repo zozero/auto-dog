@@ -28,6 +28,7 @@
         <th dHeadCell>{{ csvHeader[3] }}</th>
         <th dHeadCell>{{ csvHeader[4] }}</th>
         <th dHeadCell>{{ csvHeader[5] }}</th>
+        <th dHeadCell>操作</th>
       </tr>
     </thead>
     <tbody dTableBody>
@@ -93,6 +94,11 @@
             </div>
           </td>
 
+          <td dTableCell>
+            <d-button bsStyle="text" (btnClick)="deleteData(rowIndex)"
+              >删除</d-button
+            >
+          </td>
         </tr>
       </ng-template>
     </tbody>
