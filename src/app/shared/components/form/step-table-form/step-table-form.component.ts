@@ -90,12 +90,7 @@ export class StepTableFormComponent implements OnInit{
         })
       },
       error: (err: any) => {
-        if (err.status != 0) {
-          this.tipsService.openErrorDialog('未知原因错误')
-
-        }else{
-          this.tipsService.openErrorDialog('可能没有开启服务器。')
-        }
+        this.tipsService.responseErrorState(err.status as number )
         // 关闭载入效果
         this.btnShowLoading=false;
         this.modalInstance.hide();
