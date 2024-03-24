@@ -13,7 +13,15 @@ export class TableHttpService {
     projectName: string,
     csvFileName: string
   ) {
+     // 禁止获取缓存文件，由于频繁的操作执行端的文件，可能无法在短时间更新，为了防止这样的错误，在这添加头部，告诉它不要缓存。
+     const headers: HttpHeaders = new HttpHeaders({
+      'Cache-Control': 'no-store, no-cache, must-revalidate, pre-check=0',
+      'Pragma': 'no-cache',
+      'Expires': '0',
+
+    })
     return this.http.get(executionSideHttp + '/方法' + '/表格', {
+      headers: headers,
       params: {
         项目名: projectName,
         文件名: csvFileName
@@ -23,13 +31,21 @@ export class TableHttpService {
     });
   }
 
-  // 获取csv文件
+  // 获取方法某个文件的最后一条的序号
   getMethodLastOrder(
     executionSideHttp: string,
     projectName: string,
     csvFileName: string
   ) {
+    // 禁止获取缓存文件，由于频繁的操作执行端的文件，可能无法在短时间更新，为了防止这样的错误，在这添加头部，告诉它不要缓存。
+    const headers: HttpHeaders = new HttpHeaders({
+     'Cache-Control': 'no-store, no-cache, must-revalidate, pre-check=0',
+     'Pragma': 'no-cache',
+     'Expires': '0',
+
+   })
     return this.http.get(executionSideHttp + '/方法' + '/序号尾巴', {
+      headers: headers,
       params: {
         项目名: projectName,
         文件名: csvFileName
@@ -107,7 +123,15 @@ export class TableHttpService {
     executionSideHttp: string,
     projectName: string
   ) {
+     // 禁止获取缓存文件，由于频繁的操作执行端的文件，可能无法在短时间更新，为了防止这样的错误，在这添加头部，告诉它不要缓存。
+     const headers: HttpHeaders = new HttpHeaders({
+      'Cache-Control': 'no-store, no-cache, must-revalidate, pre-check=0',
+      'Pragma': 'no-cache',
+      'Expires': '0',
+
+    })
     return this.http.get(executionSideHttp + '/步骤' + '/文件列表', {
+      headers: headers,
       params: {
         项目名: projectName,
       }
@@ -128,14 +152,22 @@ export class TableHttpService {
     });
   }
 
-  
+
   // 获得步骤csv文件
   getStepCsvFile(
     executionSideHttp: string,
     projectName: string,
     fileName: string
   ) {
+    // 禁止获取缓存文件，由于频繁的操作执行端的文件，可能无法在短时间更新，为了防止这样的错误，在这添加头部，告诉它不要缓存。
+    const headers: HttpHeaders = new HttpHeaders({
+      'Cache-Control': 'no-store, no-cache, must-revalidate, pre-check=0',
+      'Pragma': 'no-cache',
+      'Expires': '0',
+
+    })
     return this.http.get(executionSideHttp + '/步骤' + '/表格', {
+      headers: headers,
       params: {
         项目名: projectName,
         文件名: fileName
@@ -144,7 +176,7 @@ export class TableHttpService {
       transferCache: false
     });
   }
-  
+
   // 覆盖步骤csv数据
   putStepCsvFile(executionSideUrl: string, projectName: string, fileName: string, csvFile: File) {
     // eslint-disable-next-line prefer-const
@@ -190,5 +222,48 @@ export class TableHttpService {
     );
   }
 
+  // 获取任务csv文件列表
+  getTaskCsvFileList(
+    executionSideHttp: string,
+    projectName: string
+  ) {
+    // 禁止获取缓存文件，由于频繁的操作执行端的文件，可能无法在短时间更新，为了防止这样的错误，在这添加头部，告诉它不要缓存。
+    const headers: HttpHeaders = new HttpHeaders({
+      'Cache-Control': 'no-store, no-cache, must-revalidate, pre-check=0',
+      'Pragma': 'no-cache',
+      'Expires': '0',
+
+    })
+    return this.http.get(executionSideHttp + '/任务' + '/文件列表', {
+      headers: headers,
+      params: {
+        项目名: projectName,
+      }
+    });
+  }
+
+
+    // 获得步骤csv文件
+    getTaskCsvFile(
+      executionSideHttp: string,
+      projectName: string,
+      fileName: string
+    ) {
+      // 禁止获取缓存文件，由于频繁的操作执行端的文件，可能无法在短时间更新，为了防止这样的错误，在这添加头部，告诉它不要缓存。
+      const headers: HttpHeaders = new HttpHeaders({
+        'Cache-Control': 'no-store, no-cache, must-revalidate, pre-check=0',
+        'Pragma': 'no-cache',
+        'Expires': '0',
   
+      })
+      return this.http.get(executionSideHttp + '/任务' + '/表格', {
+        headers: headers,
+        params: {
+          项目名: projectName,
+          文件名: fileName
+        },
+        responseType: 'blob',
+        transferCache: false
+      });
+    }
 }

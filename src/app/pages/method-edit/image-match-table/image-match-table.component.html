@@ -41,15 +41,15 @@
             <span>{{ rowItem[0] }}</span>
           </td>
 
-          <td dTableCell [editable]="true" [editableTip]="editableTip" [(editing)]="rowItem[csvHeader[1]+'Edit']"
+          <td dTableCell [editable]="false"
             [field]="csvHeader[1]" [rowItem]="rowItem">
-            <span *ngIf="!rowItem[csvHeader[1]+'Edit']">
+            <span >
               {{ rowItem[1] }}
             </span>
-            <div *ngIf="rowItem[csvHeader[1]+'Edit']" class="edit-padding-fix">
+            <!-- <div *ngIf="rowItem[csvHeader[1]+'Edit']" class="edit-padding-fix">
               <input [dAutoFocus]="true" class="devui-form-control" [name]="csvHeader[1]" [(ngModel)]="rowItem[1]" 
                 [attr.maxlength]="100" [attr.minlength]="1" />
-            </div>
+            </div> -->
           </td>
 
           <td dTableCell [editable]="true" [editableTip]="editableTip" [(editing)]="rowItem[csvHeader[2]+'Edit']"

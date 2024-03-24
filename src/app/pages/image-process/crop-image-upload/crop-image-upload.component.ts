@@ -14,6 +14,7 @@ import { TableHttpService } from '../../../core/services/https/table-http.servic
 import { ImageHttpService } from '../../../core/services/https/image-http.service';
 import { TipsDialogService } from '../../../core/services/tips-dialog/tips-dialog.service';
 import { AddStepInImageDialogComponent } from '../add-step-in-image-dialog/add-step-in-image-dialog.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-crop-image-upload',
@@ -26,6 +27,7 @@ import { AddStepInImageDialogComponent } from '../add-step-in-image-dialog/add-s
     SelectModule,
     CommonModule,
     ButtonModule,
+    TranslateModule,
     ImageMatchFormComponent
   ]
 })

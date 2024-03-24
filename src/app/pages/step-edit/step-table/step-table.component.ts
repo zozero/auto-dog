@@ -40,13 +40,10 @@ export class StepTableComponent implements OnInit, OnChanges {
   csvHeader!: string[];
   // 序号筛选列表
   ordinalFilterList: FilterConfig[] = []
-  // 图片名刷选列表
+  // 步骤名称刷选列表
   stepNameFilterList: FilterConfig[] = []
   // 数据的载入提示
   loadingTip!: LoadingType;
-  // 生成新的匹配方法组件命令
-  // ng g c method-edit/method-table/imagwMatchTable
-  // 它就是子菜单
   @Input() projectInfo!: ProjectInfo;
   @Input() fileName!: string | number;
 

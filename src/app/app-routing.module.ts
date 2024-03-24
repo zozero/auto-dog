@@ -43,6 +43,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: '任务编辑',
+    loadComponent: () =>
+      import('./pages/task-edit/task-edit.component').then(
+        (mod) => mod.TaskEditComponent
+      ),
+  },
+  {
     path: '**',
     component: PageNotFoundComponent,
   },

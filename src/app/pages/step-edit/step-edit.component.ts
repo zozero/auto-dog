@@ -103,7 +103,7 @@ export class StepEditComponent implements OnInit {
       ],
     });
   }
-  
+
   // 设置步骤csv文件列表栏
   setStepFileList() {
     // 数据载入提示

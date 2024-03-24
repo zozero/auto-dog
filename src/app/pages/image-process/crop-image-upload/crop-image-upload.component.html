@@ -2,7 +2,7 @@
   <img [attr.src]="imageData.url" style="max-width: 800px" />
   <form dForm [layout]="layoutDirection" ngForm>
     <d-form-item>
-      <d-form-label [required]="true">匹配方法选择</d-form-label>
+      <d-form-label [required]="true" [hasHelp]="true" [helpTips]="'帮助.匹配方法选择' | translate">匹配方法选择</d-form-label>
       <d-form-control>
         <d-select [options]="matchMethodList" name="名称" [filterKey]="'名称'" [(ngModel)]="currentMethod"></d-select>
       </d-form-control>
