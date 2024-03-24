@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { FormLayout, SelectModule, ToastService } from 'ng-devui';
+import { DialogService, FormLayout, SelectModule, ToastService } from 'ng-devui';
 import { FormModule } from 'ng-devui/form';
 import { matchMethodList } from '../../../core/mock/match-mock';
 import { CommonModule } from '@angular/common';
@@ -12,6 +12,8 @@ import { CropImageInfo } from '../../../core/interface/image-type';
 import { ImageMatchFormComponent } from "../../../shared/components/form/image-match-form/image-match-form.component";
 import { TableHttpService } from '../../../core/services/https/table-http.service';
 import { ImageHttpService } from '../../../core/services/https/image-http.service';
+import { TipsDialogService } from '../../../core/services/tips-dialog/tips-dialog.service';
+import { AddStepInImageDialogComponent } from '../add-step-in-image-dialog/add-step-in-image-dialog.component';
 
 @Component({
   selector: 'app-crop-image-upload',
@@ -49,7 +51,9 @@ export class CropImageUploadComponent implements OnInit {
   constructor(
     private tableHttp: TableHttpService,
     private imageHttp: ImageHttpService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private tipsService: TipsDialogService,
+    private dialogService: DialogService,
   ) {
 
   }
@@ -59,6 +63,7 @@ export class CropImageUploadComponent implements OnInit {
     this.imageData = this.data.imageData;
     this.projectInfo = this.data.projectInfo;
     this.closeDialog = this.data.close;
+
     this.setCurrentImageMethodData();
   }
 
@@ -74,35 +79,86 @@ export class CropImageUploadComponent implements OnInit {
 
         // 上传图片
         this.imageHttp
-          .postUploadImage(imageFile, this.projectInfo.executionSideInfo?.ipPort as string, this.projectInfo.name)
-          .subscribe((data: any) => {
-            this.toastService.open({
-              value: [{ severity: 'success', summary: '摘要', content: data }],
-            });
-
-          })
-          .add(() => {
-            this.data.close();
+          .postUploadImage(
+            this.projectInfo.executionSideInfo?.ipPort as string,
+            this.projectInfo.name,
+            imageFile
+          )
+          .subscribe({
+            next: (data: any) => {
+              this.toastService.open({
+                value: [{ severity: 'success', summary: '摘要', content: data }],
+              })
+            },
+            error: (err: any) => {
+              this.tipsService.responseErrorState(err.status as number)
+              // 关闭载入效果
+              this.closeDialog();
+            },
+            complete: () => {
+              // 关闭载入效果
+              this.closeDialog();
+            }
           });
-
         // 向csv表格中添加数据
         this.tableHttp
           .postMethodAddData(
-            this.imageMatchForm.args,
             this.projectInfo.executionSideInfo?.ipPort as string,
             this.projectInfo.name,
-            this.currentMethod['名称']
+            this.currentMethod['名称'],
+            this.imageMatchForm.args
           )
-          .subscribe((data: any) => {
-            this.toastService.open({
-              value: [{ severity: 'success', summary: '摘要', content: data }],
-            });
+          .subscribe({
+            next: (data: any) => {
+              this.toastService.open({
+                value: [{ severity: 'success', summary: '摘要', content: data }],
+              })
+              // 打开添加步骤的弹出框
+              this.addStepDialog();
+            },
+            error: (err: any) => {
+              this.tipsService.responseErrorState(err.status as number)
+              // 关闭载入效果
+              this.data.close();
+            },
+            complete: () => {
+              // 关闭载入效果
+              this.data.close();
+            }
           })
-      }
         break
+      }
     }
   }
+  // 打开添加步骤的弹出框
+  addStepDialog() {
+    const config = {
+      id: 'add-step-in-image-dialog',
+      maxWidth: '900px',
+      maxHeight: '600px',
+      title: '快捷添加步骤',
+      content: AddStepInImageDialogComponent,
+      backdropCloseable: true,
+      onClose: () => console.log('on dialog closed'),
+    };
 
+    const addStepDialog = this.dialogService.open({
+      ...config,
+      showMaximizeBtn: true,
+      dialogtype: 'standard',
+      showAnimation: false,
+      data: {
+        projectInfo: this.projectInfo,
+        methodInfo: this.currentMethod,
+        imageName: this.imageMatchForm.args['图片名'],
+        close: () => {
+          addStepDialog.modalInstance.hide();
+        },
+      },
+      buttons: [
+      ],
+    });
+  }
   // 设置当前输入列表的数据，每一次点击截取的时候都需要重新计算一遍
   setCurrentImageMethodData() {
     // 如果参数列表中有J“范围”参数就直接计算范围

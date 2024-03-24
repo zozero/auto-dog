@@ -1,0 +1,10 @@
+<div class="crop-image-container">
+    <form dForm [layout]="vertical" ngForm>
+      <d-form-item>
+        <d-form-label [required]="true">选择步骤文件</d-form-label>
+        <d-form-control>
+          <d-select [options]="stepFileList" name="文件名"  [(ngModel)]="currentFile"></d-select>
+        </d-form-control>
+      </d-form-item>
+    </form>
+    <app-step-table-form [projectInfo]="projectInfo" [encodeObj]="encodeObj" [args]="args" (dialogClose)="onCloseDialog()" [fileName]="currentFile" ></app-step-table-form>

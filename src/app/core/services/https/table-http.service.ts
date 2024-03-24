@@ -23,12 +23,26 @@ export class TableHttpService {
     });
   }
 
+  // 获取csv文件
+  getMethodLastOrder(
+    executionSideHttp: string,
+    projectName: string,
+    csvFileName: string
+  ) {
+    return this.http.get(executionSideHttp + '/方法' + '/序号尾巴', {
+      params: {
+        项目名: projectName,
+        文件名: csvFileName
+      }
+    });
+  }
+
   // 添加csv数据
   postMethodAddData(
-    imageArgs: ImageMatchMethodType | BinaryImageMatchMethodType,
     executionSideUrl: string,
     projectName: string,
-    methodName: string
+    methodName: string,
+    imageArgs: ImageMatchMethodType | BinaryImageMatchMethodType,
   ) {
     // eslint-disable-next-line prefer-const
     let headers = new HttpHeaders();

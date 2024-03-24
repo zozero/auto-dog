@@ -12,6 +12,7 @@ import { ProjectMenuService } from '../../core/services/menus/project-menu.servi
 import { CropImageUploadComponent } from './crop-image-upload/crop-image-upload.component';
 import { CropImageInfo, RowImageInfo, ImageInfo } from '../../core/interface/image-type';
 import { ImageHttpService } from '../../core/services/https/image-http.service';
+import { TipsDialogService } from '../../core/services/tips-dialog/tips-dialog.service';
 
 @Component({
   selector: 'app-image-process',
@@ -52,7 +53,8 @@ export class ImageProcessComponent implements OnInit {
   constructor(
     private imageHttp: ImageHttpService,
     private menu: ProjectMenuService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private tipsService: TipsDialogService
   ) {}
   ngOnInit(): void {
     void this.menu.initCurrentProject().then((data) => {
@@ -67,22 +69,21 @@ export class ImageProcessComponent implements OnInit {
         this.currentProject.executionSideInfo?.ipPort as string,
         this.currentProject.simulatorInfo?.ipPort as string
       )
-      .subscribe((img:Blob) => {
-        // const reader = new FileReader();
-        // reader.addEventListener(
-        //   'load',
-        //   () => {
-        //     this.rowImageUrl = reader.result as string;
-        //   },
-        //   false
-        // );
-
-        // if (img) {
-        //   reader.readAsDataURL(img);
-        // }
-        this.rowImageUrl =URL.createObjectURL(img);
+      .subscribe({
+        next: (img:Blob) => {
+          this.rowImageUrl =URL.createObjectURL(img);
+        },
+        error: (err: any) => {
+          this.tipsService.responseErrorState(err.status as number)
+          // 关闭载入效果
+          this.showLoading = false
+        },
+        complete: () => {
+          // 关闭载入效果
+          this.showLoading = false
+        }
       })
-      .add(() => (this.showLoading = false));
+      
 
   }
 
@@ -127,7 +128,6 @@ export class ImageProcessComponent implements OnInit {
       showMaximizeBtn: true,
       dialogtype: 'standard',
       showAnimation: false,
-
       data: {
         imageData: imageData,
         projectInfo:this.currentProject,
@@ -136,21 +136,6 @@ export class ImageProcessComponent implements OnInit {
         },
       },
       buttons: [
-        // {
-        //   cssClass: 'primary',
-        //   text: '确定',
-        //   disabled: false,
-        //   handler:
-        // },
-        // {
-        //   id: 'btn-cancel',
-        //   cssClass: 'common',
-        //   text: '取消',
-        //   handler: ($event: Event) => {
-        //     console.log("🚀 ~ ImageProcessComponent ~ showUploadCropImage ~ $event:", $event)
-        //     results.modalInstance.hide();
-        //   },
-        // },
       ],
     });
   }

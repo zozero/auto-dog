@@ -15,9 +15,9 @@ export class ImageHttpService {
   }
   
   postUploadImage(
-    img: File,
     executionSideUrl: string | undefined,
-    projectName: string
+    projectName: string,
+    img: File
   ) {
     // eslint-disable-next-line prefer-const
     let headers = new HttpHeaders();

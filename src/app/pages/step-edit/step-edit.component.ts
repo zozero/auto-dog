@@ -103,6 +103,7 @@ export class StepEditComponent implements OnInit {
       ],
     });
   }
+  
   // 设置步骤csv文件列表栏
   setStepFileList() {
     // 数据载入提示
@@ -132,7 +133,6 @@ export class StepEditComponent implements OnInit {
         loadTip.loadingInstance.close();
       }
     })
-    // this.stepFileList
   }
 
   // 删除弹框提示
