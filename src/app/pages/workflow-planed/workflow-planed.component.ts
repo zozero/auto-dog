@@ -5,7 +5,7 @@ import { ProjectInfo } from '../../core/interface/config-type';
 import { ProjectMenuService } from '../../core/services/menus/project-menu.service';
 import { LayoutModule } from 'ng-devui';
 import { CommonModule } from '@angular/common';
-import { ProjectMenusComponent } from '../../shared/components/sub-menus/project-menus.component';
+import { ProjectMenusComponent } from '../../shared/components/project-menus/project-menus.component';
 import { Papa } from 'ngx-papaparse';
 import G6 from '@antv/g6';
 import { DOCUMENT } from '@angular/common';

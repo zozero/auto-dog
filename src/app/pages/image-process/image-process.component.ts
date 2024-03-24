@@ -3,7 +3,7 @@ import { ButtonModule } from 'ng-devui/button';
 import { DialogService, LayoutModule } from 'ng-devui';
 import { SelectModule } from 'ng-devui/select';
 import { FormsModule } from '@angular/forms';
-import { ProjectMenusComponent } from '../../shared/components/sub-menus/project-menus.component';
+import { ProjectMenusComponent } from '../../shared/components/project-menus/project-menus.component';
 import { ProjectInfo } from '../../core/interface/config-type';
 import { CommonModule } from '@angular/common';
 // 导入 angular-cropperjs 用于图片处理

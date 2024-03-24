@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProjectMenuService } from '../../core/services/menus/project-menu.service';
 import { DevUIModule, DialogService, LayoutModule, LoadingService, ToastService } from 'ng-devui';
 import { CommonModule } from '@angular/common';
-import { ProjectMenusComponent } from '../../shared/components/sub-menus/project-menus.component';
+import { ProjectMenusComponent } from '../../shared/components/project-menus/project-menus.component';
 import { LoadingModule } from 'ng-devui/loading';
 import { TabsModule } from 'ng-devui/tabs';
 import { ProjectInfo } from '../../core/interface/config-type';

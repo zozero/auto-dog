@@ -3,7 +3,7 @@ import { TableHttpService } from '../../core/services/https/table-http.service';
 import { ProjectMenuService } from '../../core/services/menus/project-menu.service';
 import { DevUIModule, LayoutModule, LoadingService } from 'ng-devui';
 import { CommonModule } from '@angular/common';
-import { ProjectMenusComponent } from '../../shared/components/sub-menus/project-menus.component';
+import { ProjectMenusComponent } from '../../shared/components/project-menus/project-menus.component';
 import { LoadingModule } from 'ng-devui/loading';
 import { ToastService } from 'ng-devui/toast';
 import { ImageMatchTableComponent } from "./image-match-table/image-match-table.component";
