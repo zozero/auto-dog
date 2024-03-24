@@ -47,3 +47,12 @@ export interface TestStepDataType {
   名称: string;
   编号: number;
 }
+
+
+export interface TaskTableType {
+  序号?: number;
+  名称: string;
+  编号: number;
+  是: number;
+  否: number;
+}

@@ -141,7 +141,7 @@ export class StepTableComponent implements OnInit, OnChanges {
     })
 
   }
-  // 设置图片名的筛选列表
+  // 设置名称的筛选列表
   setImgNameFilterList() {
     // 初始化为空
     this.stepNameFilterList = []

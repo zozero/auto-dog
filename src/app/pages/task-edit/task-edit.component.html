@@ -7,13 +7,13 @@
       <d-col [dSpan]="20" style="padding-left: 6px;padding-right: 6px;">
         <section>
           <d-tabs type="wrapped" [scrollMode]="'auto'" [addable]="true" [closeable]="true" [(activeTab)]="tabActiveId"
-            (addOrDeleteTabChange)="addOrDelStepTable($event)">
+            (addOrDeleteTabChange)="addOrDelTaskTable($event)">
             <d-tab *ngFor="let item of taskFileList" [id]="item" [title]="item"></d-tab>
           </d-tabs>
   
         </section>
         <ng-container *ngIf="taskFileList.length>0">
-          <app-task-table  [fileName]="tabActiveId"  [projectInfo]="currentProject" ></app-task-table>
+          <app-task-table  [fileName]="tabActiveId"   [projectInfo]="currentProject" ></app-task-table>
         </ng-container>
       </d-col>
     </d-row>

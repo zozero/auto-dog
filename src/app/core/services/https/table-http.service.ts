@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BinaryImageMatchMethodType, ImageMatchMethodType, StepTableType } from '../../interface/table-type';
+import { BinaryImageMatchMethodType, ImageMatchMethodType, StepTableType, TaskTableType } from '../../interface/table-type';
 @Injectable({
   providedIn: 'root',
 })
@@ -13,8 +13,8 @@ export class TableHttpService {
     projectName: string,
     csvFileName: string
   ) {
-     // 禁止获取缓存文件，由于频繁的操作执行端的文件，可能无法在短时间更新，为了防止这样的错误，在这添加头部，告诉它不要缓存。
-     const headers: HttpHeaders = new HttpHeaders({
+    // 禁止获取缓存文件，由于频繁的操作执行端的文件，可能无法在短时间更新，为了防止这样的错误，在这添加头部，告诉它不要缓存。
+    const headers: HttpHeaders = new HttpHeaders({
       'Cache-Control': 'no-store, no-cache, must-revalidate, pre-check=0',
       'Pragma': 'no-cache',
       'Expires': '0',
@@ -39,11 +39,11 @@ export class TableHttpService {
   ) {
     // 禁止获取缓存文件，由于频繁的操作执行端的文件，可能无法在短时间更新，为了防止这样的错误，在这添加头部，告诉它不要缓存。
     const headers: HttpHeaders = new HttpHeaders({
-     'Cache-Control': 'no-store, no-cache, must-revalidate, pre-check=0',
-     'Pragma': 'no-cache',
-     'Expires': '0',
+      'Cache-Control': 'no-store, no-cache, must-revalidate, pre-check=0',
+      'Pragma': 'no-cache',
+      'Expires': '0',
 
-   })
+    })
     return this.http.get(executionSideHttp + '/方法' + '/序号尾巴', {
       headers: headers,
       params: {
@@ -123,8 +123,8 @@ export class TableHttpService {
     executionSideHttp: string,
     projectName: string
   ) {
-     // 禁止获取缓存文件，由于频繁的操作执行端的文件，可能无法在短时间更新，为了防止这样的错误，在这添加头部，告诉它不要缓存。
-     const headers: HttpHeaders = new HttpHeaders({
+    // 禁止获取缓存文件，由于频繁的操作执行端的文件，可能无法在短时间更新，为了防止这样的错误，在这添加头部，告诉它不要缓存。
+    const headers: HttpHeaders = new HttpHeaders({
       'Cache-Control': 'no-store, no-cache, must-revalidate, pre-check=0',
       'Pragma': 'no-cache',
       'Expires': '0',
@@ -243,27 +243,104 @@ export class TableHttpService {
   }
 
 
-    // 获得步骤csv文件
-    getTaskCsvFile(
-      executionSideHttp: string,
-      projectName: string,
-      fileName: string
-    ) {
-      // 禁止获取缓存文件，由于频繁的操作执行端的文件，可能无法在短时间更新，为了防止这样的错误，在这添加头部，告诉它不要缓存。
-      const headers: HttpHeaders = new HttpHeaders({
-        'Cache-Control': 'no-store, no-cache, must-revalidate, pre-check=0',
-        'Pragma': 'no-cache',
-        'Expires': '0',
+  // 获得任务csv文件
+  getTaskCsvFile(
+    executionSideHttp: string,
+    projectName: string,
+    fileName: string
+  ) {
+    // 禁止获取缓存文件，由于频繁的操作执行端的文件，可能无法在短时间更新，为了防止这样的错误，在这添加头部，告诉它不要缓存。
+    const headers: HttpHeaders = new HttpHeaders({
+      'Cache-Control': 'no-store, no-cache, must-revalidate, pre-check=0',
+      'Pragma': 'no-cache',
+      'Expires': '0',
+
+    })
+    return this.http.get(executionSideHttp + '/任务' + '/表格', {
+      headers: headers,
+      params: {
+        项目名: projectName,
+        文件名: fileName
+      },
+      responseType: 'blob',
+      transferCache: false
+    });
+  }
+
+  // 覆盖任务csv数据
+  putTaskCsvFile(executionSideUrl: string, projectName: string, fileName: string, csvFile: File) {
+    // eslint-disable-next-line prefer-const
+    let headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
+    headers.append('Accept', 'application/json');
+    const options = {
+      headers: headers,
+      params: {
+        项目名: projectName,
+        文件名: fileName
+      },
+    };
+    // eslint-disable-next-line prefer-const
+    let formData = new FormData();
+    formData.append('csv文件', csvFile);
+    return this.http.put(executionSideUrl + '/任务' + '/覆盖', formData, options);
+  }
+  // 添加任务csv数据
+  postTaskAddData(
+    executionSideUrl: string,
+    projectName: string,
+    fileName: string,
+    taskArgs: TaskTableType
+  ) {
+    // eslint-disable-next-line prefer-const
+    let headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
+    headers.append('Accept', 'application/json');
+    const options = {
+      headers: headers,
+      params: {
+        项目名: projectName,
+        文件名: fileName
+      },
+    };
+
+    return this.http.post(
+      executionSideUrl + '/任务' + '/添加',
+      taskArgs,
+      options
+    );
+  }
+   // 创建任务表格
+   putCreateTaskCsvFile(executionSideUrl: string, projectName: string, fileName: string, csvFile: File) {
+    // eslint-disable-next-line prefer-const
+    let headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
+    headers.append('Accept', 'application/json');
+    const options = {
+      headers: headers,
+      params: {
+        项目名: projectName,
+        文件名: fileName
+      },
+    };
+    // eslint-disable-next-line prefer-const
+    let formData = new FormData();
+    formData.append('csv文件', csvFile);
+    return this.http.put(executionSideUrl + '/任务' + '/创建', formData, options);
+  }
+
+  // 删除步骤csv文件
+  deleteTaskCsvFile(
+    executionSideHttp: string,
+    projectName: string,
+    fileName: string
+  ) {
+    return this.http.delete(executionSideHttp + '/任务' + '/删除文件', {
+      params: {
+        项目名: projectName,
+        文件名: fileName
+      }
+    });
+  }
   
-      })
-      return this.http.get(executionSideHttp + '/任务' + '/表格', {
-        headers: headers,
-        params: {
-          项目名: projectName,
-          文件名: fileName
-        },
-        responseType: 'blob',
-        transferCache: false
-      });
-    }
 }

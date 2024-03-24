@@ -1,0 +1,43 @@
+<section>
+  <form dForm [layout]="vertical" ngForm>
+    <d-form-item>
+      <d-form-label [required]="true" [hasHelp]="true" [helpTips]="'帮助.任务.名称' | translate">
+        名称
+      </d-form-label>
+      <d-form-control>
+        <d-select style="width: 66px;" name="名称" [(ngModel)]="args['名称']" [options]="stepFileList"></d-select>
+      </d-form-control>
+    </d-form-item>
+
+    <d-form-item>
+      <d-form-label [hasHelp]="true" [helpTips]="'帮助.任务.编号' | translate">
+        编号
+      </d-form-label>
+      <d-form-control>
+        <d-input-number [min]="0" name="编号" [(ngModel)]="args['编号']"></d-input-number>
+      </d-form-control>
+    </d-form-item>
+
+    <d-form-item>
+      <d-form-label [hasHelp]="true" [helpTips]="'帮助.任务.是' | translate">
+        是
+      </d-form-label>
+      <d-form-control>
+        <d-input-number [min]="-1" name="是" [(ngModel)]="args['是']"></d-input-number>
+      </d-form-control>
+    </d-form-item>
+    <d-form-item>
+      <d-form-label [hasHelp]="true" [helpTips]="'帮助.任务.否' | translate">
+        否
+      </d-form-label>
+      <d-form-control>
+        <d-input-number [min]="-1" name="否" [(ngModel)]="args['否']"></d-input-number>
+      </d-form-control>
+    </d-form-item>
+
+  </form>
+</section>
+
+<div class="footer">
+  <d-button (btnClick)="submit()" [showLoading]="btnShowLoading" bsStyle="primary" circled="true">提交</d-button>
+</div>

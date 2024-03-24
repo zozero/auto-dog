@@ -37,7 +37,7 @@ export class StepEditComponent implements OnInit {
     private menu: ProjectMenuService,
     private loadingService: LoadingService,
     private dialogService: DialogService,
-    private tipsDialog: TipsDialogService,
+    private tipsService: TipsDialogService,
     private toastService: ToastService,
   ) { }
 
@@ -124,7 +124,7 @@ export class StepEditComponent implements OnInit {
         }
       },
       error: (err: any) => {
-        this.tipsDialog.responseErrorState(err.status as number)
+        this.tipsService.responseErrorState(err.status as number)
         // 关闭载入提示
         loadTip.loadingInstance.close();
       },
@@ -170,7 +170,7 @@ export class StepEditComponent implements OnInit {
                 });
               },
               error: (err: any) => {
-                this.tipsDialog.responseErrorState(err.status as number)
+                this.tipsService.responseErrorState(err.status as number)
               },
               complete: () => {
 

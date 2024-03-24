@@ -6,8 +6,8 @@ import { DevUIModule, DialogService, LayoutModule, LoadingModule, LoadingService
 import { TipsDialogService } from '../../core/services/tips-dialog/tips-dialog.service';
 import { CommonModule } from '@angular/common';
 import { ProjectMenusComponent } from '../../shared/components/project-menus/project-menus.component';
-import { CreateTaskFileDialogComponent } from '../../shared/components/form/create-task-file-dialog/create-task-file-dialog.component';
 import { TaskTableComponent } from "./task-table/task-table.component";
+import { CreateTaskFileDialogComponent } from './create-task-file-dialog.component';
 
 @Component({
     selector: 'app-task-edit',
@@ -75,18 +75,18 @@ export class TaskEditComponent implements OnInit {
     console.log(tab);
   }
   // 添加或者删除文件
-  addOrDelStepTable($event: { id: string | number, operation: string }) {
+  addOrDelTaskTable($event: { id: string | number, operation: string }) {
     if ($event.operation === 'add') {
-      this.openCreateStepDialog()
+      this.openCreateTaskDialog()
     } else {
-      this.deleteStepFile($event.id)
+      this.deleteTaskFile($event.id)
     }
   }
 
   // 开一个创建任务的对话框
-  openCreateStepDialog() {
+  openCreateTaskDialog() {
     const results = this.dialogService.open({
-      id: 'createStepDialog',
+      id: 'createTaskDialog',
       width: '346px',
       maxHeight: '600px',
       title: '创建任务文件',
@@ -135,9 +135,9 @@ export class TaskEditComponent implements OnInit {
   }
 
   // 删除弹框提示
-  deleteStepFile(fileName: string | number) {
+  deleteTaskFile(fileName: string | number) {
     const config = {
-      id: 'delete-step-dialog',
+      id: 'delete-task-dialog',
       width: '346px',
       maxHeight: '600px',
       zIndex: 1050,
@@ -157,7 +157,7 @@ export class TaskEditComponent implements OnInit {
             // 先关闭弹窗，防止后续的提示显示不到位。
             results.modalInstance.hide();
 
-            this.tableHttp.deleteStepCsvFile(
+            this.tableHttp.deleteTaskCsvFile(
               this.currentProject.executionSideInfo?.ipPort as string,
               this.currentProject.name,
               fileName as string
