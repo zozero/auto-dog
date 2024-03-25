@@ -15,6 +15,10 @@ import { StepTableFormComponent } from "../../../shared/components/form/step-tab
 import { ExecutionHttpService } from '../../../core/services/https/execution-http.service';
 import { TestStepDataType } from '../../../core/interface/table-type';
 import { DownloadFileService } from '../../../core/services/https/download-file.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { ToggleModule } from 'ng-devui/toggle';
+import { TooltipModule } from 'ng-devui/tooltip';
+import { MyLocalStorageService } from '../../../core/services/my-local-storage/my-local-storage.service';
 
 @Component({
   selector: 'app-step-table',
@@ -28,7 +32,10 @@ import { DownloadFileService } from '../../../core/services/https/download-file.
     DevUIModule,
     CommonModule,
     ModalModule,
-    StepTableFormComponent
+    StepTableFormComponent,
+    TooltipModule,
+    TranslateModule,
+    ToggleModule
   ]
 })
 export class StepTableComponent implements OnInit, OnChanges {
@@ -50,6 +57,8 @@ export class StepTableComponent implements OnInit, OnChanges {
 
   @ViewChild('dialogContent', { static: true }) dialogContent!: TemplateRef<any>;
   editableTip = EditableTip.hover;
+  // 是自动执行一次
+  isAutoExe: boolean = true;
 
   constructor(
     private papa: Papa,
@@ -59,12 +68,15 @@ export class StepTableComponent implements OnInit, OnChanges {
     private dialogService: DialogService,
     private loadingService: LoadingService,
     private executionHttpService: ExecutionHttpService,
-    private downloadFileService: DownloadFileService
+    private downloadFileService: DownloadFileService,
+    private myLocalStorage: MyLocalStorageService
 
   ) { }
   ngOnInit(): void {
-    // this.getcsvFile();
-    console.log("StepTableComponent");
+    const tmpStr: string | null = this.myLocalStorage.get('autoExe');
+    if (tmpStr !=null) {
+      this.isAutoExe = Boolean(tmpStr);
+    }
   }
   ngOnChanges(changes: SimpleChanges) {
     if ('projectInfo' in changes) {
@@ -286,7 +298,6 @@ export class StepTableComponent implements OnInit, OnChanges {
         // 关闭载入效果
         this.btnShowLoading = false
       }
-
     })
   }
 
@@ -300,5 +311,15 @@ export class StepTableComponent implements OnInit, OnChanges {
   exportCsvFile() {
     const csvUrl = this.projectInfo.executionSideInfo?.ipPort + '/步骤' + '/表格?' + '项目名=' + this.projectInfo.name + '&文件名=' + this.fileName
     this.downloadFileService.exportCsvFile(csvUrl);
+  }
+  
+  // 改变自动执行的状态
+  onChageAutoExe($event: any) {
+    if($event){
+      this.myLocalStorage.set('autoExe', '1')
+    }
+    else{
+      this.myLocalStorage.set('autoExe', '')
+    }
   }
 }

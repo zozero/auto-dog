@@ -68,7 +68,7 @@ export class CreateStepFileDialogComponent implements OnInit {
     const csvArr = [csvHeader].concat(['']);
     const csvStr = this.papa.unparse(csvArr);
     const csvBlob = new Blob([csvStr], { type: 'text/csv' });
-    const csvFile = new File([csvBlob], 'something.csv', { type: 'text/csv' });
+    const csvFile = new File([csvBlob], this.fileName+'.csv', { type: 'text/csv' });
 
     this.tableHttp.putCreateStepCsvFile(
       this.projectInfo.executionSideInfo?.ipPort as string,

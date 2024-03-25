@@ -3,8 +3,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormLayout, FormModule } from 'ng-devui/form';
 import { FormsModule } from '@angular/forms';
-import { InputNumberModule, ToastService } from 'ng-devui';
-import { StepTableType } from '../../../../core/interface/table-type';
+import { InputNumberModule, LoadingService } from 'ng-devui';
+import { StepTableType, TestStepDataType } from '../../../../core/interface/table-type';
 import { TranslateModule } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash';
 import { TableHttpService } from '../../../../core/services/https/table-http.service';
@@ -15,6 +15,8 @@ import { InputGroupModule } from 'ng-devui/input-group';
 import { TooltipModule } from 'ng-devui/tooltip';
 import { ButtonModule } from 'ng-devui/button';
 import { TipsDialogService } from '../../../../core/services/tips-dialog/tips-dialog.service';
+import { MyLocalStorageService } from '../../../../core/services/my-local-storage/my-local-storage.service';
+import { ExecutionHttpService } from '../../../../core/services/https/execution-http.service';
 
 @Component({
   selector: 'app-step-table-form',
@@ -35,7 +37,6 @@ import { TipsDialogService } from '../../../../core/services/tips-dialog/tips-di
 export class StepTableFormComponent {
   @Input() projectInfo!: ProjectInfo;
   @Input() fileName!: string | number;
-
   @Input() modalInstance!: ModalComponent;
   @Input() modalContentInstance: any;
   @Output() dialogClose: EventEmitter<any> = new EventEmitter();
@@ -43,6 +44,8 @@ export class StepTableFormComponent {
   @Input() args: StepTableType = cloneDeep(defaultStepData);
   // 输入框组合，各种编码，在提交的时候要重新合成数据
   @Input() encodeObj = defaultEncodeObj
+
+
   defaultMethodEncode = defaultMethodEncode;
   defaultBehaviorEncode = defaultBehaviorEncode;
   defaultDirectionEncode = defaultDirectionEncode
@@ -56,7 +59,10 @@ export class StepTableFormComponent {
   constructor(
     private tableHttp: TableHttpService,
     private tipsService: TipsDialogService,
-    private toastService: ToastService) {
+    private loadingService: LoadingService,
+    private myLocalStorage: MyLocalStorageService,
+    private executionHttpService: ExecutionHttpService,
+  ) {
   }
   // 提交数据
   submit() {
@@ -77,9 +83,14 @@ export class StepTableFormComponent {
       this.args
     ).subscribe({
       next: (data: any) => {
-        this.toastService.open({
-          value: [{ severity: 'success', summary: '摘要', content: data }],
-        })
+        // 如果自动执行的话就去获取最后的序号
+        const tmpStr: string | null = this.myLocalStorage.get('autoExe');
+        if (tmpStr != null && Boolean(tmpStr)) {
+          this.getLastOrder()
+        }
+
+        // 全局提示成功消息
+        this.tipsService.globTipsInfo(data as string)
       },
       error: (err: any) => {
         this.tipsService.responseErrorState(err.status as number)
@@ -101,6 +112,62 @@ export class StepTableFormComponent {
         }
         // 如果有外部对话框的话，发送执行关闭外部对话框
         this.dialogClose.emit(null);
+      }
+    })
+  }
+
+  // 获取最后一条数据的序号
+  getLastOrder() {
+    // 数据载入提示
+    const loadTip = this.loadingService.open();
+    this.tableHttp.getStepLastOrder(
+      this.projectInfo.executionSideInfo?.ipPort as string,
+      this.projectInfo.name,
+      this.fileName as string
+    ).subscribe({
+      next: (data: any) => {
+        // 去执行测试吧
+        this.testStep(data as number);
+      },
+      error: (err: any) => {
+        this.tipsService.responseErrorState(err.status as number)
+        // 关闭载入提示
+        loadTip.loadingInstance.close();
+      },
+      complete: () => {
+        // 关闭载入提示
+        loadTip.loadingInstance.close();
+      }
+    })
+  }
+  // 测试数据的可行性
+  testStep(order: number) {
+    // 打开载入效果
+    this.btnShowLoading = true
+    // 准备数据
+    const stepData: TestStepDataType = {
+      模拟器的ip和端口: this.projectInfo.simulatorInfo?.ipPort as string,
+      项目名: this.projectInfo.name,
+      名称: this.fileName as string,
+      编号: order
+    }
+    console.log("🚀 ~ StepTableFormComponent ~ testStep ~ stepData:", stepData)
+    this.executionHttpService.postTestStepData(
+      this.projectInfo.executionSideInfo?.ipPort as string,
+      stepData
+    ).subscribe({
+      next: (data: any) => {
+        // 全局提示成功消息
+        this.tipsService.globTipsInfo(data as string)
+      },
+      error: (err: any) => {
+        this.tipsService.responseErrorState(err.status as number)
+        // 关闭载入效果
+        this.btnShowLoading = false
+      },
+      complete: () => {
+        // 关闭载入效果
+        this.btnShowLoading = false
       }
     })
   }

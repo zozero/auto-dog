@@ -25,6 +25,8 @@
           <d-row [dJustify]="'end'">
             <d-col>
               <section class="btn-group">
+                <d-toggle dTooltip  [(ngModel)]="isAutoExe" (change)="onChageAutoExe($event)"  [content]="'帮助.图片.自动' | translate" [color]="'#50D4AB'" [checkedContent]="'开'" [uncheckedContent]="'关'" [size]="'lg'"></d-toggle>
+
                 <d-button  bsStyle="primary" (btnClick)="resetCanvasImage()">
                   重置
                 </d-button>

@@ -1,10 +1,21 @@
 <div class="crop-image-container">
-    <form dForm [layout]="vertical" ngForm>
-      <d-form-item>
-        <d-form-label [required]="true">选择步骤文件</d-form-label>
-        <d-form-control>
-          <d-select [options]="stepFileList" name="文件名"  [(ngModel)]="currentFile"></d-select>
-        </d-form-control>
-      </d-form-item>
-    </form>
-    <app-step-table-form [projectInfo]="projectInfo" [encodeObj]="encodeObj" [args]="args" (dialogClose)="onCloseDialog()" [fileName]="currentFile" ></app-step-table-form>
+  <form dForm [layout]="vertical" ngForm>
+    <d-form-item>
+      <d-form-label [required]="true">选择步骤文件</d-form-label>
+      <d-form-control>
+        <d-row>
+          <d-col [dSpan]="12">
+            <d-select [options]="stepFileList" [isSearch]="true"  name="文件名" [(ngModel)]="currentFile"></d-select>
+          </d-col>
+          <d-col [dSpan]="8">
+            <input dTextInput  name="创建文件名" placeholder="输入文件名" [(ngModel)]="createFileName"  />
+          </d-col>
+          <d-col [dSpan]="4">
+            <d-button bsStyle="common" (btnClick)="addStepCsvFile()">创建</d-button>
+          </d-col>
+        </d-row>
+      </d-form-control>
+    </d-form-item>
+  </form>
+  <app-step-table-form [projectInfo]="projectInfo" [encodeObj]="encodeObj" [args]="args" (dialogClose)="onCloseDialog()"
+    [fileName]="currentFile"></app-step-table-form>

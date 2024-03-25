@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ToastService } from 'ng-devui';
 import { DialogService } from 'ng-devui/modal';
 
 @Injectable({
@@ -13,7 +14,10 @@ export class TipsDialogService {
     backdropCloseable: true,
     html: true,
   };
-  constructor(private dialogService: DialogService) { }
+  constructor(
+    private dialogService: DialogService,
+    private toastService: ToastService
+    ) { }
 
   // 提示重复出现
   openToEqualDialog(filed: string) {
@@ -72,5 +76,11 @@ export class TipsDialogService {
 
       this.openErrorDialog('可能执行端出现了问题。')
     }
+  }
+  // 全局提示成功
+  globTipsInfo(info:string){
+    this.toastService.open({
+      value: [{ severity: 'success', summary: '摘要', content: info }],
+    });
   }
 }

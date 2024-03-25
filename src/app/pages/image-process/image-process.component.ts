@@ -13,6 +13,10 @@ import { CropImageUploadComponent } from './crop-image-upload/crop-image-upload.
 import { CropImageInfo, RowImageInfo, ImageInfo } from '../../core/interface/image-type';
 import { ImageHttpService } from '../../core/services/https/image-http.service';
 import { TipsDialogService } from '../../core/services/tips-dialog/tips-dialog.service';
+import { ToggleModule } from 'ng-devui/toggle';
+import { TooltipModule } from 'ng-devui/tooltip';
+import { TranslateModule } from '@ngx-translate/core';
+import { MyLocalStorageService } from '../../core/services/my-local-storage/my-local-storage.service';
 
 @Component({
   selector: 'app-image-process',
@@ -26,7 +30,10 @@ import { TipsDialogService } from '../../core/services/tips-dialog/tips-dialog.s
     FormsModule,
     ProjectMenusComponent,
     CommonModule,
+    TooltipModule,
     AngularCropperjsModule,
+    TranslateModule,
+    ToggleModule
   ],
 })
 export class ImageProcessComponent implements OnInit {
@@ -45,7 +52,9 @@ export class ImageProcessComponent implements OnInit {
   // 裁剪后的图片地址
   cropImageBlobUrl!: string;
   // 裁剪后的图片
-  cropImageBlob!:Blob;
+  cropImageBlob!: Blob;
+  // 是自动执行一次
+  isAutoExe: boolean = true;
 
   // 获取裁剪节点
   @ViewChild('angularCropper') public angularCropper!: CropperComponent;
@@ -54,12 +63,19 @@ export class ImageProcessComponent implements OnInit {
     private imageHttp: ImageHttpService,
     private menu: ProjectMenuService,
     private dialogService: DialogService,
-    private tipsService: TipsDialogService
-  ) {}
+    private tipsService: TipsDialogService,
+    private myLocalStorage: MyLocalStorageService
+  ) { }
   ngOnInit(): void {
     void this.menu.initCurrentProject().then((data) => {
       this.currentProject = data;
     });
+
+    const tmpStr: string | null = this.myLocalStorage.get('autoExe');
+    if (tmpStr !=null) {
+      this.isAutoExe = Boolean(tmpStr);
+    }
+
   }
 
   toggleLoading() {
@@ -70,8 +86,8 @@ export class ImageProcessComponent implements OnInit {
         this.currentProject.simulatorInfo?.ipPort as string
       )
       .subscribe({
-        next: (img:Blob) => {
-          this.rowImageUrl =URL.createObjectURL(img);
+        next: (img: Blob) => {
+          this.rowImageUrl = URL.createObjectURL(img);
         },
         error: (err: any) => {
           this.tipsService.responseErrorState(err.status as number)
@@ -83,7 +99,7 @@ export class ImageProcessComponent implements OnInit {
           this.showLoading = false
         }
       })
-      
+
 
   }
 
@@ -97,14 +113,14 @@ export class ImageProcessComponent implements OnInit {
     }
   }
   // 导出截图，当执行图片导出时，组件会自动触发该函数
-   angularCropperExport(data: any) {
-    this.cropImageBlob=data.blob
-    this.cropImageBlobUrl =  URL.createObjectURL(this.cropImageBlob);
-    const imageInfo: ImageInfo= this.getCropImageInfo();
+  angularCropperExport(data: any) {
+    this.cropImageBlob = data.blob
+    this.cropImageBlobUrl = URL.createObjectURL(this.cropImageBlob);
+    const imageInfo: ImageInfo = this.getCropImageInfo();
     const rowImageInfo = this.getNaturalSize();
-    const cropImageInfo:CropImageInfo = {
+    const cropImageInfo: CropImageInfo = {
       url: this.cropImageBlobUrl,
-      blob:this.cropImageBlob,
+      blob: this.cropImageBlob,
       info: imageInfo,
       rowImageInfo: rowImageInfo,
     };
@@ -130,7 +146,7 @@ export class ImageProcessComponent implements OnInit {
       showAnimation: false,
       data: {
         imageData: imageData,
-        projectInfo:this.currentProject,
+        projectInfo: this.currentProject,
         close: () => {
           imageUploadDialogHandler.modalInstance.hide();
         },
@@ -156,7 +172,7 @@ export class ImageProcessComponent implements OnInit {
     // naturalWidth：原始宽
 
     const imageInfo = this.angularCropper.cropper.getImageData();
-    const rowImageInfo:RowImageInfo = {
+    const rowImageInfo: RowImageInfo = {
       width: imageInfo.naturalWidth,
       height: imageInfo.naturalHeight,
     };
@@ -168,6 +184,16 @@ export class ImageProcessComponent implements OnInit {
   resetCanvasImage() {
     if (this.rowImageUrl) {
       this.angularCropper.cropper.reset();
+    }
+  }
+  
+  // 改变自动执行的状态
+  onChageAutoExe($event: any) {
+    if($event){
+      this.myLocalStorage.set('autoExe', '1')
+    }
+    else{
+      this.myLocalStorage.set('autoExe', '')
     }
   }
 }
