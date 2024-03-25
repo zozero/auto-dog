@@ -13,11 +13,13 @@ import { TipsDialogService } from '../../../../core/services/tips-dialog/tips-di
 import { projectTable } from '../../../../core/services/dexie-db/project-table.service';
 import { executionSideTable } from '../../../../core/services/dexie-db/execution-side-table.service';
 import { simulatorTable } from '../../../../core/services/dexie-db/simulator-table.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-add-project-table-dialog',
   standalone: true,
   imports: [
+    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     SelectModule,

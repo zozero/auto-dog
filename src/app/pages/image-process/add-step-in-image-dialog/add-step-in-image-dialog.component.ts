@@ -82,7 +82,6 @@ export class AddStepInImageDialogComponent implements OnInit {
         data.forEach((el: string) => {
           newArr.push(el.split('.')[0])
         });
-        console.log("newArr",newArr)
         this.stepFileList = newArr
         if (!this.currentFile) {
           this.currentFile = this.stepFileList[0]
@@ -92,7 +91,7 @@ export class AddStepInImageDialogComponent implements OnInit {
         this.tipsDialog.responseErrorState(err.status as number)
         // 关闭载入提示
         loadTip.loadingInstance.close();
-        this.closeDialog();
+        // this.closeDialog();
       },
       complete: () => {
         // 关闭载入提示
@@ -112,10 +111,8 @@ export class AddStepInImageDialogComponent implements OnInit {
     ).subscribe({
       next: (data: any) => {
         this.encodeObj['方法编码'][1]=data
-        console.log("data",data)
       },
       error: (err: any) => {
-        console.log("err",err)
         this.tipsDialog.responseErrorState(err.status as number)
         // 关闭载入提示
         loadTip.loadingInstance.close();
