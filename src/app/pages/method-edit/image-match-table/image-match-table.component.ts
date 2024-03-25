@@ -235,11 +235,7 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
 
   // 导出为csv文件
   exportCsvFile(){
-    // 打开载入效果
-    this.btnShowLoading = true
     const csvUrl=this.projectInfo.executionSideInfo?.ipPort+'/方法' + '/表格?'+'项目名='+this.projectInfo.name+'&文件名='+'图片匹配'
     this.downloadFileService.exportCsvFile(csvUrl);
-    // 关闭载入效果
-    this.btnShowLoading = false
   }
 }

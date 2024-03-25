@@ -256,6 +256,7 @@ export class StepTableComponent implements OnInit, OnChanges {
     }
 
   }
+
   // 测试数据的可行性
   testStep(index: number) {
     // 打开载入效果
@@ -267,7 +268,6 @@ export class StepTableComponent implements OnInit, OnChanges {
       名称: this.fileName as string,
       编号: parseInt(this.csvData[index][0])
     }
-    console.log("🚀 ~ StepTableComponent ~ testStep ~ stepData:", stepData)
     this.executionHttpService.postTestStepData(
       this.projectInfo.executionSideInfo?.ipPort as string,
       stepData
@@ -289,6 +289,7 @@ export class StepTableComponent implements OnInit, OnChanges {
 
     })
   }
+
   // 删除数据
   deleteData(index: number) {
     this.csvData.splice(index, 1);
@@ -297,11 +298,7 @@ export class StepTableComponent implements OnInit, OnChanges {
 
   // 导出为csv文件
   exportCsvFile() {
-    // 打开载入效果
-    this.btnShowLoading = true
     const csvUrl = this.projectInfo.executionSideInfo?.ipPort + '/步骤' + '/表格?' + '项目名=' + this.projectInfo.name + '&文件名=' + this.fileName
     this.downloadFileService.exportCsvFile(csvUrl);
-    // 关闭载入效果
-    this.btnShowLoading = false
   }
 }

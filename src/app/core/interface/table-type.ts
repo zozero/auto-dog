@@ -42,7 +42,7 @@ export interface StepTableType {
 
 
 export interface TestStepDataType {
-  模拟器的ip和端口:string;
+  模拟器的ip和端口: string;
   项目名: string;
   名称: string;
   编号: number;
@@ -55,4 +55,10 @@ export interface TaskTableType {
   编号: number;
   是: number;
   否: number;
+}
+
+export interface TestTaskDataType {
+  模拟器的ip和端口: string;
+  项目名: string;
+  任务名: string;
 }

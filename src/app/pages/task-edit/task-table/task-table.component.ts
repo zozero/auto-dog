@@ -11,6 +11,8 @@ import { filter, orderBy } from 'lodash';
 import { defaultEncode } from '../../../core/mock/app-mock';
 import { TaskTableFormComponent } from "../../../shared/components/form/task-table-form/task-table-form.component";
 import { DownloadFileService } from '../../../core/services/https/download-file.service';
+import { TestStepDataType, TestTaskDataType } from '../../../core/interface/table-type';
+import { ExecutionHttpService } from '../../../core/services/https/execution-http.service';
 
 @Component({
   selector: 'app-task-table',
@@ -53,6 +55,7 @@ export class TaskTableComponent implements OnInit, OnChanges {
     private tipsService: TipsDialogService,
     private dialogService: DialogService,
     private loadingService: LoadingService,
+    private executionHttpService: ExecutionHttpService,
     private downloadFileService: DownloadFileService
 
   ) { }
@@ -165,11 +168,8 @@ export class TaskTableComponent implements OnInit, OnChanges {
         this.getcsvFile();
       },
       buttons: [
-
       ],
     });
-
-
   }
 
   // 保存csv文件到执行端，这里直接覆盖了
@@ -252,6 +252,39 @@ export class TaskTableComponent implements OnInit, OnChanges {
 
   }
 
+  // 测试数据的可行性
+  testStep(index: number) {
+    // 打开载入效果
+    this.btnShowLoading = true
+    // 准备数据
+    const stepData: TestStepDataType = {
+      模拟器的ip和端口: this.projectInfo.simulatorInfo?.ipPort as string,
+      项目名: this.projectInfo.name,
+      名称: this.csvData[index][1],
+      编号: parseInt(this.csvData[index][2])
+    }
+    this.executionHttpService.postTestStepData(
+      this.projectInfo.executionSideInfo?.ipPort as string,
+      stepData
+    ).subscribe({
+      next: (data: any) => {
+        this.toastService.open({
+          value: [{ severity: 'success', summary: '摘要', content: data }],
+        })
+      },
+      error: (err: any) => {
+        this.tipsService.responseErrorState(err.status as number)
+        // 关闭载入效果
+        this.btnShowLoading = false
+      },
+      complete: () => {
+        // 关闭载入效果
+        this.btnShowLoading = false
+      }
+
+    })
+  }
+  
   // 删除数据
   deleteData(index: number) {
     this.csvData.splice(index, 1);
@@ -261,12 +294,40 @@ export class TaskTableComponent implements OnInit, OnChanges {
 
   // 导出为csv文件
   exportCsvFile() {
-    // 打开载入效果
-    this.btnShowLoading = true
     const csvUrl = this.projectInfo.executionSideInfo?.ipPort + '/任务' + '/表格?' + '项目名=' + this.projectInfo.name + '&文件名=' + this.fileName
     this.downloadFileService.exportCsvFile(csvUrl);
-    // 关闭载入效果
-    this.btnShowLoading = false
   }
 
+  // 测试任务执行
+  testTask(){
+    // 打开载入效果
+    this.btnShowLoading = true
+    // 准备数据
+    const testData:TestTaskDataType={
+      模拟器的ip和端口:this.projectInfo.simulatorInfo?.ipPort as string,
+      项目名:this.projectInfo.name,
+      任务名:this.fileName as string
+    }
+    this.executionHttpService.postTestTaskData(
+      this.projectInfo.executionSideInfo?.ipPort as string,
+      testData
+    ).subscribe({
+      next: (data: any) => {
+        this.toastService.open({
+          value: [{ severity: 'success', summary: '摘要', content: data }],
+        })
+      },
+      error: (err: any) => {
+        this.tipsService.responseErrorState(err.status as number)
+        // 关闭载入效果
+        this.btnShowLoading = false
+      },
+      complete: () => {
+        // 关闭载入效果
+        this.btnShowLoading = false
+      }
+
+    })
+
+  }
 }

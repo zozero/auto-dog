@@ -90,7 +90,7 @@ export class ImageProcessComponent implements OnInit {
   getCurrentProject(currentProject: ProjectInfo) {
     this.currentProject = currentProject;
   }
-
+  // 截图后会自动触发angularCropperExport函数
   cropImage() {
     if (this.rowImageUrl) {
       this.angularCropper.exportCanvas();
@@ -120,7 +120,7 @@ export class ImageProcessComponent implements OnInit {
       title: '截图数据处理上传',
       content: CropImageUploadComponent,
       backdropCloseable: true,
-      onClose: () => console.log('on dialog closed'),
+      // onClose: () => console.log('on dialog closed'),
     };
 
     const imageUploadDialogHandler = this.dialogService.open({
