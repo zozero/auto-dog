@@ -6,7 +6,7 @@
   
   <d-toggle dTooltip  [(ngModel)]="isAutoExe" (change)="onChageAutoExe($event)"  [content]="'帮助.图片.自动' | translate" [color]="'#50D4AB'" [checkedContent]="'开'" [uncheckedContent]="'关'" [size]="''"></d-toggle>
 
-  <d-data-table  *ngIf="csvData.length>0"  [dataSource]="csvFilterList" [size]="'md'" [fixHeader]="true" [scrollable]="true" dLoading
+  <d-data-table  style="margin-top: 8px;" [borderType]="'bordered'"   *ngIf="csvData.length>0"  [dataSource]="csvFilterList" [size]="'md'" [fixHeader]="true" [scrollable]="true" dLoading
     [loading]="loadingTip" [backdrop]="true" [loadingStyle]="'infinity'" tableHeight="100%" [virtualMinBufferPx]="10"
     [virtualMaxBufferPx]="20" [tableOverflowType]="'overlay'">
     <thead dTableHead>
