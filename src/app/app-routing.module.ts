@@ -50,6 +50,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: '执行规划',
+    loadComponent: () =>
+      import('./pages/execute-plan/execute-plan.component').then(
+        (mod) => mod.ExecutePlanComponent
+      ),
+  },
+  {
     path: '**',
     component: PageNotFoundComponent,
   },
