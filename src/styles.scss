@@ -1,3 +1,4 @@
+@use "@worktile/gantt/styles/index.scss";
 @import '~ng-devui/devui-layout.css';
 /* You can add global styles to this file, and also import other style files */
 html, body {
@@ -9,4 +10,17 @@ html, body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.table-content {
+  // 一定要这么设置，因为前面会包含无数内联元素导致百分比的高度无效
+  // 这里设置视口的高度就快速定位回到想要的高度
+  height: 77vh;
 
+  // 针对小屏幕的样式 
+  @media (max-height: 900px) {
+      height: 66vh;
+  }
+  // 针对小屏幕的样式 
+  @media (max-height: 600px) {
+      height: 56vh;
+  }
+}

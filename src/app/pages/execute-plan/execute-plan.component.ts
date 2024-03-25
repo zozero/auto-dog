@@ -7,7 +7,7 @@ import { DevUIModule, DialogService, LayoutModule, LoadingModule, LoadingService
 import { TipsDialogService } from '../../core/services/tips-dialog/tips-dialog.service';
 import { CommonModule } from '@angular/common';
 import { ProjectMenusComponent } from '../../shared/components/project-menus/project-menus.component';
-
+import { GanttItem, NgxGanttModule } from '@worktile/gantt';
 
 
 @Component({
@@ -19,6 +19,7 @@ import { ProjectMenusComponent } from '../../shared/components/project-menus/pro
     ProjectMenusComponent,
     DevUIModule,
     LoadingModule,
+    NgxGanttModule,
     TabsModule
 ],
   templateUrl: './execute-plan.component.html',
@@ -31,7 +32,13 @@ export class ExecutePlanComponent implements OnInit {
   taskFileList: string[] = []
   // 激活的菜单栏
   tabActiveId!: string | number;
-
+  
+  items: GanttItem[] = [
+    { id: '000000', title: 'Task 0', start: 1627729997, end: 1628421197, expandable: true },
+    { id: '000001', title: 'Task 1', start: 1617361997, end: 1625483597, links: ['000003', '000004', '000000'], expandable: true },
+    { id: '000002', title: 'Task 2', start: 1610536397, end: 1610622797 },
+    { id: '000003', title: 'Task 3', start: 1628507597, end: 1633345997, expandable: true }
+  ];
   constructor(
     private tableHttp: TableHttpService,
     private menu: ProjectMenuService,
@@ -43,6 +50,7 @@ export class ExecutePlanComponent implements OnInit {
 
   ngOnInit(): void {
     this.projecMenuInit()
+    console.log("ExecutePlanComponent")
   }
 
   // 初始化项目菜单
@@ -54,7 +62,8 @@ export class ExecutePlanComponent implements OnInit {
       .initCurrentProject()
       .then((data) => {
         this.currentProject = data;
-        this.setTaskFileList()
+        // 暂时注释
+        // this.setTaskFileList()
       })
       .then(() => {
         // 关闭载入提示

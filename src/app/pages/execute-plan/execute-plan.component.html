@@ -6,6 +6,16 @@
       </d-col>
       <d-col [dSpan]="20" style="padding-left: 6px;padding-right: 6px;">
     
+<!-- component.html -->
+<ngx-gantt #gantt [items]="items">
+    <ngx-gantt-table>
+      <ngx-gantt-column name="标题" width="100%" height="100%">
+        <ng-template #cell let-item="item"> {{ item.title }} </ng-template>
+      </ngx-gantt-column>
+    </ngx-gantt-table>
+  </ngx-gantt>
+  
+
       </d-col>
     </d-row>
   </div>
