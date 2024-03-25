@@ -79,9 +79,6 @@ export class TaskTableFormComponent implements OnInit{
   }
   // 提交数据到执行端
   submit() {
-    console.log(this.projectInfo)
-    console.log(this.fileName)
-    console.log(this.args)
     // 打开载入效果
     this.btnShowLoading = true
     this.tableHttp.postTaskAddData(
