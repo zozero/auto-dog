@@ -5,7 +5,7 @@
         名称
       </d-form-label>
       <d-form-control>
-        <d-select style="width: 66px;" name="名称" [(ngModel)]="args['名称']" [options]="stepFileList"></d-select>
+        <d-select style="width: 66px;" [isSearch]="true" name="名称" [(ngModel)]="args['名称']" [options]="stepFileList"></d-select>
       </d-form-control>
     </d-form-item>
 
