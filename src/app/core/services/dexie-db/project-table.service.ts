@@ -46,6 +46,11 @@ export class ProjectTableService extends DexieDBService {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return await this.oneTable.orderBy('id').first();
   }
+ // 查询一条数据
+ async queryProjectInfo(id: number) {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  return await this.oneTable.get(id);
+}
 
   // 返回最后一条数据
   async queryProjectLastInfo() {
@@ -59,7 +64,7 @@ export class ProjectTableService extends DexieDBService {
     return await this.oneTable.toArray();
   }
 
-  // 获取所有数据
+  // 获取所有数据，通过名字
   async queryProjectInfoByName(name:string):Promise<ProjectInfo> {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return await this.oneTable.where("name").equalsIgnoreCase(name).first();

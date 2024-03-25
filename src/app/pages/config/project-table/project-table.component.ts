@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DataTableModule, EditableTip } from 'ng-devui/data-table';
 import { SelectModule } from 'ng-devui/select';
 import { InputGroupModule } from 'ng-devui/input-group';
-import { DevUIModule, DialogService } from 'ng-devui';
+import { DevUIModule, DialogService, ToastService } from 'ng-devui';
 import { ProjectInfo, SimulatorInfo } from '../../../core/interface/config-type';
 import { I18nModule } from 'ng-devui/i18n';
 import { remove } from 'lodash';
@@ -13,6 +13,8 @@ import { AddProjectTableDialogComponent } from './add-project-table-dialog/add-p
 import { executionSideTable } from '../../../core/services/dexie-db/execution-side-table.service';
 import { simulatorTable } from '../../../core/services/dexie-db/simulator-table.service';
 import { projectTable } from '../../../core/services/dexie-db/project-table.service';
+import { ConfigHttpService } from '../../../core/services/https/config-http.service';
+import { TipsDialogService } from '../../../core/services/tips-dialog/tips-dialog.service';
 
 @Component({
   selector: 'app-project-table',
@@ -38,7 +40,12 @@ export class ProjectTableComponent implements OnInit {
   // 	可选，编辑提示，hover背景变色，btn展示编辑按钮
   editableTip = EditableTip.hover;
 
-  constructor(private dialogService: DialogService) {}
+  constructor(
+    private dialogService: DialogService,
+    private toastService: ToastService,
+    private tipsService: TipsDialogService,
+    private configHttpService: ConfigHttpService
+  ) { }
   ngOnInit(): void {
     void this.selectClickUpdateDatas('');
   }
@@ -63,7 +70,7 @@ export class ProjectTableComponent implements OnInit {
   }
 
   onSelectEditEnd(rowItem: any, field: any) {
-    this.updateData(rowItem, field);
+    void this.updateData(rowItem, field);
     rowItem[field] = false;
   }
 
@@ -73,8 +80,7 @@ export class ProjectTableComponent implements OnInit {
   };
 
   beforeEditEnd = (rowItem: any, field: any) => {
-    console.log('beforeEditEnd');
-    this.updateData(rowItem, field);
+    void this.updateData(rowItem, field);
     if (rowItem && rowItem[field].length < 3) {
       return false;
     } else {
@@ -82,8 +88,14 @@ export class ProjectTableComponent implements OnInit {
     }
   };
 
-  updateData(rowItem: any, field: any) {
+  async updateData(rowItem: any, field: any) {
     const curType = field.replace('Edit', '');
+    if (curType == 'name') {
+      const oldData: ProjectInfo = await projectTable.queryProjectInfo(rowItem.id as number);
+      const oldName = oldData['name']
+      const newName = rowItem[curType];
+      this.onChangeProjectName(oldName, newName as string, oldData)
+    }
     const data = {
       [curType]: rowItem[curType],
     };
@@ -123,12 +135,37 @@ export class ProjectTableComponent implements OnInit {
       ],
     });
   }
-
+  // 删除数据
   deleteData(id: number) {
     void projectTable.deleteProjectInfo(id).finally(() => {
       remove(this.dataList, (data) => {
         return data.id === id;
       });
     });
+  }
+  // 当项目名改变的时候修改项目
+  onChangeProjectName(oldName: string, newName: string, projectInfo: ProjectInfo) {
+    if (projectInfo.executionSideInfo) {
+      this.configHttpService.getMethodCsvFile(
+        projectInfo.executionSideInfo.ipPort,
+        oldName,
+        newName
+      ).subscribe({
+        next: (data: any) => {
+          this.toastService.open({
+            value: [{ severity: 'success', summary: '摘要', content: data }],
+          })
+        },
+        error: (err: any) => {
+          this.tipsService.responseErrorState(err.status as number)
+
+        },
+        complete: () => {
+        }
+
+      })
+    }
+
+
   }
 }
