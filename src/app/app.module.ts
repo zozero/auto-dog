@@ -21,6 +21,9 @@ import { IconModule } from 'ng-devui/icon';
 import { MenuModule } from 'ng-devui/menu';
 import { LayoutModule } from 'ng-devui';
 
+import { GANTT_GLOBAL_CONFIG } from '@worktile/gantt';
+import { zhCN } from 'date-fns/locale';
+
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>  new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
@@ -49,7 +52,14 @@ const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>  new Transl
     IconModule
 
   ],
-  providers: [],
+  providers: [ {
+    provide: GANTT_GLOBAL_CONFIG,
+    useValue: {
+      dateOptions: {
+           locale: zhCN
+      }
+    }
+  },],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

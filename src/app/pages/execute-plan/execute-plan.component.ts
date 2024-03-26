@@ -3,27 +3,32 @@ import { Component, OnInit } from '@angular/core';
 import { ProjectInfo } from '../../core/interface/config-type';
 import { TableHttpService } from '../../core/services/https/table-http.service';
 import { ProjectMenuService } from '../../core/services/menus/project-menu.service';
-import { DevUIModule, DialogService, LayoutModule, LoadingModule, LoadingService, TabsModule, ToastService } from 'ng-devui';
+import { DevUIModule, DialogService, LoadingModule, LoadingService, TabsModule, ToastService } from 'ng-devui';
 import { TipsDialogService } from '../../core/services/tips-dialog/tips-dialog.service';
 import { CommonModule } from '@angular/common';
 import { ProjectMenusComponent } from '../../shared/components/project-menus/project-menus.component';
-import { GanttItem, NgxGanttModule } from '@worktile/gantt';
+import { GanttCanvasComponent } from './gantt-canvas/gantt-canvas.component';
+import { DragPeriodicComponent } from "./drag-periodic/drag-periodic.component";
 
 
+
+export function random(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
 @Component({
-  selector: 'app-execute-plan',
-  standalone: true,
-  imports: [
-    LayoutModule,
-    CommonModule,
-    ProjectMenusComponent,
-    DevUIModule,
-    LoadingModule,
-    NgxGanttModule,
-    TabsModule
-],
-  templateUrl: './execute-plan.component.html',
-  styleUrl: './execute-plan.component.scss'
+    selector: 'app-execute-plan',
+    standalone: true,
+    templateUrl: './execute-plan.component.html',
+    styleUrl: './execute-plan.component.scss',
+    imports: [
+        CommonModule,
+        ProjectMenusComponent,
+        DevUIModule,
+        LoadingModule,
+        TabsModule,
+        GanttCanvasComponent,
+        DragPeriodicComponent
+    ]
 })
 export class ExecutePlanComponent implements OnInit {
 
@@ -32,13 +37,15 @@ export class ExecutePlanComponent implements OnInit {
   taskFileList: string[] = []
   // 激活的菜单栏
   tabActiveId!: string | number;
-  
-  items: GanttItem[] = [
-    { id: '000000', title: 'Task 0', start: 1627729997, end: 1628421197, expandable: true },
-    { id: '000001', title: 'Task 1', start: 1617361997, end: 1625483597, links: ['000003', '000004', '000000'], expandable: true },
-    { id: '000002', title: 'Task 2', start: 1610536397, end: 1610622797 },
-    { id: '000003', title: 'Task 3', start: 1628507597, end: 1633345997, expandable: true }
-  ];
+
+  // items!:any
+  // groups!:any
+  // // 先写一笔假数据
+  // tmpTaskList: string[] = ["下载", "购买", "签到"]
+  // tmpStart!:number;
+  // tmpEnd!:number;
+  // viewType =GanttViewType.day
+
   constructor(
     private tableHttp: TableHttpService,
     private menu: ProjectMenuService,
@@ -49,9 +56,39 @@ export class ExecutePlanComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.projecMenuInit()
-    console.log("ExecutePlanComponent")
+ 
+    this.projecMenuInit();
+    console.log("ExecutePlanComponent");
   }
+  // 初始化甘特图数据
+  // initGanttDatas() {
+  //   const groups: GanttGroup[] = [];
+  //   const items: GanttItem[] = [];
+  //   groups.push({
+  //     id: '1',
+  //     title: this.currentProject.name
+  //   })
+  //   let tmpDate=new Date()
+  //   // let a1:GanttBaselineItem
+  //   console.log("12313",tmpDate)
+  //   for (let i = 0; i < this.tmpTaskList.length; ++i) {
+  //     const start = addHours(new Date(), random(-1, 1));
+  //     const end = addHours(start, random(0, 1));
+
+  //     items.push({
+  //       id: String(i),
+  //       title: this.tmpTaskList[i],
+  //       start: getUnixTime(start),
+  //       end: getUnixTime(end),
+  //       group_id: '1',
+  //       draggable: true,
+  //       itemDraggable: true
+  //     })
+  //   }
+
+  //   this.groups = groups
+  //   this.items = items
+  // }
 
   // 初始化项目菜单
   projecMenuInit() {
@@ -62,6 +99,7 @@ export class ExecutePlanComponent implements OnInit {
       .initCurrentProject()
       .then((data) => {
         this.currentProject = data;
+
         // 暂时注释
         // this.setTaskFileList()
       })

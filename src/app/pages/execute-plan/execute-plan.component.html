@@ -1,21 +1,25 @@
-<div *ngIf="currentProject">
+<div *ngIf="currentProject" class="execute-plan-container">
     <h2>执行规划 {{ currentProject.name }}</h2>
     <d-row>
-      <d-col [dSpan]="4">
-        <app-project-menus (sendCurrentProject)="getCurrentProject($event)"></app-project-menus>
-      </d-col>
-      <d-col [dSpan]="20" style="padding-left: 6px;padding-right: 6px;">
-    
-<!-- component.html -->
-<ngx-gantt #gantt [items]="items">
-    <ngx-gantt-table>
-      <ngx-gantt-column name="标题" width="100%" height="100%">
-        <ng-template #cell let-item="item"> {{ item.title }} </ng-template>
-      </ngx-gantt-column>
-    </ngx-gantt-table>
-  </ngx-gantt>
-  
+        <d-col [dSpan]="4">
+            <app-project-menus (sendCurrentProject)="getCurrentProject($event)"></app-project-menus>
+        </d-col>
+        <d-col [dSpan]="20" style="padding-left: 6px;padding-right: 6px;">
+            <!-- 功能按钮 -->
+            <d-row>
+                <d-button style="padding-right: 6px;" bsStyle="primary">执行</d-button>
+            </d-row>
+            
+            <!-- 拖拽设置周期 -->
+            <d-row>
+                <app-drag-periodic style="padding: 0;"></app-drag-periodic>
+            </d-row>
 
-      </d-col>
+            <!-- 甘特图的画布，显示状态 -->
+            <d-row>
+                <app-gantt-canvas></app-gantt-canvas>
+            </d-row>
+
+        </d-col>
     </d-row>
-  </div>
+</div>
