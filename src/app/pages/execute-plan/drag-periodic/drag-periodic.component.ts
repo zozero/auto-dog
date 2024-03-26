@@ -44,7 +44,7 @@ export class DragPeriodicComponent {
       原索引: -1,
       数据: "快速行动",
       选中: false
-    }
+    },
   ]
   // 每天任务列表
   taskListEvery: MyDragDropType[] = [];

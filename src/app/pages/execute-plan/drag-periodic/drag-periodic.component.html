@@ -1,209 +1,125 @@
-<d-row style="margin-top: 8px;"  [dJustify]="'around'" >
-    <d-col [dSpan]="4" >
-        <!-- 可以放置的区域 -->
-        <div 
-        class="card card-outline-primary mb-3" 
-        dDroppable
-        [switchWhileCrossEdge]="true"
-        [dropScope]="'raw'" 
-        >
-            <div class="card-header">原始任务</div>
-            <div class="card-block">
-                <!-- 可以排序，就是可以在内部上下拖拽 -->
-                <ul 
-                class="list-group drop-el devui-scrollbar" 
-                dSortable 
-                dDropScrollEnhanced
-                [direction]="'v'"
-                
-                >
-                    <!-- 可以拿区的区域 -->
-                    <li 
-                    dDraggable 
+<div style="margin: 8px;">
+    <d-row [dJustify]="'around'">
+        <d-col [dSpan]="4" style="padding-left: 0;">
+            <!-- 可以放置的区域 -->
+            <div class="card card-outline-primary mb-3" dDroppable dDropScrollEnhanced [switchWhileCrossEdge]="true"
+                [dropScope]="['raw']">
+                <div class="card-header">原始任务</div>
+                <div class="card-block">
+                    <ul class="list-group drop-el devui-scrollbar" dSortable dDropScrollEnhanced [direction]="'v'"
+                        [responseEdgeWidth]="'20px'">
+                        <!-- 可以拿区的区域 -->
+                        <li dDraggable batchDrag (click)="onBatchSelectRawCheck($event, item)"
+                            [batchDragActive]="item['选中']" (batchDragActiveEvent)="onBatchSelectRaw(item)"
+                            [enableDragFollow]="true" [ngClass]="{ selected: item['选中'] }" *ngFor="let item of taskList"
+                            [dragScope]="'raw'" [dragHandleClass]="'drag-handle'" [dragData]="item"
+                            class="list-group-item over-flow-ellipsis">
+                            {{ item['数据'] }}
+                        </li>
 
-                    batchDrag 
-                    (click)="onBatchSelectRawCheck($event, item)"
-                    [batchDragActive]="item['选中']"
-                    (batchDragActiveEvent)="onBatchSelectRaw(item)"
-                    [enableDragFollow]="true"
-                    [ngClass]="{ selected: item['选中'] }"
-
-                    *ngFor="let item of taskList" 
-                    [dragScope]="'raw'"
-                    [dragHandleClass]="'drag-handle'" 
-                    [dragData]="item" 
-                    class="list-group-item over-flow-ellipsis"
-                    >
-                    {{ item['数据'] }}
-                    </li>
-                </ul>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </d-col>
+        </d-col>
 
-    <d-col [dSpan]="4">
-        <!-- 可以放置的区域 -->
-        <div 
-        class="card card-outline-primary mb-3" 
-        dDroppable
-        [switchWhileCrossEdge]="true"
-        [dropScope]="['raw']" 
-        (dropEvent)="onDrop($event,taskListEvery)"
-        >
-            <div class="card-header">每天任务</div>
-            <div class="card-block">
-                <!-- 可以排序，就是可以在内部上下拖拽 -->
-                <ul
-                class="list-group drop-el devui-scrollbar" 
-                dDropScrollEnhanced
-                [direction]="'v'"
-                >
-                    <!-- 可以拿区的区域 -->
-                    <li 
-                    dDraggable 
-                    *ngFor="let item of taskListEvery;let i=index;" 
-                    [dragScope]="'every'"
-                    [dragHandleClass]="'drag-handle'" 
-                    [dragData]="item" 
-                    (dragStartEvent)="onDragStart(i,taskListEvery)"
-                    
-                    class="list-group-item over-flow-ellipsis"
-                    >
-                    {{ item['数据'] }}
-                </li>
-              
-                </ul>
-            </div>
-        </div>
-    </d-col>
+        <d-col [dSpan]="4">
+            <!-- 可以放置的区域 -->
+            <div class="card card-outline-primary mb-3" dDroppable dDropScrollEnhanced [switchWhileCrossEdge]="true"
+                [dropScope]="['raw']" (dropEvent)="onDrop($event,taskListEvery)">
 
-    <d-col [dSpan]="4">
-        <!-- 可以放置的区域 -->
-        <div 
-        class="card card-outline-primary mb-3" 
-        dDroppable
-        [switchWhileCrossEdge]="true"
-        [dropScope]="['raw']" 
-        (dropEvent)="onDrop($event,taskListWeek)"
-        >
-            <div class="card-header">每周任务</div>
-            <div class="card-block">
-                <!-- 可以排序，就是可以在内部上下拖拽 -->
-                <ul 
-                class="list-group drop-el devui-scrollbar" 
-                dDropScrollEnhanced
-                [direction]="'v'">
-                    <!-- 可以拿区的区域 -->
-                    <li 
-                    dDraggable 
-                    *ngFor="let item of taskListWeek;let i=index;" 
-                    [dragScope]="'every'"
-                    [dragHandleClass]="'drag-handle'" 
-                    [dragData]="item" 
-                    (dragStartEvent)="onDragStart(i,taskListWeek)"
-                    
-                    class="list-group-item over-flow-ellipsis"
-                    >
-                    {{ item['数据'] }}
-                </li>
-              
-                </ul>
-            </div>
-        </div>
-    </d-col>
+                <div class="card-header">每天任务</div>
+                <div class="card-block">
+                    <ul class="list-group drop-el devui-scrollbar" dDropScrollEnhanced [direction]="'v'"
+                        [responseEdgeWidth]="'20px'">
+                        <!-- 可以拿区的区域 -->
+                        <li dDraggable *ngFor="let item of taskListEvery;let i=index;" [dragScope]="'every'"
+                            [dragHandleClass]="'drag-handle'" [dragData]="item"
+                            (dragStartEvent)="onDragStart(i,taskListEvery)" class="list-group-item over-flow-ellipsis">
+                            {{ item['数据'] }}
+                        </li>
 
-    <d-col [dSpan]="4">
-        <!-- 可以放置的区域 -->
-        <div 
-        class="card card-outline-primary mb-3" 
-        dDroppable
-        dDropScrollEnhanced
-        [switchWhileCrossEdge]="true"
-        [dropScope]="['raw']" 
-        (dropEvent)="onDrop($event,taskListMonth)"
-        >
-            <div class="card-header">每月任务</div>
-            <div class="card-block">
-                <!-- 可以排序，就是可以在内部上下拖拽 -->
-                <ul class="list-group drop-el devui-scrollbar"
-                dDropScrollEnhanced
-                [direction]="'v'"
-                >
-                    <!-- 可以拿区的区域 -->
-                    <li 
-                    dDraggable 
-                    *ngFor="let item of taskListMonth;let i=index;" 
-                    [dragScope]="'every'"
-                    [dragHandleClass]="'drag-handle'" 
-                    [dragData]="item" 
-                    (dragStartEvent)="onDragStart(i,taskListMonth)"
-                    
-                    class="list-group-item over-flow-ellipsis"
-                    >
-                    {{ item['数据'] }}
-                </li>
-              
-                </ul>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </d-col>
+        </d-col>
 
-    
-    <d-col [dSpan]="4">
-        <!-- 可以放置的区域 -->
-        <div 
-        class="card card-outline-primary mb-3" 
-        dDroppable
-        dDropScrollEnhanced
-        [switchWhileCrossEdge]="true"
-        [dropScope]="['raw','every','today']" 
-        (dropEvent)="onDropToday($event,taskListToday)"
-        [defaultDropPosition]="'closest'"
-        >
-            <div class="card-header">今日任务</div>
-            <div class="card-block">
-                <!-- 可以排序，就是可以在内部上下拖拽 -->
-                <ul 
-                class="list-group drop-el devui-scrollbar" 
-                dSortable 
-                dDropScrollEnhanced
-                [direction]="'v'">
-                    <!-- 可以拿区的区域 -->
-                    <li 
-                    dDraggable 
-                    *ngFor="let item of taskListToday;let i=index;" 
-                    [dragScope]="'today'"
-                    [dragHandleClass]="'drag-handle'" 
-                    [dragData]="item" 
-                    (dragStartEvent)="onDragStart(i,taskListToday)"
-                    
-                    class="list-group-item over-flow-ellipsis"
-                    >
-                    {{ item['数据'] }}
-                </li>
-              
-                </ul>
-            </div>
-        </div>
-    </d-col>
+        <d-col [dSpan]="4">
+            <!-- 可以放置的区域 -->
+            <div class="card card-outline-primary mb-3" dDroppable dDropScrollEnhanced [switchWhileCrossEdge]="true"
+                [dropScope]="['raw']" (dropEvent)="onDrop($event,taskListWeek)">
 
-    <d-col>
-        <!-- 可以放置的区域 -->
-        <div 
-        class="card card-outline-primary mb-3" 
-        dDroppable
-        [switchWhileCrossEdge]="true"
-        [dropScope]="['every','today']" 
-        (dropEvent)="onDropDelete($event)"
-        >
-            <div class="card-header">删除</div>
-            <div class="card-block" dDraggable>
-                <!-- 可以排序，就是可以在内部上下拖拽 -->
-                <div class="trash-zone" >
-                    <div class="icon icon-delete"></div>
-                    <div class="info">拖这里可以删除它。</div>
-                  </div>
+                <div class="card-header">每周任务</div>
+                <div class="card-block">
+                    <ul class="list-group drop-el devui-scrollbar" dDropScrollEnhanced [direction]="'v'"
+                        [responseEdgeWidth]="'20px'">
+                        <!-- 可以拿区的区域 -->
+                        <li dDraggable *ngFor="let item of taskListWeek;let i=index;" [dragScope]="'every'"
+                            [dragHandleClass]="'drag-handle'" [dragData]="item"
+                            (dragStartEvent)="onDragStart(i,taskListWeek)" class="list-group-item over-flow-ellipsis">
+                            {{ item['数据'] }}
+                        </li>
+
+                    </ul>
+                </div>
             </div>
-        </div>
-    </d-col>
-</d-row>
+        </d-col>
+
+        <d-col [dSpan]="4">
+            <!-- 可以放置的区域 -->
+            <div class="card card-outline-primary mb-3" dDroppable dDropScrollEnhanced [switchWhileCrossEdge]="true"
+                [dropScope]="['raw']" (dropEvent)="onDrop($event,taskListMonth)">
+
+                <div class="card-header">每月任务</div>
+                <div class="card-block">
+                    <ul class="list-group drop-el devui-scrollbar" dDropScrollEnhanced [direction]="'v'"
+                        [responseEdgeWidth]="'20px'">
+                        <!-- 可以拿区的区域 -->
+                        <li dDraggable *ngFor="let item of taskListMonth;let i=index;" [dragScope]="'every'"
+                            [dragHandleClass]="'drag-handle'" [dragData]="item"
+                            (dragStartEvent)="onDragStart(i,taskListMonth)" class="list-group-item over-flow-ellipsis">
+                            {{ item['数据'] }}
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+
+        </d-col>
+        <d-col [dSpan]="4">
+            <!-- 可以放置的区域 -->
+            <div class="card card-outline-primary mb-3" dDroppable dDropScrollEnhanced [switchWhileCrossEdge]="true"
+                [dropScope]="['raw','every','today']" (dropEvent)="onDropToday($event,taskListToday)"
+                [defaultDropPosition]="'closest'">
+
+                <div class="card-header">今日任务</div>
+                <div class="card-block">
+                    <ul class="list-group drop-el devui-scrollbar" dSortable dDropScrollEnhanced [direction]="'v'"
+                        [responseEdgeWidth]="'20px'">
+                        <!-- 可以拿区的区域 -->
+                        <li dDraggable *ngFor="let item of taskListToday;let i=index;" [dragScope]="'today'"
+                            [dragHandleClass]="'drag-handle'" [dragData]="item"
+                            (dragStartEvent)="onDragStart(i,taskListToday)" class="list-group-item over-flow-ellipsis">
+                            {{ item['数据'] }}
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </d-col>
+
+        <d-col [dSpan]="4" style="padding-right: 0;">
+            <!-- 可以放置的区域 -->
+            <div class="card card-outline-primary mb-3" dDroppable [switchWhileCrossEdge]="true"
+                [dropScope]="['every','today']" (dropEvent)="onDropDelete($event)">
+                <div class="card-header">删除</div>
+                <div class="card-block list-group" dDraggable>
+                    <!-- 可以排序，就是可以在内部上下拖拽 -->
+                    <div class="trash-zone">
+                        <div class="icon icon-delete"></div>
+                        <div class="info">拖这里可以删除它。</div>
+                    </div>
+                </div>
+            </div>
+        </d-col>
+    </d-row>
+</div>
