@@ -2,27 +2,29 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { DragDropModule, DropEvent } from 'ng-devui/dragdrop';
 import { LayoutModule } from 'ng-devui';
-import { cloneDeep, findIndex } from 'lodash';
 import { ButtonModule } from 'ng-devui/button';
-import { IconModule } from 'ng-devui/icon';
-import { BadgeModule } from 'ng-devui/badge';
 import { MyDragDropType } from '../../../core/interface/execute-type';
+import { FormsModule } from '@angular/forms';
+import { SelectModule } from 'ng-devui/select';
+import { InputNumberModule } from 'ng-devui';
 
 @Component({
   selector: 'app-drag-periodic',
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     DragDropModule,
     LayoutModule,
     ButtonModule,
-    IconModule,
-    BadgeModule,
+    InputNumberModule,
+    SelectModule,
   ],
   templateUrl: './drag-periodic.component.html',
   styleUrl: './drag-periodic.component.scss'
 })
 export class DragPeriodicComponent {
+  tmpdata=1;
   // 任务列表 "下载", "购买", "签到", "快速行动"
   taskList: MyDragDropType[] = [
     {
@@ -136,4 +138,5 @@ export class DragPeriodicComponent {
       this.onBatchSelectRaw(item);
     }
   }
+
 }

@@ -6,6 +6,7 @@ import {
   ProjectInfo,
   SimulatorInfo,
 } from '../../interface/config-type';
+import { ExecuteInfo } from '../../interface/execute-type';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,7 @@ export class DexieDBService extends Dexie {
   executionSideInfoTable!: Table<ExecutionSideInfo, number>;
   simulatorInfoTable!: Table<SimulatorInfo, number>;
   projectInfoTable!: Table<ProjectInfo, number>;
+  executeInfoTable!: Table<ExecuteInfo, number>;
 
   constructor() {
     // 传递数据库的名称
