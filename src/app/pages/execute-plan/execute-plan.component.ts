@@ -7,8 +7,8 @@ import { DevUIModule, DialogService, LoadingModule, LoadingService, TabsModule, 
 import { TipsDialogService } from '../../core/services/tips-dialog/tips-dialog.service';
 import { CommonModule } from '@angular/common';
 import { ProjectMenusComponent } from '../../shared/components/project-menus/project-menus.component';
-import { GanttCanvasComponent } from './gantt-canvas/gantt-canvas.component';
 import { DragPeriodicComponent } from "./drag-periodic/drag-periodic.component";
+import { ExecuteEditComponent } from "./execute-edit/execute-edit.component";
 
 
 
@@ -26,8 +26,8 @@ export function random(min: number, max: number) {
         DevUIModule,
         LoadingModule,
         TabsModule,
-        GanttCanvasComponent,
-        DragPeriodicComponent
+        DragPeriodicComponent,
+        ExecuteEditComponent
     ]
 })
 export class ExecutePlanComponent implements OnInit {

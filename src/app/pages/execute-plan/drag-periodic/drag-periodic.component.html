@@ -31,8 +31,8 @@
                         [responseEdgeWidth]="'20px'">
                         <!-- 可以拿区的区域 -->
                         <li dDraggable *ngFor="let item of taskListEvery;let i=index;" [dragScope]="'periodic'"
-                            [dragHandleClass]="'drag-handle'" [dragData]="item"
-                            (dragStartEvent)="onDragStart(taskListEvery,i)" class="list-group-item ">
+                            [dragHandleClass]="'drag-handle'" [dragData]="item" 
+                            (dragStartEvent)="onDragStart(taskListEvery,i,'每天')" class="list-group-item ">
                             <span> {{ item['数据']['name'] }}</span>
                             <d-input-number [max]="1" [min]="1" size="sm" [(ngModel)]="item['数据']['executionDay']" class="input-number"></d-input-number>
                         </li>
@@ -52,18 +52,17 @@
                         <!-- 可以拿区的区域 -->
                         <li dDraggable *ngFor="let item of taskListWeek;let i=index;" [dragScope]="'periodic'"
                             [dragHandleClass]="'drag-handle'" [dragData]="item"
-                            (dragStartEvent)="onDragStart(taskListWeek,i)" class="list-group-item">
+                            (dragStartEvent)="onDragStart(taskListWeek,i,'每周')" class="list-group-item">
                             <span > {{ item['数据']['name'] }}</span>
                             <d-input-number 
                             size="sm" 
-                            [max]="7" 
-                            [min]="1"  
+                            [max]="6" 
+                            [min]="0"  
                             [(ngModel)]="item['数据']['executionDay']"
                             class="input-number" 
                             (afterValueChanged)="onChangeExecutionDay($event,item['数据']['id'])"
                             ></d-input-number>
                         </li>
-
                     </ul>
                 </div>
             </div>
@@ -78,9 +77,9 @@
                     <ul class="list-group drop-el devui-scrollbar" dDropScrollEnhanced [direction]="'v'"
                         [responseEdgeWidth]="'20px'">
                         <!-- 可以拿区的区域 -->
-                        <li dDraggable *ngFor="let item of taskListMonth;let i=index;" [dragScope]="'periodic'"
+                        <li dDraggable *ngFor="let item of taskListMonth;let i=index;"  [dragScope]="'periodic'"
                             [dragHandleClass]="'drag-handle'" [dragData]="item"
-                            (dragStartEvent)="onDragStart(taskListMonth,i)" class="list-group-item">
+                            (dragStartEvent)="onDragStart(taskListMonth,i,'每月')" class="list-group-item">
                             <span > {{ item['数据']['name'] }}</span>
                             <d-input-number 
                             size="sm" 
@@ -109,7 +108,7 @@
                         <!-- 可以拿区的区域 -->
                         <li dDraggable *ngFor="let item of taskListToday;let i=index;" [dragScope]="'today'"
                             [dragHandleClass]="'drag-handle'" [dragData]="item"
-                            (dragStartEvent)="onDragStart(taskListToday,i)" class="list-group-item ">
+                            (dragStartEvent)="onDragStart(taskListToday,i,'今日')" class="list-group-item ">
                             {{ item['数据']['name'] }}
                         </li>
 

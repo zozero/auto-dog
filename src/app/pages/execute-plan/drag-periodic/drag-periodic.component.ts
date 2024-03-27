@@ -8,9 +8,10 @@ import { ExecuteInfo, MyDragDropType } from '../../../core/interface/execute-typ
 import { FormsModule } from '@angular/forms';
 import { SelectModule } from 'ng-devui/select';
 import { InputNumberModule } from 'ng-devui';
-import { executeResultInfoTable } from '../../../core/services/dexie-db/execute-result-table.service';
 import { executeInfoTable } from '../../../core/services/dexie-db/execute-table.service';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, findIndex } from 'lodash';
+import { getDay, getDate } from 'date-fns';
+import { from, filter } from 'rxjs';
 
 @Component({
   selector: 'app-drag-periodic',
@@ -49,7 +50,7 @@ export class DragPeriodicComponent implements OnInit {
     },
     {
       原索引: -1,
-      数据: "快速行动快速行动啊快速行动快速行动啊快速行动快速行动啊快速行动快速行动啊",
+      数据: "快速行动",
       选中: false
     },
   ]
@@ -64,14 +65,16 @@ export class DragPeriodicComponent implements OnInit {
 
   constructor(private cdr: ChangeDetectorRef) { }
   ngOnInit(): void {
-    void this.setPeriodicData();
+    void this.setInitData();
   }
-
+  // 设置初始的数据
+  async setInitData() {
+    await this.setPeriodicData();
+  }
   // 放下
   async onDrop(e: DropEvent, type: string = "") {
-    console.log("🚀 ~ DragPeriodicComponent ~ onDrop ~ e:", e)
     if (e.batchDragData && e.batchDragData.length > 1) {
-      this.onDropBatch(e, type);
+      await this.onDropBatch(e, type);
     } else {
       e.dragData['类型'] = type
       const tmpExecuteInfo = await this.addDataTOExecute(e.dragData as MyDragDropType);
@@ -79,6 +82,10 @@ export class DragPeriodicComponent implements OnInit {
       const tmpData: MyDragDropType = cloneDeep(e.dragData)
       tmpData['数据'] = tmpExecuteInfo;
       this.listClassify(type)?.push(tmpData)
+
+      if(type!=='今日'){
+        this.addTodayItem(tmpData);
+      }
     }
   }
 
@@ -100,25 +107,30 @@ export class DragPeriodicComponent implements OnInit {
     return tableData
   }
   // 拖动开始事件
-  onDragStart(list: MyDragDropType[], i: number,) {
-    console.log("🚀 ~ DragPeriodicComponent ~ onDragStart ~ e:", i)
+  onDragStart(list: MyDragDropType[], i: number, type: string) {
     list[i]['原索引'] = i;
+    list[i]['类型'] = type;
   }
   // 放下批量数据
-  onDropBatch(e: DropEvent, type: string = "") {
-    console.log("🚀 ~ DragPeriodicComponent ~ onDropBatch ~ e:", e)
-    e.batchDragData.forEach(async (element: MyDragDropType) => {
-      element['类型'] = type
-      const tmpExecuteInfo = await this.addDataTOExecute(element);
+  async onDropBatch(e: DropEvent, type: string = "") {
+    const listData: MyDragDropType[] = e.batchDragData
+    for (let i = 0; i < listData.length; i++) {
+      listData[i]['类型'] = type
+      const tmpExecuteInfo = await this.addDataTOExecute(listData[i]);
+
       // 不能去修改原始的数据，因为原始数据的类型和数据库数据的类型是不一样的。
-      const tmpData: MyDragDropType = cloneDeep(element)
+      const tmpData: MyDragDropType = cloneDeep(listData[i])
       tmpData['数据'] = tmpExecuteInfo;
       this.listClassify(type)?.push(tmpData)
-    });
+      
+      if(type!=='今日'){
+        this.addTodayItem(tmpData);
+      }
+    }
   }
   // 获取和设置初始的周期数据
   async setPeriodicData() {
-    let type='每天'
+    let type = '每天'
     const dataListDay: ExecuteInfo[] = await executeInfoTable.queryWhereExecuteInfo({ 'projectName': this.projectInfo.name, 'periodic': type })
     dataListDay.forEach((data: ExecuteInfo) => {
       this.taskListEvery.push({
@@ -127,7 +139,7 @@ export class DragPeriodicComponent implements OnInit {
       })
     })
 
-    type='每周'
+    type = '每周'
     const dataListWeek: ExecuteInfo[] = await executeInfoTable.queryWhereExecuteInfo({ 'projectName': this.projectInfo.name, 'periodic': type })
     dataListWeek.forEach((data: ExecuteInfo) => {
       this.taskListWeek.push({
@@ -136,7 +148,7 @@ export class DragPeriodicComponent implements OnInit {
       })
     })
 
-    type='每月'
+    type = '每月'
     const dataLisMonth: ExecuteInfo[] = await executeInfoTable.queryWhereExecuteInfo({ 'projectName': this.projectInfo.name, 'periodic': type })
     dataLisMonth.forEach((data: ExecuteInfo) => {
       this.taskListMonth.push({
@@ -144,7 +156,41 @@ export class DragPeriodicComponent implements OnInit {
         类型: type
       })
     })
+
+    this.calculateTodayTaskList();
   }
+
+  // 计算今日任务列表 
+  calculateTodayTaskList() {
+    // 先清除所有数据
+    this.taskListToday = [];
+    // 每日要做的直接加入到今日要做到中
+    this.taskListToday.push(...this.taskListEvery);
+
+    // 每周几
+    const weekDay = getDay(new Date())
+    const weekObservable = from(this.taskListWeek).pipe(
+      filter((data: MyDragDropType) => {
+        return weekDay === data['数据']['executionDay'];
+      })
+    );
+    weekObservable.subscribe((data: MyDragDropType) => {
+      this.taskListToday.push(data);
+
+    })
+
+    // 每月几号
+    const monthDate = getDate(new Date())
+    const monthObservable = from(this.taskListMonth).pipe(
+      filter((data: MyDragDropType) => {
+        return monthDate === data['数据']['executionDay'];
+      })
+    );
+    monthObservable.subscribe((data: MyDragDropType) => {
+      this.taskListToday.push(data);
+    })
+  }
+
   // 列表分类，用于返回不同类型的列表对象
   listClassify(type: string) {
     switch (type) {
@@ -165,11 +211,40 @@ export class DragPeriodicComponent implements OnInit {
 
   // 放下 删除
   onDropDelete(e: DropEvent) {
-    console.log("🚀 ~ DragPeriodicComponent ~ onDropDelete ~ e:", e)
     const data: ExecuteInfo = e.dragData['数据'] as ExecuteInfo
-    void executeInfoTable.deleteExecuteInfo(data['id'] as number);
     this.listClassify(e.dragData['类型'] as string)?.splice(e.dragData['原索引'] as number, 1)
+    if (e.dragData['类型'] !== '今日') {
+      void executeInfoTable.deleteExecuteInfo(data['id'] as number);
+      this.removeTodayItem(data);
+    }
   }
+  // 移除今日执行的指定数据
+  removeTodayItem(data: ExecuteInfo) {
+    const index = findIndex(this.taskListToday, ['id', data['id']])
+    this.taskListToday.splice(index, 1)
+  }
+  // 添加今日执行的指定数据
+  addTodayItem(data: MyDragDropType) {
+    console.log("🚀 ~ DragPeriodicComponent ~ addTodayItem ~ data:", data)
+    if (data['数据']['periodic'] === '每天') {
+      this.taskListToday.push(data)
+    }
+    else if (data['数据']['periodic'] === '每周') {
+      // 每周几
+      const weekDay = getDay(new Date())
+      if (weekDay === data['数据']['executionDay']) {
+        this.taskListToday.push(data)
+      }
+    } else if (data['数据']['periodic'] === '每月') {
+
+      // 每月几号
+      const monthDate = getDate(new Date())
+      if (monthDate === data['数据']['executionDay']) {
+        this.taskListToday.push(data)
+      }
+    }
+  }
+
 
   // 原数据批量选中
   onBatchSelectRaw(item: MyDragDropType) {
@@ -178,7 +253,6 @@ export class DragPeriodicComponent implements OnInit {
   }
 
   onDropToday(e: DropEvent, list: MyDragDropType[]) {
-    console.log("🚀 ~ DragPeriodicComponent ~ onDropToday ~ e:", e)
     const oldIndex = e.dragFromIndex;
     let newIndex = e.dropIndex;
 
@@ -195,7 +269,6 @@ export class DragPeriodicComponent implements OnInit {
 
   // 原数据批量选中检查
   onBatchSelectRawCheck(event: MouseEvent, item: MyDragDropType) {
-    console.log("🚀 ~ DragPeriodicComponent ~ onBatchSelectCheck ~ event:", event)
     // 如果按了ctrl键就执行
     if (event.ctrlKey) {
       this.onBatchSelectRaw(item);
@@ -203,8 +276,9 @@ export class DragPeriodicComponent implements OnInit {
   }
 
   // 修改执行日数据
-  async onChangeExecutionDay(e:number,id:number|undefined){
-    await executeInfoTable.updateExecuteInfo(id as number,{'executionDay':e});
+  async onChangeExecutionDay(e: number, id: number | undefined) {
+    await executeInfoTable.updateExecuteInfo(id as number, { 'executionDay': e });
+    this.calculateTodayTaskList();
   }
 
 }

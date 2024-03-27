@@ -24,12 +24,12 @@ export class DexieDBService extends Dexie {
   constructor() {
     // 传递数据库的名称
     super('AutoDog');
-    this.version(1.1).stores({
+    this.version(1.2).stores({
       configDataTable: '++id,createTime,updateTime',
       executionSideInfoTable: '++id,&ipPort,updateTime,createTime',
       simulatorInfoTable: '++id,&name,&ipPort,type,updateTime,createTime',
       projectInfoTable: '++id,&name,updateTime,createTime',
-      executeInfoTable: '++id,name,periodic,sort,projectName,updateTime,createTime',
+      executeInfoTable: '++id,name,[periodic+projectName],sort,projectName,updateTime,createTime',
       executeResultInfoTable: '++id,name,projectName,start,end,status,updateTime,createTime',
     });
 
