@@ -1,5 +1,4 @@
-
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ProjectInfo } from '../../core/interface/config-type';
 import { TableHttpService } from '../../core/services/https/table-http.service';
 import { ProjectMenuService } from '../../core/services/menus/project-menu.service';
@@ -16,19 +15,19 @@ export function random(min: number, max: number) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 @Component({
-    selector: 'app-execute-plan',
-    standalone: true,
-    templateUrl: './execute-plan.component.html',
-    styleUrl: './execute-plan.component.scss',
-    imports: [
-        CommonModule,
-        ProjectMenusComponent,
-        DevUIModule,
-        LoadingModule,
-        TabsModule,
-        DragPeriodicComponent,
-        ExecuteEditComponent
-    ]
+  selector: 'app-execute-plan',
+  standalone: true,
+  templateUrl: './execute-plan.component.html',
+  styleUrl: './execute-plan.component.scss',
+  imports: [
+    CommonModule,
+    ProjectMenusComponent,
+    DevUIModule,
+    LoadingModule,
+    TabsModule,
+    DragPeriodicComponent,
+    ExecuteEditComponent
+  ]
 })
 export class ExecutePlanComponent implements OnInit {
 
@@ -37,14 +36,10 @@ export class ExecutePlanComponent implements OnInit {
   taskFileList: string[] = []
   // 激活的菜单栏
   tabActiveId!: string | number;
-
-  // items!:any
-  // groups!:any
-  // // 先写一笔假数据
-  // tmpTaskList: string[] = ["下载", "购买", "签到"]
-  // tmpStart!:number;
-  // tmpEnd!:number;
-  // viewType =GanttViewType.day
+  // 获取任务拖拽组件
+  @ViewChild('dragPeriodic') public dragPeriodic!: DragPeriodicComponent;
+  // 获取任务表格组件
+  @ViewChild('executeEdit') public executeEdit!: ExecuteEditComponent;
 
   constructor(
     private tableHttp: TableHttpService,
@@ -56,39 +51,9 @@ export class ExecutePlanComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
- 
     this.projecMenuInit();
     console.log("ExecutePlanComponent");
   }
-  // 初始化甘特图数据
-  // initGanttDatas() {
-  //   const groups: GanttGroup[] = [];
-  //   const items: GanttItem[] = [];
-  //   groups.push({
-  //     id: '1',
-  //     title: this.currentProject.name
-  //   })
-  //   let tmpDate=new Date()
-  //   // let a1:GanttBaselineItem
-  //   console.log("12313",tmpDate)
-  //   for (let i = 0; i < this.tmpTaskList.length; ++i) {
-  //     const start = addHours(new Date(), random(-1, 1));
-  //     const end = addHours(start, random(0, 1));
-
-  //     items.push({
-  //       id: String(i),
-  //       title: this.tmpTaskList[i],
-  //       start: getUnixTime(start),
-  //       end: getUnixTime(end),
-  //       group_id: '1',
-  //       draggable: true,
-  //       itemDraggable: true
-  //     })
-  //   }
-
-  //   this.groups = groups
-  //   this.items = items
-  // }
 
   // 初始化项目菜单
   projecMenuInit() {
@@ -151,5 +116,8 @@ export class ExecutePlanComponent implements OnInit {
       }
     })
   }
-
+  // 执行按钮点击
+  onClickExecute(){
+    console.log(this.dragPeriodic.taskListToday)
+  }
 }

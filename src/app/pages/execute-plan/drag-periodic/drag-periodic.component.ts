@@ -1,6 +1,6 @@
 import { ProjectInfo } from './../../../core/interface/config-type';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { DragDropModule, DropEvent } from 'ng-devui/dragdrop';
 import { LayoutModule } from 'ng-devui';
 import { ButtonModule } from 'ng-devui/button';
@@ -26,7 +26,8 @@ import { from, filter } from 'rxjs';
     SelectModule,
   ],
   templateUrl: './drag-periodic.component.html',
-  styleUrl: './drag-periodic.component.scss'
+  styleUrl: './drag-periodic.component.scss',
+  encapsulation: ViewEncapsulation.None 
 })
 export class DragPeriodicComponent implements OnInit {
   @Input() projectInfo!: ProjectInfo;
@@ -265,6 +266,11 @@ export class DragPeriodicComponent implements OnInit {
     } else {
       void this.onDrop(e, '今日');
     }
+  }
+
+  // 今日任务列表的排序
+  todayListSortChange(){
+
   }
 
   // 原数据批量选中检查

@@ -107,10 +107,20 @@ d-row {
   }
 
   .input-number {
+
+
+    .devui-input {
+      text-align: center!important;
+      border: none !important;
+      background: $devui-info-bg !important;
+      box-shadow: $devui-shadow-length-base $devui-shadow;
+    }
+
     width: 52px;
   }
 
 }
+
 
 .list-group>li.selected,
 :host ::ng-deep .list-group>div>li.selected {
