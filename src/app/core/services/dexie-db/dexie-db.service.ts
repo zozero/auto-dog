@@ -6,7 +6,7 @@ import {
   ProjectInfo,
   SimulatorInfo,
 } from '../../interface/config-type';
-import { ExecuteInfo } from '../../interface/execute-type';
+import { ExecuteInfo, ExecuteResultInfo } from '../../interface/execute-type';
 
 @Injectable({
   providedIn: 'root',
@@ -19,15 +19,18 @@ export class DexieDBService extends Dexie {
   simulatorInfoTable!: Table<SimulatorInfo, number>;
   projectInfoTable!: Table<ProjectInfo, number>;
   executeInfoTable!: Table<ExecuteInfo, number>;
+  executeResultInfoTable!: Table<ExecuteResultInfo, number>;
 
   constructor() {
     // 传递数据库的名称
     super('AutoDog');
-    this.version(1).stores({
+    this.version(1.1).stores({
       configDataTable: '++id,createTime,updateTime',
       executionSideInfoTable: '++id,&ipPort,updateTime,createTime',
       simulatorInfoTable: '++id,&name,&ipPort,type,updateTime,createTime',
       projectInfoTable: '++id,&name,updateTime,createTime',
+      executeInfoTable: '++id,name,periodic,sort,projectName,updateTime,createTime',
+      executeResultInfoTable: '++id,name,projectName,start,end,status,updateTime,createTime',
     });
 
     //   this.on('populate', () => this.populate());
@@ -47,11 +50,12 @@ export class DexieDBService extends Dexie {
   // new Date('2023/03/01'),new Date('2023/03/04')
   // return historyDB.historyTable.where('dateTime').between(startDate, endDate)
   // }
-  async tableAddData(table: Table, data: any) {
+  async tableAddData(table: Table, data: any):Promise<number> {
     const currentDate=new Date();
     data.createTime =currentDate;
     data.updateTime = currentDate;
-    await table.add(data);
+    return await table.add(data) as number;
+    
   }
 
   async tableAddDatas(table: Table, datas: any[]) {
