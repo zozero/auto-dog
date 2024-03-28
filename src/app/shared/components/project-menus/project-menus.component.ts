@@ -4,7 +4,7 @@ import { LayoutModule } from 'ng-devui/layout';
 import { MenuModule } from 'ng-devui/menu';
 import { projectTable } from '../../../core/services/dexie-db/project-table.service';
 import { CommonModule } from '@angular/common';
-import { findIndex } from 'lodash';
+import { findIndex } from 'lodash-es';
 import { HttpSelectComponent } from "../http-select/http-select.component";
 import { ButtonModule } from 'ng-devui/button';
 import { ProjectInfo } from '../../../core/interface/config-type';

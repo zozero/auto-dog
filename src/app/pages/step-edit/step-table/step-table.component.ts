@@ -6,7 +6,7 @@ import { DevUIModule, LoadingService, LoadingType, ToastService } from 'ng-devui
 import { TableHttpService } from '../../../core/services/https/table-http.service';
 import { Papa, ParseResult } from 'ngx-papaparse';
 import { CommonModule } from '@angular/common';
-import { filter, orderBy } from 'lodash';
+import { filter, orderBy } from 'lodash-es';
 import { ProjectInfo } from '../../../core/interface/config-type';
 import { defaultEncode } from '../../../core/mock/app-mock';
 import { DialogService, ModalModule } from 'ng-devui/modal';
@@ -234,10 +234,12 @@ export class StepTableComponent implements OnInit, OnChanges {
   onSortChange(event: SortEventArg, field: number) {
     if (event.direction === SortDirection.ASC) {
       // 转成数字才能按照数字排序
-      this.csvFilterList = orderBy(this.csvFilterList, [(data) => parseInt(data[field])], ['asc'])
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      this.csvFilterList = orderBy(this.csvFilterList, [(data:any) => parseInt(data[field])], ['asc'])
 
     } else if (event.direction === SortDirection.DESC) {
-      this.csvFilterList = orderBy(this.csvFilterList, [(data) => parseInt(data[field])], ['desc'])
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      this.csvFilterList = orderBy(this.csvFilterList, [(data:any) => parseInt(data[field])], ['desc'])
 
     }
     else {

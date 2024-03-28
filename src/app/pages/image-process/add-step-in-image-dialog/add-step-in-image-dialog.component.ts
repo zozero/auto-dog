@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { StepTableFormComponent } from "../../../shared/components/form/step-table-form/step-table-form.component";
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import { defaultEncodeObj, defaultStepData } from '../../../core/mock/step-mock';
 import { TableHttpService } from '../../../core/services/https/table-http.service';
 import { Papa } from 'ngx-papaparse';

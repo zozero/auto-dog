@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { InputGroupModule } from 'ng-devui/input-group';
 import { defaultTaskData } from '../../../../core/mock/task-mock';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import { TaskTableType } from '../../../../core/interface/table-type';
 
 @Component({

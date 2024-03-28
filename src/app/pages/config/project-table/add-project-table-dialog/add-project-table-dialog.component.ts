@@ -8,7 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectModule } from 'ng-devui/select';
 import { InputGroupModule } from 'ng-devui/input-group';
 import { DevUIModule } from 'ng-devui';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import { TipsDialogService } from '../../../../core/services/tips-dialog/tips-dialog.service';
 import { projectTable } from '../../../../core/services/dexie-db/project-table.service';
 import { executionSideTable } from '../../../../core/services/dexie-db/execution-side-table.service';

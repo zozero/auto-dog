@@ -6,7 +6,7 @@ import { InputNumberModule, ToastService } from 'ng-devui';
 import { ImageMatchMethodType } from '../../../../core/interface/table-type';
 import { TranslateModule } from '@ngx-translate/core';
 import { defaultImageMatchMethodArgs } from '../../../../core/mock/match-mock';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import { ImageHttpService } from '../../../../core/services/https/image-http.service';
 
 @Component({

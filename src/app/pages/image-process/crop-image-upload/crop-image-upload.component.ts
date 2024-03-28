@@ -5,7 +5,7 @@ import { FormModule } from 'ng-devui/form';
 import { matchMethodList } from '../../../core/mock/match-mock';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'ng-devui/button';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import { MatchMethodType } from '../../../core/interface/table-type';
 import { ProjectInfo } from '../../../core/interface/config-type';
 import { CropImageInfo } from '../../../core/interface/image-type';

@@ -8,7 +8,7 @@ import { DevUIModule, DialogService } from 'ng-devui';
 import { SimulatorInfo } from '../../../core/interface/config-type';
 import { I18nModule } from 'ng-devui/i18n';
 import { SimulatorTableDialogComponent } from './simulator-table-dialog/simulator-table-dialog.component';
-import { remove } from 'lodash';
+import { remove } from 'lodash-es';
 import { simulatorType } from '../../../core/mock/config-mock';
 import { simulatorTable } from '../../../core/services/dexie-db/simulator-table.service';
 
@@ -95,7 +95,7 @@ export class SimulatorTableComponent {
 
   deleteData(id: number) {
     void simulatorTable.deleteSimulatorInfo(id).finally(() => {
-      remove(this.dataList, (data) => {
+      remove(this.dataList, (data:any) => {
         return data.id === id;
       });
     });

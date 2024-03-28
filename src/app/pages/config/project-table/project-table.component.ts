@@ -8,7 +8,7 @@ import { InputGroupModule } from 'ng-devui/input-group';
 import { DevUIModule, DialogService, ToastService } from 'ng-devui';
 import { ProjectInfo, SimulatorInfo } from '../../../core/interface/config-type';
 import { I18nModule } from 'ng-devui/i18n';
-import { remove } from 'lodash';
+import { remove } from 'lodash-es';
 import { AddProjectTableDialogComponent } from './add-project-table-dialog/add-project-table-dialog.component';
 import { executionSideTable } from '../../../core/services/dexie-db/execution-side-table.service';
 import { simulatorTable } from '../../../core/services/dexie-db/simulator-table.service';
@@ -138,7 +138,7 @@ export class ProjectTableComponent implements OnInit {
   // 删除数据
   deleteData(id: number) {
     void projectTable.deleteProjectInfo(id).finally(() => {
-      remove(this.dataList, (data) => {
+      remove(this.dataList, (data:any) => {
         return data.id === id;
       });
     });

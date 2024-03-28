@@ -19,16 +19,16 @@ export interface ExecuteInfo {
 // 执行的结果信息，就是把今日需要执行的重新加入到这个表中
 export interface ExecuteResultInfo {
     id?: number;
-    // 任务名
-    name: string;
+    // 执行所需要信息
+    executeInfo: ExecuteInfo;
     // 项目名
     projectName: string;
     // 开始时间
     start?: Date;
     // 结束时间
     end?: Date;
-    // 执行状态，-1未预期；0未执行；1已执行
-    status: number;
+    // 执行状态，未预期；未执行；正在执行；已执行
+    status: string;
     // 修改的时间
     updateTime?: Date;
     // 记录创建的时间

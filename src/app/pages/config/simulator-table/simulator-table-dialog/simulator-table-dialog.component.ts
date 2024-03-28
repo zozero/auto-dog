@@ -5,7 +5,7 @@ import { SelectModule } from 'ng-devui/select';
 import { InputGroupModule } from 'ng-devui/input-group';
 import { DevUIModule } from 'ng-devui';
 
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import { defaultSimulatorInfo, simulatorType } from '../../../../core/mock/config-mock';
 import { TipsDialogService } from '../../../../core/services/tips-dialog/tips-dialog.service';
 import { simulatorTable } from '../../../../core/services/dexie-db/simulator-table.service';

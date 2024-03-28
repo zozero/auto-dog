@@ -2,7 +2,8 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "cli": {
     "schematicCollections": [
-      "@angular-eslint/schematics"
+      "@angular-eslint/schematics",
+      "@ngrx/schematics"
     ]
   },
   "version": 1,
@@ -38,7 +39,6 @@
             "styles": [
               "src/styles.scss",
               "node_modules/ng-devui/devui.min.css",
-              "node_modules/@worktile/gantt/styles/index.scss",
               "node_modules/@devui-design/icons/icomoon/devui-icon.css"
             ],
             "scripts": [],

@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { SelectModule } from 'ng-devui/select';
 import { InputNumberModule } from 'ng-devui';
 import { executeInfoTable } from '../../../core/services/dexie-db/execute-table.service';
-import { cloneDeep, findIndex } from 'lodash';
+import { cloneDeep, findIndex } from 'lodash-es';
 import { getDay, getDate } from 'date-fns';
 import { from, filter } from 'rxjs';
 
@@ -245,7 +245,6 @@ export class DragPeriodicComponent implements OnInit {
       }
     }
   }
-
 
   // 原数据批量选中
   onBatchSelectRaw(item: MyDragDropType) {

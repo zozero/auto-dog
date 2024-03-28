@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ExecutionSideInfo } from '../../../../core/interface/config-type';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DevUIModule } from 'ng-devui';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import { defaultExecutionSideInfo } from '../../../../core/mock/config-mock';
 import { TipsDialogService } from '../../../../core/services/tips-dialog/tips-dialog.service';
 import { executionSideTable } from '../../../../core/services/dexie-db/execution-side-table.service';

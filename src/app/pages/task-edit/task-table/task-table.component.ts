@@ -7,7 +7,7 @@ import { InputGroupModule } from 'ng-devui/input-group';
 import { TableHttpService } from '../../../core/services/https/table-http.service';
 import { Papa, ParseResult } from 'ngx-papaparse';
 import { TipsDialogService } from '../../../core/services/tips-dialog/tips-dialog.service';
-import { filter, orderBy } from 'lodash';
+import { filter, orderBy } from 'lodash-es';
 import { defaultEncode } from '../../../core/mock/app-mock';
 import { TaskTableFormComponent } from "../../../shared/components/form/task-table-form/task-table-form.component";
 import { DownloadFileService } from '../../../core/services/https/download-file.service';
@@ -217,10 +217,12 @@ export class TaskTableComponent implements OnInit, OnChanges {
   onSortChange(event: SortEventArg, field: number) {
     if (event.direction === SortDirection.ASC) {
       // 转成数字才能按照数字排序
-      this.csvFilterList = orderBy(this.csvFilterList, [(data) => parseInt(data[field])], ['asc'])
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      this.csvFilterList = orderBy(this.csvFilterList, [(data:any) => parseInt(data[field])], ['asc'])
 
     } else if (event.direction === SortDirection.DESC) {
-      this.csvFilterList = orderBy(this.csvFilterList, [(data) => parseInt(data[field])], ['desc'])
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      this.csvFilterList = orderBy(this.csvFilterList, [(data:any) => parseInt(data[field])], ['desc'])
 
     }
     else {

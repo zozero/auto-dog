@@ -25,7 +25,6 @@ export class AppComponent {
   // 当前的主菜单，默认为配置
   currentMenu: AppMenuItemType = this.menuList[0];
 
-
   constructor(
     private electronService: ElectronService,
     private translate: TranslateService,
@@ -36,6 +35,7 @@ export class AppComponent {
     
     this.translate.setDefaultLang('zh');
     this.systemInfo();
+
   }
 
   // 设置保存的菜单
@@ -82,4 +82,5 @@ export class AppComponent {
       console.log('Run in browser');
     }
   }
+
 }

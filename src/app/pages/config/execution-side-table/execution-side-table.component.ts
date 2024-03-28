@@ -6,7 +6,7 @@ import { InputGroupModule } from 'ng-devui/input-group';
 import { DevUIModule, DialogService } from 'ng-devui';
 import { ExecutionSideInfo } from '../../../core/interface/config-type';
 import { I18nModule } from 'ng-devui/i18n';
-import { remove } from 'lodash';
+import { remove } from 'lodash-es';
 import { AddExecutionSideInfoDialogComponent } from './add-execution-side-info-dialog/add-execution-side-info-dialog.component';
 import { executionSideTable } from '../../../core/services/dexie-db/execution-side-table.service';
 
@@ -90,7 +90,7 @@ export class ExecutionSideTableComponent {
 
   deleteData(id: number) {
     void executionSideTable.deleteExecutionSideInfo(id).finally(() => {
-      remove(this.dataList, (data) => {
+      remove(this.dataList, (data:any) => {
         return data.id === id;
       });
     });

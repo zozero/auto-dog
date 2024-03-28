@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { InputNumberModule, LoadingService } from 'ng-devui';
 import { StepTableType, TestStepDataType } from '../../../../core/interface/table-type';
 import { TranslateModule } from '@ngx-translate/core';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import { TableHttpService } from '../../../../core/services/https/table-http.service';
 import { defaultBehaviorEncode, defaultDirectionEncode, defaultEncodeObj, defaultMethodEncode, defaultStepData, defaultZJEncode } from '../../../../core/mock/step-mock';
 import { ModalComponent } from 'ng-devui/modal';
