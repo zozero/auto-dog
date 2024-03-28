@@ -24,7 +24,7 @@ export class DexieDBService extends Dexie {
   constructor() {
     // 传递数据库的名称
     super('AutoDog');
-    this.version(1.4).stores({
+    this.version(1.51).stores({
       configDataTable: '++id,createTime,updateTime',
       executionSideInfoTable: '++id,&ipPort,updateTime,createTime',
       simulatorInfoTable: '++id,&name,&ipPort,type,updateTime,createTime',

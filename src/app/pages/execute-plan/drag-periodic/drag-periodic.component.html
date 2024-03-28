@@ -31,10 +31,11 @@
                         [responseEdgeWidth]="'20px'">
                         <!-- 可以拿区的区域 -->
                         <li dDraggable *ngFor="let item of taskListEvery;let i=index;" [dragScope]="'periodic'"
-                            [dragHandleClass]="'drag-handle'" [dragData]="item" 
+                            [dragHandleClass]="'drag-handle'" [dragData]="item"
                             (dragStartEvent)="onDragStart(taskListEvery,i,'每天')" class="list-group-item ">
                             <span> {{ item['数据']['name'] }}</span>
-                            <d-input-number [max]="1" [min]="1" size="sm" [(ngModel)]="item['数据']['executionDay']" class="input-number"></d-input-number>
+                            <d-input-number [max]="1" [min]="1" size="sm" [(ngModel)]="item['数据']['executionDay']"
+                                class="input-number"></d-input-number>
                         </li>
                     </ul>
                 </div>
@@ -53,15 +54,10 @@
                         <li dDraggable *ngFor="let item of taskListWeek;let i=index;" [dragScope]="'periodic'"
                             [dragHandleClass]="'drag-handle'" [dragData]="item"
                             (dragStartEvent)="onDragStart(taskListWeek,i,'每周')" class="list-group-item">
-                            <span > {{ item['数据']['name'] }}</span>
-                            <d-input-number 
-                            size="sm" 
-                            [max]="6" 
-                            [min]="0"  
-                            [(ngModel)]="item['数据']['executionDay']"
-                            class="input-number" 
-                            (afterValueChanged)="onChangeExecutionDay($event,item['数据']['id'])"
-                            ></d-input-number>
+                            <span> {{ item['数据']['name'] }}</span>
+                            <d-input-number size="sm" [max]="6" [min]="0" [(ngModel)]="item['数据']['executionDay']"
+                                class="input-number"
+                                (afterValueChanged)="onChangeExecutionDay($event,item['数据'])"></d-input-number>
                         </li>
                     </ul>
                 </div>
@@ -77,19 +73,13 @@
                     <ul class="list-group drop-el devui-scrollbar" dDropScrollEnhanced [direction]="'v'"
                         [responseEdgeWidth]="'20px'">
                         <!-- 可以拿区的区域 -->
-                        <li dDraggable *ngFor="let item of taskListMonth;let i=index;"  [dragScope]="'periodic'"
+                        <li dDraggable *ngFor="let item of taskListMonth;let i=index;" [dragScope]="'periodic'"
                             [dragHandleClass]="'drag-handle'" [dragData]="item"
                             (dragStartEvent)="onDragStart(taskListMonth,i,'每月')" class="list-group-item">
-                            <span > {{ item['数据']['name'] }}</span>
-                            <d-input-number 
-                            size="sm" 
-                            [max]="31" 
-                            [min]="1"  
-                            [(ngModel)]="item['数据']['executionDay']" 
-                            class="input-number"
-                            (afterValueChanged)="onChangeExecutionDay($event,item['数据']['id'])"
-                          
-                            ></d-input-number>
+                            <span> {{ item['数据']['name'] }}</span>
+                            <d-input-number size="sm" [max]="31" [min]="1" [(ngModel)]="item['数据']['executionDay']"
+                                class="input-number"
+                                (afterValueChanged)="onChangeExecutionDay($event,item['数据'])"></d-input-number>
                         </li>
 
                     </ul>
@@ -100,17 +90,17 @@
         <d-col [dSpan]="4">
             <!-- 可以放置的区域 -->
             <div class="card card-outline-primary mb-3" dDroppable dDropScrollEnhanced [switchWhileCrossEdge]="true"
-                [dropScope]="['periodic','today']" (dropEvent)="onDropToday($event,taskListToday)"
-                [defaultDropPosition]="'closest'">
+                [dropScope]="['periodic','today']" (dropEvent)="onDropToday($event)" [defaultDropPosition]="'closest'">
                 <div class="card-header">今日任务</div>
                 <div class="card-block">
                     <ul class="list-group drop-el devui-scrollbar" dSortable dDropScrollEnhanced [direction]="'v'"
                         [responseEdgeWidth]="'20px'">
                         <!-- 可以拿区的区域 -->
+                        <!-- 可以排序，就是可以在内部上下拖拽 -->
                         <li dDraggable *ngFor="let item of taskListToday;let i=index;" [dragScope]="'today'"
-                            [dragHandleClass]="'drag-handle'" [dragData]="item"
-                            (dragStartEvent)="onDragStart(taskListToday,i,'今日')" class="list-group-item ">
-                            {{ item['数据']['name'] }}
+                            [dragHandleClass]="'drag-handle'" [dragData]="item" class="list-group-item ">
+                            {{ item['executeInfo']['name'] }}
+                            <d-badge class="span-space" [count]="i+1" bgColor="#F2F2F3" textColor="#7A7E87"> </d-badge>
                         </li>
 
                     </ul>
@@ -124,7 +114,6 @@
                 [dropScope]="['periodic','today']" (dropEvent)="onDropDelete($event)">
                 <div class="card-header">删除</div>
                 <div class="card-block list-group" dDraggable>
-                    <!-- 可以排序，就是可以在内部上下拖拽 -->
                     <div class="trash-zone">
                         <div class="icon icon-delete"></div>
                         <div class="info">拖这里可以删除它。</div>

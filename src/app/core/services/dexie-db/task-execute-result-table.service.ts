@@ -14,8 +14,8 @@ export class TaskExecuteResultTableService extends DexieDBService {
   }
 
   // 添加一条数据
-  async addtTaskExecuteResultInfo(data: TaskExecuteResultInfo) {
-    await this.tableAddData(this.oneTable, data);
+  async addtTaskExecuteResultInfo(data: TaskExecuteResultInfo): Promise<number> {
+    return await this.tableAddData(this.oneTable, data);
   }
 
   // 更新数据
@@ -27,6 +27,25 @@ export class TaskExecuteResultTableService extends DexieDBService {
   async queryAllTaskExecuteResultInfos() {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return await this.oneTable.toArray();
+  }
+
+ // 获取某项目今日的所有数据
+ async queryAllProjectTaskExecuteResultInfos(xiao:any[],da:any[]) {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  return await this.oneTable.where(['projectName','createTime']).between(xiao,da,true,true).sortBy('sort');
+}
+
+
+  // 返回最后一条数据
+  async queryTaskExecuteResultLastInfo() {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return await this.oneTable.orderBy('id').last();
+  }
+
+  // 返回某项目最后一条数据
+  async queryProjectTaskExecuteResultLastInfo(projectName: string) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return await this.oneTable.where({ projectName: projectName }).last();
   }
 
   // 删除一条数据
