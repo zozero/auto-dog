@@ -289,14 +289,15 @@ export class DragPeriodicComponent implements OnInit, OnChanges {
     }
   }
 
-  // 放下 删除
+  // 放下删除
   onDropDelete(e: DropEvent) {
     const dragData = e.dragData
     // 如果是周期里面来的移除
     if (dragData['类型'] !== undefined) {
       this.listClassify(dragData['类型'] as string)?.splice(dragData['原索引'] as number, 1)
+      void this.removeTaskInfo(dragData['数据'] as TaskExecuteInfo)
     } else {
-      // 如果是今日里面的数据
+      // 如果是今日任务里面的数据
       const taskExecuteData = dragData as TaskExecuteResultInfo;
       this.removeTodayItem(taskExecuteData)
     }
@@ -314,7 +315,20 @@ export class DragPeriodicComponent implements OnInit, OnChanges {
       void taskExecuteResultInfoTable.deleteTaskExecuteResultInfo(data['id'] as number)
     }
   }
-
+  // 移除由周期删除的任务执行结果信息的数据和相应周期数据
+  async removeTaskInfo(data: TaskExecuteInfo) {
+    await executeInfoTable.deleteExecuteInfo(data['id'] as number);
+    // 根据信息的id找到数据的位置
+    const index = findIndex(
+      this.taskListToday,
+      (o: TaskExecuteResultInfo) => {
+        return o['executeInfo']['id'] === data['id'];
+      })
+    if (index != -1) {
+      await taskExecuteResultInfoTable.deleteTaskExecuteResultInfo(this.taskListToday[index]['id'] as number)
+      this.taskListToday.splice(index, 1)
+    }
+  }
   // 今日执行添加指定的数据
   addTodayItem(data: TaskExecuteInfo) {
     if (data['periodic'] === '每天') {
