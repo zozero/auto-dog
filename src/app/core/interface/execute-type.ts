@@ -23,6 +23,8 @@ export interface TaskExecuteResultInfo {
     executeInfo: TaskExecuteInfo;
     // 项目名
     projectName: string;
+    // 排序
+    sort?:number;
     // 开始时间
     start?: Date;
     // 结束时间

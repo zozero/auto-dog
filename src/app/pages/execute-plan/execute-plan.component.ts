@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { ProjectMenusComponent } from '../../shared/components/project-menus/project-menus.component';
 import { DragPeriodicComponent } from "./drag-periodic/drag-periodic.component";
 import { ExecuteEditComponent } from "./execute-edit/execute-edit.component";
+import { taskExecuteResultInfoTable } from '../../core/services/dexie-db/task-execute-result-table.service';
 
 
 
@@ -86,5 +87,19 @@ export class ExecutePlanComponent implements OnInit {
   // 执行按钮点击
   onClickExecute(){
     console.log(this.dragPeriodic.taskListToday)
+    void this.getProjectTaskResult();
+  }
+
+  async getProjectTaskResult(){
+    // 设置0点到24点，即今天的数据
+    const d0 = new Date().setHours(0, 0, 0, 0);
+    const d24 = new Date().setHours(24, 0, 0, 0);
+    const taskListToday = await taskExecuteResultInfoTable.queryAllProjectTaskExecuteResultInfos(
+      [this.currentProject.name, new Date(d0)],
+      [this.currentProject.name, new Date(d24)]
+    );
+
+    console.log("taskListToday",taskListToday)
+
   }
 }

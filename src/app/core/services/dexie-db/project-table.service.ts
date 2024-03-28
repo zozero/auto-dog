@@ -13,15 +13,15 @@ export class ProjectTableService extends DexieDBService {
   oneTable: Table = this.projectInfoTable;
   constructor() {
     super();
-   
+
   }
 
   // 初始化配置数据
   async initProjectInfo() {
-    const currentPronject:ProjectInfo={
-      name:defaultProjectData.name,
-      executionSideInfo:await executionSideTable.queryExecutionSideLastInfo(),
-      simulatorInfo:await simulatorTable.querySimulatorLastInfo()
+    const currentPronject: ProjectInfo = {
+      name: defaultProjectData.name,
+      executionSideInfo: await executionSideTable.queryExecutionSideLastInfo(),
+      simulatorInfo: await simulatorTable.querySimulatorLastInfo()
     }
     // 可以原地让它返回为空这样就不需要让整个函数为异步了
     // const count=await this.getDataCount(this.executionSideInfoTable);
@@ -34,7 +34,6 @@ export class ProjectTableService extends DexieDBService {
 
   // 添加一条数据
   async addtProjectInfo(data: ProjectInfo) {
-    
     await this.tableAddData(this.oneTable, data);
   }
   // 更新数据
@@ -46,11 +45,11 @@ export class ProjectTableService extends DexieDBService {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return await this.oneTable.orderBy('id').first();
   }
- // 查询一条数据
- async queryProjectInfo(id: number) {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-  return await this.oneTable.get(id);
-}
+  // 查询一条数据
+  async queryProjectInfo(id: number) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return await this.oneTable.get(id);
+  }
 
   // 返回最后一条数据
   async queryProjectLastInfo() {
@@ -65,7 +64,7 @@ export class ProjectTableService extends DexieDBService {
   }
 
   // 获取所有数据，通过名字
-  async queryProjectInfoByName(name:string):Promise<ProjectInfo> {
+  async queryProjectInfoByName(name: string): Promise<ProjectInfo> {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return await this.oneTable.where("name").equalsIgnoreCase(name).first();
   }

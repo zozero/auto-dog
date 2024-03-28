@@ -48,6 +48,11 @@ export class TaskExecuteResultTableService extends DexieDBService {
     return await this.oneTable.where({ projectName: projectName }).last();
   }
 
+  // 当前项目中结果数量
+  async queryProjectTaskResultCount(projectName:string):Promise<number>{
+    return await this.oneTable.where('projectName').equals(projectName).count();
+  }
+  
   // 删除一条数据
   async deleteTaskExecuteResultInfo(id: number) {
     await this.oneTable.delete(id);

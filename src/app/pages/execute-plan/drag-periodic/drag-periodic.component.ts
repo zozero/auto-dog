@@ -117,7 +117,7 @@ export class DragPeriodicComponent implements OnInit, OnChanges {
       const tmpExecuteInfo = await this.addDataToExecute(e.dragData as MyDragDropType);
       // 不能去修改原始的数据，因为原始数据的类型和数据库数据的类型是不一样的。
       const tmpData: MyDragDropType = cloneDeep(e.dragData);
-      tmpData['数据']=tmpExecuteInfo;
+      tmpData['数据'] = tmpExecuteInfo;
       this.listClassify(type)?.push(tmpData);
       // 这里是判断新的任务是否可以直接加入今日任务列表的。
       this.addTodayItem(tmpExecuteInfo);
@@ -139,7 +139,7 @@ export class DragPeriodicComponent implements OnInit, OnChanges {
       periodic: data['类型'] as string,
       sort: sort
     }
-    console.log("tableData",tableData)
+    console.log("tableData", tableData)
     tableData['id'] = await executeInfoTable.addtExecuteInfo(tableData)
     return tableData
   }
@@ -158,10 +158,10 @@ export class DragPeriodicComponent implements OnInit, OnChanges {
 
       // 不能去修改原始的数据，因为原始数据的类型和数据库数据的类型是不一样的。
       const tmpData: MyDragDropType = cloneDeep(listData[i]);
-      tmpData['数据']=tmpExecuteInfo;
+      tmpData['数据'] = tmpExecuteInfo;
       this.listClassify(type)?.push(tmpData)
       this.addTodayItem(tmpExecuteInfo);
- 
+
     }
   }
   // 获取和设置初始的周期数据
@@ -221,13 +221,17 @@ export class DragPeriodicComponent implements OnInit, OnChanges {
 
   // 添加任务执行结果到数据库
   async addTaskExecuteResult(data: TaskExecuteInfo, position: number = -1) {
+    // 当前项目中的数量
+    const count = await taskExecuteResultInfoTable.queryProjectTaskResultCount(this.projectInfo.name);
+
     const newData: TaskExecuteResultInfo = {
       executeInfo: data,
       projectName: data.projectName,
       status: '未执行',
+      sort: count + 1
     }
     // 添加数据到数据库
-    newData['id']=await taskExecuteResultInfoTable.addtTaskExecuteResultInfo(newData);
+    newData['id'] = await taskExecuteResultInfoTable.addtTaskExecuteResultInfo(newData);
     // 添加数据到指定位置
     if (position == -1) {
       this.taskListToday.splice(this.taskListToday.length, 0, newData)
@@ -291,11 +295,11 @@ export class DragPeriodicComponent implements OnInit, OnChanges {
     // 如果是周期里面来的移除
     if (dragData['类型'] !== undefined) {
       this.listClassify(dragData['类型'] as string)?.splice(dragData['原索引'] as number, 1)
-    }else{
+    } else {
       // 如果是今日里面的数据
       const taskExecuteData = dragData as TaskExecuteResultInfo;
       this.removeTodayItem(taskExecuteData)
-    } 
+    }
   }
   // 移除今日执行的指定数据
   removeTodayItem(data: TaskExecuteResultInfo) {
@@ -342,7 +346,7 @@ export class DragPeriodicComponent implements OnInit, OnChanges {
     // 等于意味着，这个来自于外部，周期里的数据
     if (e.dragFromIndex === -1) {
       const newIndex = e.dropIndex;
-      void this.addTaskExecuteResult(e.dragData['数据'] as TaskExecuteInfo,newIndex)
+      void this.addTaskExecuteResult(e.dragData['数据'] as TaskExecuteInfo, newIndex)
     } else {
       // 这里意味着用户可能需要排序
       const oldIndex = e.dragFromIndex as number;
@@ -358,10 +362,10 @@ export class DragPeriodicComponent implements OnInit, OnChanges {
 
   // 今日任务列表的排序
   async todayListSortChange() {
-    for(let i=0;i<this.taskListToday.length;++i){
+    for (let i = 0; i < this.taskListToday.length; ++i) {
       await taskExecuteResultInfoTable.updateTaskExecuteResultInfo(
         this.taskListToday[i]['id'] as number,
-        {sort:i}
+        { sort: i }
       )
     }
   }
