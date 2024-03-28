@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DexieDBService } from './dexie-db.service';
 import { Table } from 'dexie';
-import { ExecuteInfo } from '../../interface/execute-type';
+import { TaskExecuteInfo } from '../../interface/execute-type';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class ExecuteTableService extends DexieDBService {
   }
 
   // 添加一条数据
-  async addtExecuteInfo(data: ExecuteInfo): Promise<number> {
+  async addtExecuteInfo(data: TaskExecuteInfo): Promise<number> {
     return await this.tableAddData(this.oneTable, data);
   }
 
@@ -30,12 +30,12 @@ export class ExecuteTableService extends DexieDBService {
   }
 
   // 返回最后一条数据
-  async queryExecuteLastInfo(): Promise<ExecuteInfo | undefined> {
+  async queryExecuteLastInfo(): Promise<TaskExecuteInfo | undefined> {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return await this.oneTable.orderBy('id').last();
   }
 
-  async queryWhereExecuteInfo(dict: { [key: string]: any }): Promise<ExecuteInfo[]> {
+  async queryWhereExecuteInfo(dict: { [key: string]: any }): Promise<TaskExecuteInfo[]> {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return await this.oneTable.where(dict).sortBy('sort')
   }

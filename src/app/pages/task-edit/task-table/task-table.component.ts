@@ -65,6 +65,7 @@ export class TaskTableComponent implements OnInit, OnChanges {
     console.log("TaskTableComponent");
 
   }
+  // 自动监听到改变事件后执行
   ngOnChanges(changes: SimpleChanges) {
     if ('projectInfo' in changes) {
       this.getcsvFile();

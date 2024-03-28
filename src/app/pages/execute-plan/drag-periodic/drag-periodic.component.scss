@@ -106,13 +106,11 @@ d-row {
     width: 66%;
   }
 
-  .input-number {
-
-
-    .devui-input {
-      text-align: center!important;
-      border: none !important;
-      background: $devui-info-bg !important;
+  .input-number ::ng-deep{
+    input{
+      text-align: centert !important;
+      border: none;
+      background: $devui-info-bg;
       box-shadow: $devui-shadow-length-base $devui-shadow;
     }
 

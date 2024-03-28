@@ -6,7 +6,7 @@ import {
   ProjectInfo,
   SimulatorInfo,
 } from '../../interface/config-type';
-import { ExecuteInfo, ExecuteResultInfo } from '../../interface/execute-type';
+import { TaskExecuteInfo, TaskExecuteResultInfo } from '../../interface/execute-type';
 
 @Injectable({
   providedIn: 'root',
@@ -18,19 +18,19 @@ export class DexieDBService extends Dexie {
   executionSideInfoTable!: Table<ExecutionSideInfo, number>;
   simulatorInfoTable!: Table<SimulatorInfo, number>;
   projectInfoTable!: Table<ProjectInfo, number>;
-  executeInfoTable!: Table<ExecuteInfo, number>;
-  executeResultInfoTable!: Table<ExecuteResultInfo, number>;
+  executeInfoTable!: Table<TaskExecuteInfo, number>;
+  taskExecuteResultInfoTable!: Table<TaskExecuteResultInfo, number>;
 
   constructor() {
     // 传递数据库的名称
     super('AutoDog');
-    this.version(1.3).stores({
+    this.version(1.4).stores({
       configDataTable: '++id,createTime,updateTime',
       executionSideInfoTable: '++id,&ipPort,updateTime,createTime',
       simulatorInfoTable: '++id,&name,&ipPort,type,updateTime,createTime',
       projectInfoTable: '++id,&name,updateTime,createTime',
       executeInfoTable: '++id,name,[periodic+projectName],sort,projectName,updateTime,createTime',
-      executeResultInfoTable: '++id,executeInfo,projectName,start,end,status,updateTime,createTime',
+      taskExecuteResultInfoTable: '++id,executeInfo,projectName,start,end,status,updateTime,createTime',
     });
 
     //   this.on('populate', () => this.populate());

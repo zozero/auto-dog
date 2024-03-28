@@ -64,9 +64,6 @@ export class ExecutePlanComponent implements OnInit {
       .initCurrentProject()
       .then((data) => {
         this.currentProject = data;
-
-        // 暂时注释
-        // this.setTaskFileList()
       })
       .then(() => {
         // 关闭载入提示
@@ -79,7 +76,6 @@ export class ExecutePlanComponent implements OnInit {
     this.taskFileList = []
     this.tabActiveId = ''
     this.currentProject = currentProject;
-    this.setTaskFileList()
 
   }
   // 当前激活的栏
@@ -87,35 +83,6 @@ export class ExecutePlanComponent implements OnInit {
     console.log(tab);
   }
 
-  setTaskFileList() {
-    // 数据载入提示
-    const loadTip = this.loadingService.open();
-    this.tableHttp.getTaskCsvFileList(
-      this.currentProject.executionSideInfo?.ipPort as string,
-      this.currentProject.name
-    ).subscribe({
-      next: (data: any) => {
-        // eslint-disable-next-line prefer-const
-        let newArr: string[] = []
-        data.forEach((el: string) => {
-          newArr.push(el.split('.')[0])
-        });
-        this.taskFileList = newArr
-        if (!this.tabActiveId) {
-          this.tabActiveId = this.taskFileList[0]
-        }
-      },
-      error: (err: any) => {
-        this.tipsDialog.responseErrorState(err.status as number)
-        // 关闭载入提示
-        loadTip.loadingInstance.close();
-      },
-      complete: () => {
-        // 关闭载入提示
-        loadTip.loadingInstance.close();
-      }
-    })
-  }
   // 执行按钮点击
   onClickExecute(){
     console.log(this.dragPeriodic.taskListToday)
