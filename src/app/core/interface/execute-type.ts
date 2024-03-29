@@ -49,7 +49,9 @@ export interface MyDragDropType {
 }
 
 export interface TaskStoreState{
-    projectName:string;
+    id?:string;
+    // 这边添加项目名用于额外
+    // projectName?:string;
     // 任务结果列表
-    taskResultList:TaskExecuteResultInfo[];
+    taskResultList?:TaskExecuteResultInfo[];
 }

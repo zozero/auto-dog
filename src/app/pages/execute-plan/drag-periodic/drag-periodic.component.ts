@@ -215,7 +215,7 @@ export class DragPeriodicComponent implements OnInit, OnChanges {
       );
       return;
     } else {
-      this.calculateTodayTaskList();
+      await this.calculateTodayTaskList();
     }
   }
 
@@ -243,13 +243,13 @@ export class DragPeriodicComponent implements OnInit, OnChanges {
   }
 
   // 计算今日任务列表 
-  calculateTodayTaskList() {
+  async calculateTodayTaskList() {
     // 先清除所有数据
     this.taskListToday = [];
     // 每日要做的直接加入到今日要做到中
-    this.taskListEvery.forEach((data: MyDragDropType) => {
-      void this.addTaskExecuteResult(data['数据']);
-    })
+    for (let i = 0; i < this.taskListEvery.length; i++) {
+      await this.addTaskExecuteResult(this.taskListEvery[i]['数据']);
+    }
 
     // 每周几
     const weekDay = getDay(new Date())
@@ -258,9 +258,14 @@ export class DragPeriodicComponent implements OnInit, OnChanges {
         return weekDay === data['数据']['executionDay'];
       })
     );
-    weekObservable.subscribe((data: MyDragDropType) => {
-      void this.addTaskExecuteResult(data['数据']);
+    const weekDatas: TaskExecuteInfo[]=[]
+    await weekObservable.forEach((data: MyDragDropType) => {
+      weekDatas.push(data['数据'] )
+     
     })
+    for (let i = 0; i < weekDatas.length; i++) {
+      await this.addTaskExecuteResult(weekDatas[i]);
+    }
 
     // 每月几号
     const monthDate = getDate(new Date())
@@ -269,9 +274,15 @@ export class DragPeriodicComponent implements OnInit, OnChanges {
         return monthDate === data['数据']['executionDay'];
       })
     );
-    monthObservable.subscribe((data: MyDragDropType) => {
-      void this.addTaskExecuteResult(data['数据']);
+    const monthDatas: TaskExecuteInfo[]=[]
+    await monthObservable.forEach((data: MyDragDropType) => {
+      monthDatas.push(data['数据'] )
+     
     })
+    for (let i = 0; i < monthDatas.length; i++) {
+      await this.addTaskExecuteResult(monthDatas[i]);
+    }
+
   }
 
   // 列表分类，用于返回不同类型的列表对象

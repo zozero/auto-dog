@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { ProjectInfo } from '../../core/interface/config-type';
 import { TableHttpService } from '../../core/services/https/table-http.service';
 import { ProjectMenuService } from '../../core/services/menus/project-menu.service';
@@ -9,6 +9,10 @@ import { ProjectMenusComponent } from '../../shared/components/project-menus/pro
 import { DragPeriodicComponent } from "./drag-periodic/drag-periodic.component";
 import { ExecuteEditComponent } from "./execute-edit/execute-edit.component";
 import { taskExecuteResultInfoTable } from '../../core/services/dexie-db/task-execute-result-table.service';
+import { Store, select } from '@ngrx/store';
+import { TaskActions } from '../../store/task/task.actions';
+import { TaskExecuteResultInfo } from '../../core/interface/execute-type';
+import { selectTaskList } from '../../store/task/task.selectors';
 
 
 
@@ -31,7 +35,8 @@ export function random(min: number, max: number) {
   ]
 })
 export class ExecutePlanComponent implements OnInit {
-
+  // ngrx的依赖注入
+  private store=inject(Store)
   currentProject!: ProjectInfo;
   // 表格文件名列表
   taskFileList: string[] = []
@@ -53,6 +58,13 @@ export class ExecutePlanComponent implements OnInit {
 
   ngOnInit(): void {
     this.projecMenuInit();
+    
+    const beforeList=this.store.pipe(select(selectTaskList))
+    beforeList.subscribe((data:any)=>{
+      console.log("beforeListbeforeList")
+      console.log("data",data)
+    }
+    )
     console.log("ExecutePlanComponent");
   }
 
@@ -94,12 +106,29 @@ export class ExecutePlanComponent implements OnInit {
     // 设置0点到24点，即今天的数据
     const d0 = new Date().setHours(0, 0, 0, 0);
     const d24 = new Date().setHours(24, 0, 0, 0);
-    const taskListToday = await taskExecuteResultInfoTable.queryAllProjectTaskExecuteResultInfos(
+    const taskListToday:TaskExecuteResultInfo[] = await taskExecuteResultInfoTable.queryAllProjectTaskExecuteResultInfos(
       [this.currentProject.name, new Date(d0)],
       [this.currentProject.name, new Date(d24)]
     );
 
-    console.log("taskListToday",taskListToday)
+    this.store.dispatch(TaskActions['追加任务']({
+      taskResultList:taskListToday
+    }))
+
+  }
+
+  async onClickExecute2(){
+    // 设置0点到24点，即今天的数据
+    const d0 = new Date().setHours(0, 0, 0, 0);
+    const d24 = new Date().setHours(24, 0, 0, 0);
+    const taskListToday:TaskExecuteResultInfo[] = await taskExecuteResultInfoTable.queryAllProjectTaskExecuteResultInfos(
+      [this.currentProject.name, new Date(d0)],
+      [this.currentProject.name, new Date(d24)]
+    );
+
+    this.store.dispatch(TaskActions['添加任务']({
+      taskResultList:taskListToday
+    }))
 
   }
 }
