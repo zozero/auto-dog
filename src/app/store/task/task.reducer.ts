@@ -19,6 +19,15 @@ export const TaskReducer = createReducer(
   }),
   on(TaskActions['删除任务'],(state,action)=>TaskAdater.removeOne(action.id,state)),
   on(TaskActions['单改任务'], (state, { update }) => {
+    // 预留的修改方法
+    // const UpdateNum = {
+    //   id: 1,
+    //   changes: { executing: true }
+    // }
+    // // 状态管理添加新的任务
+    // this.store.dispatch(ProjectActions['单改任务']({
+    //   update: UpdateNum
+    // }))
     return TaskAdater.updateOne(update, state);
   }),
    on(TaskActions['多改任务'], (state, { updates }) => {

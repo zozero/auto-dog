@@ -23,9 +23,10 @@ import { LayoutModule } from 'ng-devui';
 
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { metaReducers, reducers } from './store/task';
+import { metaReducers, reducers } from './store';
 import { EffectsModule } from '@ngrx/effects';
 import { TaskEffects } from './store/task/task.effects';
+import { ProjectEffects } from './store/project/project.effects';
 
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>  new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -63,7 +64,7 @@ const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>  new Transl
       traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
       connectInZone: true // If set to true, the connection is established within the Angular zone
     }),
-    EffectsModule.forRoot([TaskEffects]),
+    EffectsModule.forRoot([TaskEffects, ProjectEffects]),
   
   ],
   providers: [],

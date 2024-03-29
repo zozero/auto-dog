@@ -17,14 +17,14 @@ export interface TaskExecuteInfo {
 }
 
 // 执行的结果信息，就是把今日需要执行的重新加入到这个表中
-export interface TaskExecuteResultInfo { 
+export interface TaskExecuteResultInfo {
     id?: number;
     // 执行所需要信息
     executeInfo: TaskExecuteInfo;
     // 项目名
     projectName: string;
     // 排序
-    sort?:number;
+    sort?: number;
     // 开始时间
     start?: Date;
     // 结束时间
@@ -39,20 +39,20 @@ export interface TaskExecuteResultInfo {
 
 export interface MyDragDropType {
     // 执行信息类，暂时添加string
-    数据: TaskExecuteInfo ;
+    数据: TaskExecuteInfo;
     // 用于删除列表中指定索引的数据
     原索引?: number;
     // 选中的状态，用于多选拖拽
     选中?: boolean;
     // 放置在什么类型上，是天，还是周，还是月
-    类型?: string ;
+    类型?: string;
 }
 
-// 当前已经用不到了
-// export interface TaskStoreState{
-//     id?:string;
-//     // 这边添加项目名用于额外
-//     // projectName?:string;
-//     // 任务结果列表
-//     taskResultList?:TaskExecuteResultInfo[];
-// }
+export interface ProjectStateType {
+    id: number;
+    projectName: string;
+    // 是否在进行中
+    executing: boolean;
+    // 激活状态，使用了本地存储功能，所以它暂时没有用
+    activing?:boolean;
+}

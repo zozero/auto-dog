@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { TaskExecuteResultInfo } from '../../core/interface/execute-type';
 import { Update } from '@ngrx/entity';

@@ -7,7 +7,12 @@ import { ProjectInfo } from '../../interface/config-type';
   providedIn: 'root',
 })
 export class ProjectMenuService {
-  constructor(private myLocalStorage: MyLocalStorageService) {}
+
+
+  constructor(
+    private myLocalStorage: MyLocalStorageService
+  ) { }
+  // 设置当前项目名
   async initCurrentProject() {
     let currentProject: ProjectInfo;
     // 获取已保存的菜单
@@ -19,4 +24,6 @@ export class ProjectMenuService {
     }
     return currentProject;
   }
+
+
 }

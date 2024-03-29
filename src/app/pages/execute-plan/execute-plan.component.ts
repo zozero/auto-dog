@@ -8,12 +8,16 @@ import { CommonModule } from '@angular/common';
 import { ProjectMenusComponent } from '../../shared/components/project-menus/project-menus.component';
 import { DragPeriodicComponent } from "./drag-periodic/drag-periodic.component";
 import { ExecuteEditComponent } from "./execute-edit/execute-edit.component";
-import { taskExecuteResultInfoTable } from '../../core/services/dexie-db/task-execute-result-table.service';
 import { Store, select } from '@ngrx/store';
 import { TaskActions } from '../../store/task/task.actions';
-import { TaskExecuteResultInfo } from '../../core/interface/execute-type';
 import { selectTaskAll, selectTaskList } from '../../store/task/task.selectors';
 import { filter, sortBy } from 'lodash-es';
+import { ProjectActions } from '../../store/project/project.actions';
+import { ExecutionHttpService } from '../../core/services/https/execution-http.service';
+import { TestTaskDataType } from '../../core/interface/table-type';
+import { taskExecuteResultInfoTable } from '../../core/services/dexie-db/task-execute-result-table.service';
+import { selectProjectById } from '../../store/project/project.selectors';
+import { ProjectStateType } from '../../core/interface/execute-type';
 
 
 
@@ -53,11 +57,13 @@ export class ExecutePlanComponent implements OnInit {
     private menu: ProjectMenuService,
     private loadingService: LoadingService,
     private dialogService: DialogService,
-    private tipsDialog: TipsDialogService,
+    private tipsService: TipsDialogService,
     private toastService: ToastService,
+    private executionHttpService: ExecutionHttpService
   ) { }
 
   ngOnInit(): void {
+    console.log("ExecutePlanComponent");
     this.projecMenuInit();
 
     const beforeList = this.store.pipe(select(selectTaskList))
@@ -66,7 +72,6 @@ export class ExecutePlanComponent implements OnInit {
       console.log("data", data)
     }
     )
-    console.log("ExecutePlanComponent");
   }
 
   // 初始化项目菜单
@@ -118,32 +123,100 @@ export class ExecutePlanComponent implements OnInit {
     console.log("开始执行吧")
     // 获取所有数据
     const exeDatas = this.store.pipe(select(selectTaskAll))
-    exeDatas.subscribe((data) => {
+    exeDatas.subscribe((exeData) => {
       // 先找到当前的项目的数据
-      data=filter(data,o=>o['projectName']===this.currentProject.name)
+      exeData = filter(exeData, o => o['projectName'] === this.currentProject.name)
       // 再去排序
-      data = sortBy(data, o=>o['sort'])
+      exeData = sortBy(exeData, o => o['sort'])
 
-      if (data[0] !== undefined) {
-        // 发送请求
+      let projectStateBool = false
+      const selectIdObser = this.store.pipe(select(selectProjectById(this.currentProject.id as number)))
+      selectIdObser.subscribe((projectStateData) => {
         
-        // 删除任务
-        this.store.dispatch(TaskActions['删除任务']({ id: data[0]['id'] as number }))
-      }
+        projectStateBool = projectStateData?.executing as boolean;
 
+      })
+
+      if (exeData[0] !== undefined && exeData[0]['status'] === '未执行' && !projectStateBool) {
+        // 修改数据库中任务的执行状态
+        void taskExecuteResultInfoTable.updateTaskExecuteResultInfo(exeData[0]['id'] as number, {
+          status: '执行中'
+        })
+
+        // 开始前，修改项目执行状态
+        const UpdateNum = {
+          id: this.currentProject.id as number,
+          changes: { executing: true }
+        }
+        // 状态管理添加新的任务
+        this.store.dispatch(ProjectActions['单改任务']({
+          update: UpdateNum
+        }))
+
+
+        const testData: TestTaskDataType = {
+          模拟器的ip和端口: this.currentProject.simulatorInfo?.ipPort as string,
+          项目名: this.currentProject.name,
+          任务名: exeData[0]['executeInfo']['name']
+        }
+        // 发送请求
+        this.executionHttpService.postTestTaskData(
+          this.currentProject.executionSideInfo?.ipPort as string,
+          testData
+        ).subscribe({
+          next: (httpData: any) => {
+            // 修改数据库中任务的执行状态
+            void taskExecuteResultInfoTable.updateTaskExecuteResultInfo(exeData[0]['id'] as number, {
+              status: '已执行'
+            })
+
+            this.toastService.open({
+              value: [{ severity: 'success', summary: '摘要', content: httpData }],
+            })
+          },
+          error: (err: any) => {
+            // 修改数据库中任务的执行状态
+            void taskExecuteResultInfoTable.updateTaskExecuteResultInfo(exeData[0]['id'] as number, {
+              status: '未预期'
+            })
+
+            this.tipsService.responseErrorState(err.status as number)
+
+          },
+          complete: () => {
+            console.log("complete")
+            // 删除任务
+            this.changeProjectState(this.currentProject.id as number, false)
+            this.store.dispatch(TaskActions['删除任务']({ id: exeData[0]['id'] as number }))
+          }
+        }
+        )
+      }
     })
   }
 
-  async onClickExecute2() {
-    // 设置0点到24点，即今天的数据
-    const d0 = new Date().setHours(0, 0, 0, 0);
-    const d24 = new Date().setHours(24, 0, 0, 0);
-    const taskListToday: TaskExecuteResultInfo[] = await taskExecuteResultInfoTable.queryAllProjectTaskExecuteResultInfos(
-      [this.currentProject.name, new Date(d0)],
-      [this.currentProject.name, new Date(d24)]
-    );
+  // 修改项目的状态id
+  changeProjectState(id: number, state: boolean) {
+    // 完成后，修改项目执行状态
+    const UpdateNum = {
+      id: id,
+      changes: { executing: state }
+    }
+    // 状态管理添加新的任务
+    this.store.dispatch(ProjectActions['单改任务']({
+      update: UpdateNum
+    }))
+  }
 
-
+  onClickProject() {
+    const UpdateNum = {
+      id: 1,
+      changes: { executing: true }
+    }
+    // 状态管理添加新的任务
+    this.store.dispatch(ProjectActions['单改任务']({
+      update: UpdateNum
+    }))
 
   }
 }

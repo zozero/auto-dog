@@ -32,7 +32,7 @@ export class AppComponent {
     private myLocalStorage: MyLocalStorageService
   ) {
     this.getStoreMenu();
-    
+    this.setAutoExecute();
     this.translate.setDefaultLang('zh');
     this.systemInfo();
 
@@ -49,6 +49,14 @@ export class AppComponent {
         this.navigateCurMenu();
       }
     });
+  }
+  
+  // 判断自动执行是否设置过，没有就赋值为自动状态
+  setAutoExecute(){
+    const tmpStr: string | null = this.myLocalStorage.get('autoExe');
+    if (tmpStr === null) {
+      this.myLocalStorage.set('autoExe', '1');
+    }
   }
 
   // 主菜单栏某项被点击

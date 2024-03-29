@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { SelectModule } from 'ng-devui/select';
 import { InputNumberModule } from 'ng-devui';
 import { executeInfoTable } from '../../../core/services/dexie-db/execute-table.service';
-import { cloneDeep, findIndex } from 'lodash-es';
+import { cloneDeep, findIndex, filter as lodashFIlter } from 'lodash-es';
 import { getDay, getDate } from 'date-fns';
 import { from, filter } from 'rxjs';
 import { TableHttpService } from '../../../core/services/https/table-http.service';
@@ -210,15 +210,15 @@ export class DragPeriodicComponent implements OnInit, OnChanges {
     const d10 = d1?.setHours(0, 0, 0, 0);
     const d20 = new Date().setHours(0, 0, 0, 0);
     const d24 = new Date().setHours(24, 0, 0, 0);
-
     // 如果说最后一条数据是今日的数据，必须让今日的数据从数据库中取出
     if (lastData !== undefined && d10 === d20) {
       // 返回某项目的今日项目
       this.taskListToday = await taskExecuteResultInfoTable.queryAllProjectTaskExecuteResultInfos(
-        [this.projectInfo.name, new Date(d20), '未执行'],
-        [this.projectInfo.name, new Date(d24), '未执行']
+        [this.projectInfo.name, new Date(d20)],
+        [this.projectInfo.name, new Date(d24)]
       );
-
+      this.taskListToday = lodashFIlter(this.taskListToday, ['status', '未执行']);
+      console.log("this.taskListToday ", this.taskListToday)
       // 状态管理添加新的任务
       this.store.dispatch(TaskActions['加多任务']({
         // 这里必须深度克隆，不然会导致对象类型发生改变

@@ -3,13 +3,14 @@ import { State, TaskAdater, taskFeatureKey } from './task.reducer';
 import { EntityState } from '@ngrx/entity';
 import { TaskExecuteResultInfo } from '../../core/interface/execute-type';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const {selectIds,selectEntities,selectAll,selectTotal}=TaskAdater.getSelectors();
 
 // 获取相应状态的对象
 export const selectTask=createFeatureSelector<State>(taskFeatureKey)
 // 创建选择器，直接使用了上面提供的实体类方法
 // 这个以对象方式，返回所有内容
-export const selectTaskList=createSelector(selectTask,selectAll)
+export const selectTaskList=createSelector(selectTask,selectEntities)
 // 这个以数组方式，返回所有id
 export const selectTaskIds=createSelector(selectTask,selectIds)
 // 这个以数组方式，返回所有内容
