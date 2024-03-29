@@ -48,10 +48,11 @@ export interface MyDragDropType {
     类型?: string ;
 }
 
-export interface TaskStoreState{
-    id?:string;
-    // 这边添加项目名用于额外
-    // projectName?:string;
-    // 任务结果列表
-    taskResultList?:TaskExecuteResultInfo[];
-}
+// 当前已经用不到了
+// export interface TaskStoreState{
+//     id?:string;
+//     // 这边添加项目名用于额外
+//     // projectName?:string;
+//     // 任务结果列表
+//     taskResultList?:TaskExecuteResultInfo[];
+// }

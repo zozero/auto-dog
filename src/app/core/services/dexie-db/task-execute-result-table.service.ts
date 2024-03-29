@@ -32,7 +32,7 @@ export class TaskExecuteResultTableService extends DexieDBService {
  // 获取某项目今日的所有数据
  async queryAllProjectTaskExecuteResultInfos(xiao:any[],da:any[]) {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-  return await this.oneTable.where(['projectName','createTime']).between(xiao,da,true,true).sortBy('sort');
+  return await this.oneTable.where(['projectName','createTime','status']).between(xiao,da,true,true).sortBy('sort');
 }
 
 

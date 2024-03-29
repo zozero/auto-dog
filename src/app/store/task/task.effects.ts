@@ -10,17 +10,17 @@ export class TaskEffects {
 
 
   constructor(private actions$: Actions) {}
-  addTaskList=createEffect(()=>{
-    return this.actions$.pipe(
-      // 找到要执行的动作
-      ofType(TaskActions['追加任务']),
-      // 与这个动作合并
-      mergeMap((arg)=>{
-        return timer(5000).pipe(
-          // 延迟2秒然后继续执行
-          map(()=>TaskActions['添加任务'](arg))
-        )
-      })
-    )
-  })
+  // addTaskList=createEffect(()=>{
+  //   return this.actions$.pipe(
+  //     // 找到要执行的动作
+  //     ofType(TaskActions['追加任务']),
+  //     // 与这个动作合并
+  //     mergeMap((arg)=>{
+  //       return timer(5000).pipe(
+  //         // 延迟2秒然后继续执行
+  //         map(()=>TaskActions['加个任务'](arg))
+  //       )
+  //     })
+  //   )
+  // })
 }
