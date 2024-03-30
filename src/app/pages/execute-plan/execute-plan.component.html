@@ -7,16 +7,19 @@
         <d-col [dSpan]="20" style="padding-left: 6px;padding-right: 6px;">
             <!-- 功能按钮 -->
             <div class="bottom">
-                <d-button [disabled]="executing" style="padding-right: 6px;" bsStyle="primary" (btnClick)="onClickExecute()">执行</d-button>
-                <d-button style="padding-right: 6px;" bsStyle="primary" (btnClick)="onClickProject()">查看项目状态</d-button>
-          
+                <d-button [disabled]="executing" style="padding-right: 6px;" bsStyle="primary"
+                    (btnClick)="onClickExecute()">执行</d-button>
+                <d-button style="padding-right: 6px;" bsStyle="common" (btnClick)="onClickPause()" [showLoading]="pauseLoading">暂停</d-button>
+                <d-button style="padding-right: 6px;" bsStyle="common" (btnClick)="onClearTask()">清空任务</d-button>
+                <d-button style="padding-right: 6px;" bsStyle="common" (btnClick)="onClearTaskResult()">清空表格</d-button>
+
             </div>
-            
+
             <!-- 拖拽设置周期 -->
             <app-drag-periodic #dragPeriodic [projectInfo]="currentProject" style="padding: 0;"></app-drag-periodic>
 
             <!-- 执行的表格显示，显示状态 -->
-            <app-execute-result-table #executeResultTable  [projectInfo]="currentProject"></app-execute-result-table>
+            <app-execute-result-table #executeResultTable [projectInfo]="currentProject"></app-execute-result-table>
 
         </d-col>
     </d-row>

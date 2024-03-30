@@ -24,11 +24,11 @@ export interface TaskExecuteResultInfo {
     // 项目名
     projectName: string;
     // 项目id
-    projectId:number;
+    projectId: number;
     // 执行端网络地址和端口
-    executeSideIpPort:string;
+    executeSideIpPort: string;
     // 模拟器网络地址和端口
-    simulatorInfoIpPort:string;
+    simulatorInfoIpPort: string;
     // 排序
     sort?: number;
     // 开始时间
@@ -56,11 +56,14 @@ export interface MyDragDropType {
 
 export interface ProjectStateType {
     id: number;
+    // 项目名
     projectName: string;
     // 是否在进行中
     executing: boolean;
+    // 是否暂停
+    pause: boolean;
     // 是否开启订阅，
     // subscriptHandle?:Subscription
     // 激活状态，使用了本地存储功能，所以它暂时没有用
-    activing?:boolean;
+    activing?: boolean;
 }

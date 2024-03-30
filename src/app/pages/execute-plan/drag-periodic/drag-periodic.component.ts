@@ -456,9 +456,18 @@ export class DragPeriodicComponent implements OnInit, OnChanges {
       (o: TaskExecuteResultInfo) => {
         return o['id'] === data['id'];
       })
-      
+
     if (index !== -1) {
       this.taskListToday.splice(index, 1)
     }
+  }
+
+  // 清空各种任务列表
+  async clearAllTaskListByExecutePlan() {
+    await executeInfoTable.clearTable();
+    this.taskListEvery = []
+    this.taskListWeek = []
+    this.taskListMonth = []
+    this.taskListToday = []
   }
 }

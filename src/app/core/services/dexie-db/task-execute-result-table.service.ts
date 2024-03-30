@@ -29,11 +29,11 @@ export class TaskExecuteResultTableService extends DexieDBService {
     return await this.oneTable.toArray();
   }
 
- // 获取某项目今日的所有数据
- async queryAllProjectTaskExecuteResultInfos(xiao:any[],da:any[]) {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-  return await this.oneTable.where(['projectName','createTime']).between(xiao,da,true,true).sortBy('sort');
-}
+  // 获取某项目今日的所有数据
+  async queryAllProjectTaskExecuteResultInfos(xiao: any[], da: any[]) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return await this.oneTable.where(['projectName', 'createTime']).between(xiao, da, true, true).sortBy('sort');
+  }
 
 
   // 返回最后一条数据
@@ -49,18 +49,23 @@ export class TaskExecuteResultTableService extends DexieDBService {
   }
 
   // 当前项目中结果列表
-  async queryProjectTaskResultInfos(projectName:string):Promise<TaskExecuteResultInfo[]>{
+  async queryProjectTaskResultInfos(projectName: string): Promise<TaskExecuteResultInfo[]> {
     return await this.oneTable.where('projectName').equals(projectName).reverse().toArray() as TaskExecuteResultInfo[];
   }
 
   // 当前项目中结果数量
-  async queryProjectTaskResultCount(projectName:string):Promise<number>{
+  async queryProjectTaskResultCount(projectName: string): Promise<number> {
     return await this.oneTable.where('projectName').equals(projectName).count();
   }
-  
+
   // 删除一条数据
   async deleteTaskExecuteResultInfo(id: number) {
     await this.oneTable.delete(id);
+  }
+
+  // 清空表格
+  async clearTable() {
+    await this.oneTable.clear()
   }
 }
 export const taskExecuteResultInfoTable = new TaskExecuteResultTableService();

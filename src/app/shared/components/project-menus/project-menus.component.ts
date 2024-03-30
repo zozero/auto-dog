@@ -70,7 +70,8 @@ export class ProjectMenusComponent implements OnInit {
       tmpDatas.push({
         id: data.id as number,
         projectName: data.name,
-        executing: false
+        executing: false,
+        pause:false
       })
     })
     this.store.dispatch(ProjectActions['加多任务']({

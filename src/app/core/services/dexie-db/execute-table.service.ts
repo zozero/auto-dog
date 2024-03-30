@@ -44,5 +44,10 @@ export class ExecuteTableService extends DexieDBService {
   async deleteExecuteInfo(id: number) {
     await this.oneTable.delete(id);
   }
+
+  // 清空表格
+  async clearTable() {
+    await this.oneTable.clear()
+  }
 }
 export const executeInfoTable = new ExecuteTableService();

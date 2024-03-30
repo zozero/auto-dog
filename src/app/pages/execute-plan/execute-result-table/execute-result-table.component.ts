@@ -41,8 +41,8 @@ export class ExecuteResultTableComponent implements OnInit, OnChanges {
   stateFilterList: FilterConfig[] = []
   // 任务名称刷选列表
   taskNameFilterList: FilterConfig[] = []
-   // ngrx的依赖注入
-   private store = inject(Store)
+  // ngrx的依赖注入
+  private store = inject(Store)
   constructor(
     private loadingService: LoadingService,
     private tableHttp: TableHttpService,
@@ -161,4 +161,13 @@ export class ExecuteResultTableComponent implements OnInit, OnChanges {
     }
 
   }
+  // 清空任务结果信息表
+  async clearAllTaskResultListByExecutePlan() {
+    await taskExecuteResultInfoTable.clearTable();
+    this.taskResultList = []
+    this.taskResultFilterList = []
+    this.stateFilterList = []
+    this.taskNameFilterList = []
+  }
+
 }

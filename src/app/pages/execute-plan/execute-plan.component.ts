@@ -9,7 +9,7 @@ import { ProjectMenusComponent } from '../../shared/components/project-menus/pro
 import { DragPeriodicComponent } from "./drag-periodic/drag-periodic.component";
 import { Store, select } from '@ngrx/store';
 import { TaskActions } from '../../store/task/task.actions';
-import { selectTaskAll, selectTaskList } from '../../store/task/task.selectors';
+import { selectTaskAll } from '../../store/task/task.selectors';
 import { cloneDeep, filter, sortBy } from 'lodash-es';
 import { ProjectActions } from '../../store/project/project.actions';
 import { ExecutionHttpService } from '../../core/services/https/execution-http.service';
@@ -18,6 +18,7 @@ import { taskExecuteResultInfoTable } from '../../core/services/dexie-db/task-ex
 import { selectProjectById } from '../../store/project/project.selectors';
 import { TaskExecuteResultInfo } from '../../core/interface/execute-type';
 import { ExecuteResultTableComponent } from "./execute-result-table/execute-result-table.component";
+import { Subscription, timer } from 'rxjs';
 
 
 
@@ -25,19 +26,19 @@ export function random(min: number, max: number) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 @Component({
-    selector: 'app-execute-plan',
-    standalone: true,
-    templateUrl: './execute-plan.component.html',
-    styleUrl: './execute-plan.component.scss',
-    imports: [
-        CommonModule,
-        ProjectMenusComponent,
-        DevUIModule,
-        LoadingModule,
-        TabsModule,
-        DragPeriodicComponent,
-        ExecuteResultTableComponent
-    ]
+  selector: 'app-execute-plan',
+  standalone: true,
+  templateUrl: './execute-plan.component.html',
+  styleUrl: './execute-plan.component.scss',
+  imports: [
+    CommonModule,
+    ProjectMenusComponent,
+    DevUIModule,
+    LoadingModule,
+    TabsModule,
+    DragPeriodicComponent,
+    ExecuteResultTableComponent
+  ]
 })
 export class ExecutePlanComponent implements OnInit {
   // ngrx的依赖注入
@@ -49,10 +50,12 @@ export class ExecutePlanComponent implements OnInit {
   tabActiveId!: string | number;
   // 执行按钮的状态
   executing: boolean = false;
+  // 暂停按钮载入
+  pauseLoading: boolean = false;
   // 获取任务拖拽组件
   @ViewChild('dragPeriodic') public dragPeriodic!: DragPeriodicComponent;
   // 获取任务表格组件
-  @ViewChild('executeEdit') public executeResultTable!: ExecuteResultTableComponent;
+  @ViewChild('executeResultTable') public executeResultTable!: ExecuteResultTableComponent;
 
   constructor(
     private tableHttp: TableHttpService,
@@ -67,13 +70,6 @@ export class ExecutePlanComponent implements OnInit {
   ngOnInit(): void {
     console.log("ExecutePlanComponent");
     this.projecMenuInit();
-
-    const beforeList = this.store.pipe(select(selectTaskList))
-    beforeList.subscribe((data: any) => {
-      console.log("beforeListbeforeList")
-      console.log("data", data)
-    }
-    )
   }
 
   // 初始化项目菜单
@@ -109,15 +105,10 @@ export class ExecutePlanComponent implements OnInit {
     })
   }
 
-  // 当前激活的栏
-  activeTabChange(tab: any) {
-    console.log(tab);
-  }
 
   // 执行按钮点击
   onClickExecute() {
-    console.log(this.dragPeriodic.taskListToday)
-    void this.getProjectTaskResult();
+    this.getProjectTaskResult();
   }
 
   getProjectTaskResult() {
@@ -128,23 +119,44 @@ export class ExecutePlanComponent implements OnInit {
     const tmpProjectInfo = cloneDeep(this.currentProject)
     // 获取所有数据
     const exeDatas = this.store.pipe(select(selectTaskAll))
+    let tmpSubscribe: Subscription = new Subscription()
 
-    const tmpSubscribe = exeDatas.subscribe((exeData) => {
-      console.log("tmpProjectInfo", tmpProjectInfo)
+    tmpSubscribe = exeDatas.subscribe((exeData) => {
+      //  exeDatas.subscribe((exeData) => {
+      if (tmpSubscribe === null || tmpSubscribe === undefined) {
+        return;
+      }
 
       // 先找到当前的项目的数据
       exeData = filter(exeData, o => o['projectName'] === tmpProjectInfo.name)
       // 再去排序
       exeData = sortBy(exeData, o => o['sort'])
 
+      if (exeData === undefined || exeData.length===0) {
+        tmpSubscribe.unsubscribe()
+        return;
+      }
+
       let projectStateBool = false
       const selectIdObser = this.store.pipe(select(selectProjectById(tmpProjectInfo.id as number)))
-      selectIdObser.subscribe((projectStateData) => {
+      const tmpSelectIdSubscribe = selectIdObser.subscribe((projectStateData) => {
         projectStateBool = projectStateData?.executing as boolean;
       })
+      // 执行完后直接停止订阅
+      tmpSelectIdSubscribe.unsubscribe()
 
-      const firstExeData:TaskExecuteResultInfo = cloneDeep(exeData[0]);
-      if (firstExeData !== undefined && firstExeData['status'] === '未执行' && !projectStateBool) {
+      const firstExeData: TaskExecuteResultInfo = cloneDeep(exeData[0]);
+
+      // 先获取暂停状态，提前判断一波
+      let pauseState = false
+      const pauseObser = this.store.pipe(select(selectProjectById(firstExeData['projectId'])))
+      const pauseSubscribe = pauseObser.subscribe((projectStateData: any) => {
+        pauseState = projectStateData?.pause as boolean;
+      })
+      // 使用完后停止订阅
+      pauseSubscribe.unsubscribe();
+
+      if (firstExeData !== undefined && firstExeData['status'] === '未执行' && !projectStateBool && !pauseState) {
         // 告诉状态管理，该项目有任务正在进行
         this.changeProjectState(firstExeData['projectId'], true)
         // 修改数据库中任务的执行状态
@@ -175,7 +187,7 @@ export class ExecutePlanComponent implements OnInit {
         ).subscribe({
           next: (httpData: any) => {
             // 修改数据库中任务的执行状态
-            void taskExecuteResultInfoTable.updateTaskExecuteResultInfo(exeData[0]['id'] as number, {
+            void taskExecuteResultInfoTable.updateTaskExecuteResultInfo(firstExeData['id'] as number, {
               status: '已执行',
               end: new Date()
             })
@@ -186,7 +198,7 @@ export class ExecutePlanComponent implements OnInit {
           },
           error: (err: any) => {
             // 修改数据库中任务的执行状态
-            void taskExecuteResultInfoTable.updateTaskExecuteResultInfo(exeData[0]['id'] as number, {
+            void taskExecuteResultInfoTable.updateTaskExecuteResultInfo(firstExeData['id'] as number, {
               status: '未预期'
             })
 
@@ -195,18 +207,27 @@ export class ExecutePlanComponent implements OnInit {
           },
           complete: () => {
             console.log("complete")
-            // 删除任务
-            this.changeProjectState(firstExeData['projectId'], false)
-            this.store.dispatch(TaskActions['删除任务']({ id: firstExeData['id'] as number }))
-            this.dragPeriodic.changeTodayTaskListByExecutePlan(firstExeData)
+            console.log("exeData",exeData)
+            if (firstExeData !== undefined) {
+              // 删除任务
+              this.store.dispatch(TaskActions['删除任务']({ id: firstExeData['id'] as number }))
+              this.dragPeriodic.changeTodayTaskListByExecutePlan(firstExeData)
+               // 更改项目状态
+               this.changeProjectState(firstExeData['projectId'], false)
+            }
           }
         }
         )
       }
 
-      // 如果已经没有数据就停止订阅
-      if (exeData.length === 1) {
-        tmpSubscribe.unsubscribe();
+      // 如果已经没有数据就停止订阅，
+      if (exeData?.length <= 1 || pauseState) {
+        // 重置暂停
+        this.onResetPause(firstExeData['projectId']);
+        // 重置暂停
+        if (tmpSubscribe !== undefined && tmpSubscribe !== null) {
+          tmpSubscribe.unsubscribe();
+        }
       }
     })
 
@@ -236,5 +257,113 @@ export class ExecutePlanComponent implements OnInit {
       update: UpdateNum
     }))
 
+  }
+
+  // 暂停按钮
+  onClickPause() {
+    // 正在载入
+    this.pauseLoading = true
+
+    // 开始前，修改项目执行状态，无法暂停正在进行中的任务
+    const UpdateNum = {
+      id: this.currentProject.id as number,
+      changes: { pause: true }
+    }
+    // 状态管理添加新的任务
+    this.store.dispatch(ProjectActions['单改任务']({
+      update: UpdateNum
+    }))
+
+    // 防止多次误触，或每反应过来
+    timer(1000).subscribe(() => {
+      this.pauseLoading = false
+    })
+  }
+
+  // 重置暂停按钮
+  onResetPause(id: number) {
+    // 开始前，修改项目执行状态，无法暂停正在进行中的任务
+    const UpdateNum = {
+      id: id,
+      changes: { pause: false }
+    }
+    // 状态管理添加新的任务
+    this.store.dispatch(ProjectActions['单改任务']({
+      update: UpdateNum
+    }))
+  }
+
+  // 清空任务
+  onClearTask() {
+    const config = {
+      id: 'execute-dialog',
+      width: '346px',
+      maxHeight: '600px',
+      zIndex: 1050,
+      backdropCloseable: true,
+      html: true,
+    };
+    const results = this.dialogService.open({
+      ...config,
+      dialogtype: 'failed',
+      title: '警告!!!',
+      content: "它会清空所有项目的所有任务数据！！！",
+      buttons: [
+        {
+          cssClass: 'danger',
+          text: '确定',
+          handler: () => {
+            void this.dragPeriodic.clearAllTaskListByExecutePlan()
+            results.modalInstance.hide();
+          },
+        },
+        {
+          id: 'btn-cancel',
+          cssClass: 'primary',
+          text: '取消',
+          handler: () => {
+            results.modalInstance.hide();
+          },
+        },
+      ],
+    });
+
+
+  }
+
+  // 清空任务结果信息
+  onClearTaskResult() {
+    const config = {
+      id: 'execute-result-dialog',
+      width: '346px',
+      maxHeight: '600px',
+      zIndex: 1050,
+      backdropCloseable: true,
+      html: true,
+    };
+    const results = this.dialogService.open({
+      ...config,
+      dialogtype: 'failed',
+      title: '警告!!!',
+      content: "它会清空所有项目的所有任务结果数据！！！",
+      buttons: [
+        {
+          cssClass: 'danger',
+          text: '确定',
+          handler: () => {
+            void this.executeResultTable.clearAllTaskResultListByExecutePlan()
+            results.modalInstance.hide();
+          },
+        },
+        {
+          id: 'btn-cancel',
+          cssClass: 'primary',
+          text: '取消',
+          handler: () => {
+            results.modalInstance.hide();
+          },
+        },
+      ],
+    });
   }
 }
