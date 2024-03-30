@@ -13,7 +13,8 @@
     <app-project-table #projectTable [dataList]="projectInfoList"></app-project-table>
   </div>
   <hr />
-  <div style="padding-top: 20px;">
-    <p>版本信息：{{ version }}</p>
+  <div style="padding-top: 8px;">
+    <p>版本信息：{{ version }}  <d-button style="margin-left: 10px;" bsStyle="text" bsSize="md" (btnClick)="resetDatabase()">重置数据库</d-button></p>
+   
   </div>
 </div>

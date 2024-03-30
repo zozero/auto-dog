@@ -75,7 +75,8 @@ export class DexieDBService extends Dexie {
 
   // 初始化表格，先删除表格，后重新打开表格
   async initTable() {
-    await this.delete();
-    await this.open();
+    return dexieDB.delete().then(()=>dexieDB.open());
   }
 }
+
+export const dexieDB = new DexieDBService();
