@@ -35,18 +35,18 @@ export class SimulatorTableService extends DexieDBService {
   // 更新一条数据
   async updateSimulatorInfo(key: number, data: { [keyPath: string]: any }) {
     await this.tableUpdateData(this.oneTable, key, data);
-    await this.updateProjectInfoTable(key);
+    await this.updateSimulatorInfoTable(key);
   }
 
   // 修改项目信息表的数据，更新后就执行这个,达到数据统一
-  async updateProjectInfoTable(key: number) {
+  async updateSimulatorInfoTable(key: number) {
     const projectInfoList: ProjectInfo[] = await projectTable.queryAllProjectInfos();
     for (let i = 0; i < projectInfoList.length; i++) {
-      if (projectInfoList[i].executionSideInfo?.id === key) {
-        const sideData: SimulatorInfo = await this.querySimulatorInfoByid(key)
+      if (projectInfoList[i].simulatorInfo?.id === key) {
+        const simData: SimulatorInfo = await this.querySimulatorInfoByid(key)
         await projectTable.updateProjectInfo(
           projectInfoList[i]['id'] as number,
-          { executionSideInfo: sideData }
+          { simulatorInfo: simData }
         )
       }
     }

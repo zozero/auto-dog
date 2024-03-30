@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DataTableModule, EditableTip } from 'ng-devui/data-table';
@@ -31,13 +31,15 @@ import { simulatorTable } from '../../../core/services/dexie-db/simulator-table.
 })
 export class SimulatorTableComponent {
   @Input() dataList!: SimulatorInfo[];
+  // 发送数据修改的事件
+  @Output () updateInfo: EventEmitter<any> = new EventEmitter();
   simulatorType = simulatorType;
   // 	可选，编辑提示，hover背景变色，btn展示编辑按钮
   editableTip = EditableTip.hover;
 
   constructor(private dialogService: DialogService) {}
   onSelectEditEnd(rowItem: any, field: any) {
-    this.updateData(rowItem, field);
+    void this.updateData(rowItem, field);
     rowItem[field] = false;
   }
 
@@ -47,17 +49,19 @@ export class SimulatorTableComponent {
   };
 
   beforeEditEnd = (rowItem: any, field: any) => {
-    this.updateData(rowItem, field);
+    void this.updateData(rowItem, field);
     console.log(rowItem, field);
     return true;
   };
 
-  updateData(rowItem: any, field: any) {
+  async updateData(rowItem: any, field: any) {
     const curType = field.replace('Edit', '');
     const data = {
       [curType]: rowItem[curType],
     };
-    void simulatorTable.updateSimulatorInfo(rowItem.id as number, data);
+    await simulatorTable.updateSimulatorInfo(rowItem.id as number, data);
+    // 更新时向外部组件发送修改了。
+    this.updateInfo.emit();
   }
 
   addData() {

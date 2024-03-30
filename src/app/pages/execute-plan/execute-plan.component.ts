@@ -132,7 +132,7 @@ export class ExecutePlanComponent implements OnInit {
       // 再去排序
       exeData = sortBy(exeData, o => o['sort'])
 
-      if (exeData === undefined || exeData.length===0) {
+      if (exeData === undefined || exeData.length === 0) {
         tmpSubscribe.unsubscribe()
         return;
       }
@@ -201,19 +201,21 @@ export class ExecutePlanComponent implements OnInit {
             void taskExecuteResultInfoTable.updateTaskExecuteResultInfo(firstExeData['id'] as number, {
               status: '未预期'
             })
+            this.changeProjectState(firstExeData['projectId'], false)
 
+            
             this.tipsService.responseErrorState(err.status as number)
 
           },
           complete: () => {
             console.log("complete")
-            console.log("exeData",exeData)
             if (firstExeData !== undefined) {
+              // 更改项目状态
+              this.changeProjectState(firstExeData['projectId'], false)
               // 删除任务
               this.store.dispatch(TaskActions['删除任务']({ id: firstExeData['id'] as number }))
               this.dragPeriodic.changeTodayTaskListByExecutePlan(firstExeData)
-               // 更改项目状态
-               this.changeProjectState(firstExeData['projectId'], false)
+
             }
           }
         }
@@ -221,7 +223,7 @@ export class ExecutePlanComponent implements OnInit {
       }
 
       // 如果已经没有数据就停止订阅，
-      if (exeData?.length <= 1 || pauseState) {
+      if (pauseState) {
         // 重置暂停
         this.onResetPause(firstExeData['projectId']);
         // 重置暂停
