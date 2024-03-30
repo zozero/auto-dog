@@ -11,13 +11,13 @@ import { ExecuteEditComponent } from "./execute-edit/execute-edit.component";
 import { Store, select } from '@ngrx/store';
 import { TaskActions } from '../../store/task/task.actions';
 import { selectTaskAll, selectTaskList } from '../../store/task/task.selectors';
-import { filter, sortBy } from 'lodash-es';
+import { cloneDeep, filter, sortBy } from 'lodash-es';
 import { ProjectActions } from '../../store/project/project.actions';
 import { ExecutionHttpService } from '../../core/services/https/execution-http.service';
 import { TestTaskDataType } from '../../core/interface/table-type';
 import { taskExecuteResultInfoTable } from '../../core/services/dexie-db/task-execute-result-table.service';
 import { selectProjectById } from '../../store/project/project.selectors';
-import { ProjectStateType } from '../../core/interface/execute-type';
+import { TaskExecuteResultInfo } from '../../core/interface/execute-type';
 
 
 
@@ -47,6 +47,8 @@ export class ExecutePlanComponent implements OnInit {
   taskFileList: string[] = []
   // 激活的菜单栏
   tabActiveId!: string | number;
+  // 执行按钮的状态
+  executing: boolean = false;
   // 获取任务拖拽组件
   @ViewChild('dragPeriodic') public dragPeriodic!: DragPeriodicComponent;
   // 获取任务表格组件
@@ -96,7 +98,17 @@ export class ExecutePlanComponent implements OnInit {
     this.tabActiveId = ''
     this.currentProject = currentProject;
 
+    this.setExecuteButton();
   }
+
+  // 设置执行按钮的状态
+  setExecuteButton() {
+    const selectIdObser = this.store.pipe(select(selectProjectById(this.currentProject.id as number)))
+    selectIdObser.subscribe((projectStateData) => {
+      this.executing = projectStateData?.executing as boolean;
+    })
+  }
+
   // 当前激活的栏
   activeTabChange(tab: any) {
     console.log(tab);
@@ -109,43 +121,39 @@ export class ExecutePlanComponent implements OnInit {
   }
 
   getProjectTaskResult() {
-    // 设置0点到24点，即今天的数据
-    // const d0 = new Date().setHours(0, 0, 0, 0);
-    // const d24 = new Date().setHours(24, 0, 0, 0);
-    // const taskListToday: TaskExecuteResultInfo[] = await taskExecuteResultInfoTable.queryAllProjectTaskExecuteResultInfos(
-    //   [this.currentProject.name, new Date(d0)],
-    //   [this.currentProject.name, new Date(d24)]
-    // );
-    // // 添加数据到状态管理中
-    // taskListToday.forEach((element: TaskExecuteResultInfo) => {
-    //   this.store.dispatch(TaskActions['加个任务'](element))
-    // });
     console.log("开始执行吧")
+    // 告诉状态管理，该项目有任务正在进行
+    // this.changeProjectState(this.currentProject.id as number, true)
+    // 克隆数据这样即使this.currentProject改变了也不会影响到内部的项目运行。
+    const tmpProjectInfo = cloneDeep(this.currentProject)
     // 获取所有数据
     const exeDatas = this.store.pipe(select(selectTaskAll))
-    exeDatas.subscribe((exeData) => {
+
+    const tmpSubscribe = exeDatas.subscribe((exeData) => {
+      console.log("tmpProjectInfo", tmpProjectInfo)
+
       // 先找到当前的项目的数据
-      exeData = filter(exeData, o => o['projectName'] === this.currentProject.name)
+      exeData = filter(exeData, o => o['projectName'] === tmpProjectInfo.name)
       // 再去排序
       exeData = sortBy(exeData, o => o['sort'])
 
       let projectStateBool = false
-      const selectIdObser = this.store.pipe(select(selectProjectById(this.currentProject.id as number)))
+      const selectIdObser = this.store.pipe(select(selectProjectById(tmpProjectInfo.id as number)))
       selectIdObser.subscribe((projectStateData) => {
-        
         projectStateBool = projectStateData?.executing as boolean;
-
       })
 
-      if (exeData[0] !== undefined && exeData[0]['status'] === '未执行' && !projectStateBool) {
+      const firstExeData:TaskExecuteResultInfo = cloneDeep(exeData[0]);
+      if (firstExeData !== undefined && firstExeData['status'] === '未执行' && !projectStateBool) {
+        // 告诉状态管理，该项目有任务正在进行
+        this.changeProjectState(firstExeData['projectId'], true)
         // 修改数据库中任务的执行状态
-        void taskExecuteResultInfoTable.updateTaskExecuteResultInfo(exeData[0]['id'] as number, {
+        void taskExecuteResultInfoTable.updateTaskExecuteResultInfo(firstExeData['id'] as number, {
           status: '执行中'
         })
-
         // 开始前，修改项目执行状态
         const UpdateNum = {
-          id: this.currentProject.id as number,
+          id: firstExeData.projectId,
           changes: { executing: true }
         }
         // 状态管理添加新的任务
@@ -153,15 +161,15 @@ export class ExecutePlanComponent implements OnInit {
           update: UpdateNum
         }))
 
-
+        // 请求测试任务用的数据
         const testData: TestTaskDataType = {
-          模拟器的ip和端口: this.currentProject.simulatorInfo?.ipPort as string,
-          项目名: this.currentProject.name,
-          任务名: exeData[0]['executeInfo']['name']
+          模拟器的ip和端口: firstExeData.simulatorInfoIpPort,
+          项目名: firstExeData.projectName,
+          任务名: firstExeData['executeInfo']['name']
         }
         // 发送请求
         this.executionHttpService.postTestTaskData(
-          this.currentProject.executionSideInfo?.ipPort as string,
+          firstExeData['executeSideIpPort'],
           testData
         ).subscribe({
           next: (httpData: any) => {
@@ -186,17 +194,25 @@ export class ExecutePlanComponent implements OnInit {
           complete: () => {
             console.log("complete")
             // 删除任务
-            this.changeProjectState(this.currentProject.id as number, false)
-            this.store.dispatch(TaskActions['删除任务']({ id: exeData[0]['id'] as number }))
+            this.changeProjectState(firstExeData['projectId'], false)
+            this.store.dispatch(TaskActions['删除任务']({ id: firstExeData['id'] as number }))
+            this.dragPeriodic.changeTodayTaskListByExecutePlan(firstExeData)
           }
         }
         )
       }
+
+      // 如果已经没有数据就停止订阅
+      if (exeData.length === 1) {
+        tmpSubscribe.unsubscribe();
+      }
     })
+
   }
 
   // 修改项目的状态id
   changeProjectState(id: number, state: boolean) {
+    this.executing = state
     // 完成后，修改项目执行状态
     const UpdateNum = {
       id: id,

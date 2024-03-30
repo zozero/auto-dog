@@ -41,7 +41,7 @@ export class DragPeriodicComponent implements OnInit, OnChanges {
   // ngrx的依赖注入
   private store = inject(Store)
 
-  // 任务列表 "下载", "购买", "签到", "快速行动"
+  // 任务列表 
   taskList: any[] = []
   // 每天任务列表
   taskListEvery: MyDragDropType[] = [];
@@ -239,6 +239,9 @@ export class DragPeriodicComponent implements OnInit, OnChanges {
     const newData: TaskExecuteResultInfo = {
       executeInfo: data,
       projectName: data.projectName,
+      projectId: this.projectInfo.id as number,
+      executeSideIpPort: this.projectInfo.executionSideInfo?.ipPort as string,
+      simulatorInfoIpPort: this.projectInfo.simulatorInfo?.ipPort as string,
       status: '未执行',
       sort: count + 1
     }
@@ -445,4 +448,17 @@ export class DragPeriodicComponent implements OnInit, OnChanges {
     await this.addTodayItem(taskData)
   }
 
+  // 通过父组件改变今日任务列表
+  changeTodayTaskListByExecutePlan(data: TaskExecuteResultInfo) {
+    // 根据信息的id找到数据的位置
+    const index = findIndex(
+      this.taskListToday,
+      (o: TaskExecuteResultInfo) => {
+        return o['id'] === data['id'];
+      })
+      
+    if (index !== -1) {
+      this.taskListToday.splice(index, 1)
+    }
+  }
 }

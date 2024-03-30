@@ -47,6 +47,7 @@ export class SimulatorTableComponent {
   };
 
   beforeEditEnd = (rowItem: any, field: any) => {
+    this.updateData(rowItem, field);
     console.log(rowItem, field);
     return true;
   };
