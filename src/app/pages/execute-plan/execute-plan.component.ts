@@ -7,7 +7,6 @@ import { TipsDialogService } from '../../core/services/tips-dialog/tips-dialog.s
 import { CommonModule } from '@angular/common';
 import { ProjectMenusComponent } from '../../shared/components/project-menus/project-menus.component';
 import { DragPeriodicComponent } from "./drag-periodic/drag-periodic.component";
-import { ExecuteEditComponent } from "./execute-edit/execute-edit.component";
 import { Store, select } from '@ngrx/store';
 import { TaskActions } from '../../store/task/task.actions';
 import { selectTaskAll, selectTaskList } from '../../store/task/task.selectors';
@@ -18,6 +17,7 @@ import { TestTaskDataType } from '../../core/interface/table-type';
 import { taskExecuteResultInfoTable } from '../../core/services/dexie-db/task-execute-result-table.service';
 import { selectProjectById } from '../../store/project/project.selectors';
 import { TaskExecuteResultInfo } from '../../core/interface/execute-type';
+import { ExecuteResultTableComponent } from "./execute-result-table/execute-result-table.component";
 
 
 
@@ -25,19 +25,19 @@ export function random(min: number, max: number) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 @Component({
-  selector: 'app-execute-plan',
-  standalone: true,
-  templateUrl: './execute-plan.component.html',
-  styleUrl: './execute-plan.component.scss',
-  imports: [
-    CommonModule,
-    ProjectMenusComponent,
-    DevUIModule,
-    LoadingModule,
-    TabsModule,
-    DragPeriodicComponent,
-    ExecuteEditComponent
-  ]
+    selector: 'app-execute-plan',
+    standalone: true,
+    templateUrl: './execute-plan.component.html',
+    styleUrl: './execute-plan.component.scss',
+    imports: [
+        CommonModule,
+        ProjectMenusComponent,
+        DevUIModule,
+        LoadingModule,
+        TabsModule,
+        DragPeriodicComponent,
+        ExecuteResultTableComponent
+    ]
 })
 export class ExecutePlanComponent implements OnInit {
   // ngrx的依赖注入
@@ -52,7 +52,7 @@ export class ExecutePlanComponent implements OnInit {
   // 获取任务拖拽组件
   @ViewChild('dragPeriodic') public dragPeriodic!: DragPeriodicComponent;
   // 获取任务表格组件
-  @ViewChild('executeEdit') public executeEdit!: ExecuteEditComponent;
+  @ViewChild('executeEdit') public executeResultTable!: ExecuteResultTableComponent;
 
   constructor(
     private tableHttp: TableHttpService,
@@ -149,7 +149,8 @@ export class ExecutePlanComponent implements OnInit {
         this.changeProjectState(firstExeData['projectId'], true)
         // 修改数据库中任务的执行状态
         void taskExecuteResultInfoTable.updateTaskExecuteResultInfo(firstExeData['id'] as number, {
-          status: '执行中'
+          status: '执行中',
+          start: new Date()
         })
         // 开始前，修改项目执行状态
         const UpdateNum = {
@@ -175,7 +176,8 @@ export class ExecutePlanComponent implements OnInit {
           next: (httpData: any) => {
             // 修改数据库中任务的执行状态
             void taskExecuteResultInfoTable.updateTaskExecuteResultInfo(exeData[0]['id'] as number, {
-              status: '已执行'
+              status: '已执行',
+              end: new Date()
             })
 
             this.toastService.open({

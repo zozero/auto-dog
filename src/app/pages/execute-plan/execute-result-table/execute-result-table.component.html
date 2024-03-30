@@ -1,0 +1,65 @@
+<div class="execute-result-container">
+    <d-data-table [borderType]="'bordered'" *ngIf="taskResultList.length>0"
+        [dataSource]="taskResultFilterList" [size]="'md'" [fixHeader]="true" [scrollable]="true" dLoading
+        [loading]="loadingTip" [backdrop]="true" [loadingStyle]="'infinity'" tableHeight="100%"
+        [virtualMinBufferPx]="10" [virtualMaxBufferPx]="20" [tableOverflowType]="'overlay'">
+        <thead dTableHead>
+            <tr dTableRow>
+                <th dHeadCell>索引</th>
+                <th dHeadCell [filterList]="taskNameFilterList" [filterable]="true" [filterMultiple]="true"
+                    [filterBoxWidth]="'200px'" (filterChange)="filterChangeMutil($event,taskTableHeader[0])">{{ taskTableHeader[0] }}
+                </th>
+                <th dHeadCell [filterList]="stateFilterList" [filterable]="true" [filterMultiple]="true"
+                    [filterBoxWidth]="'200px'" (filterChange)="filterChangeMutil($event,taskTableHeader[1])">{{ taskTableHeader[1] }}
+                </th>
+                <!-- <th dHeadCell [sortable]="true" [showSortIcon]="false" (sortChange)="onSortChange($event,taskTableHeader[2])">{{ taskTableHeader[2] }}</th> -->
+                <th dHeadCell>{{ taskTableHeader[2] }}</th>
+                <th dHeadCell>{{ taskTableHeader[3] }}</th>
+                <th dHeadCell>{{ taskTableHeader[4] }}</th>
+                <!-- <th dHeadCell>操作</th> -->
+            </tr>
+        </thead>
+        <tbody dTableBody>
+            <ng-template let-rowItem="rowItem" let-rowIndex="rowIndex">
+                <tr dTableRow>
+                    <td dTableCell [rowItem]="rowItem" [field]="'index'">
+                        <span>{{ rowIndex + 1 }}</span>
+                    </td>
+                    <td dTableCell [rowItem]="rowItem" [field]="taskTableHeader[0]">
+                        <span>{{ rowItem['executeInfo']['name'] }}</span>
+                    </td>
+
+                    <td dTableCell [field]="taskTableHeader[1]" [rowItem]="rowItem">
+                        <span>
+                            {{ rowItem['status'] }}
+                        </span>
+                    </td>
+
+                    <td dTableCell [field]="taskTableHeader[2]" [rowItem]="rowItem">
+                        <span>
+                            {{ rowItem['start'] | dDatePipe: 'y/M/d HH:mm:ss' }}
+                        </span>
+                    </td>
+
+                    <td dTableCell [field]="taskTableHeader[3]" [rowItem]="rowItem">
+                        <span>
+                            {{  rowItem['end'] | dDatePipe: 'y/M/d HH:mm:ss' }}
+                        </span>
+                    </td>
+
+                    <td dTableCell [field]="taskTableHeader[4]" [rowItem]="rowItem">
+                        <span>
+                            {{rowItem['createTime'] | dDatePipe: 'y/M/d HH:mm' }}
+                        </span>
+                    </td>
+
+                    <!-- <td dTableCell>
+                        <d-button bsStyle="text" [showLoading]="btnShowLoading" style="margin-right: 8px"
+                            (btnClick)="testStep(rowIndex)">测试</d-button>
+                        <d-button bsStyle="text" (btnClick)="deleteData(rowIndex)">删除</d-button>
+                    </td> -->
+                </tr>
+            </ng-template>
+        </tbody>
+    </d-data-table>
+</div>

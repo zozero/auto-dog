@@ -1,0 +1,18 @@
+.execute-result-container {
+
+     // 一定要这么设置，因为前面会包含无数内联元素导致百分比的高度无效
+        // 这里设置视口的高度就快速定位回到想要的高度
+
+        height: 39vh;
+
+        // 针对小屏幕的样式 
+        @media (max-height: 900px) {
+            height: 30vh;
+        }
+
+        // 针对小屏幕的样式 
+        @media (max-height: 600px) {
+            height: 20vh;
+        }
+
+}

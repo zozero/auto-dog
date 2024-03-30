@@ -1,5 +1,3 @@
-import { Subscription } from "rxjs";
-
 export interface TaskExecuteInfo {
     id?: number;
     // 任务名

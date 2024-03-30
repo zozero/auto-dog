@@ -6,22 +6,17 @@
         </d-col>
         <d-col [dSpan]="20" style="padding-left: 6px;padding-right: 6px;">
             <!-- 功能按钮 -->
-            <d-row class="bottom">
-               <d-col>
+            <div class="bottom">
                 <d-button [disabled]="executing" style="padding-right: 6px;" bsStyle="primary" (btnClick)="onClickExecute()">执行</d-button>
                 <d-button style="padding-right: 6px;" bsStyle="primary" (btnClick)="onClickProject()">查看项目状态</d-button>
-               </d-col>
-            </d-row>
+          
+            </div>
             
             <!-- 拖拽设置周期 -->
-            <d-row class="bottom">
-                <app-drag-periodic #dragPeriodic [projectInfo]="currentProject" style="padding: 0;"></app-drag-periodic>
-            </d-row>
+            <app-drag-periodic #dragPeriodic [projectInfo]="currentProject" style="padding: 0;"></app-drag-periodic>
 
             <!-- 执行的表格显示，显示状态 -->
-            <d-row>
-                <app-execute-edit #executeEdit ></app-execute-edit>
-            </d-row>
+            <app-execute-result-table #executeResultTable  [projectInfo]="currentProject"></app-execute-result-table>
 
         </d-col>
     </d-row>

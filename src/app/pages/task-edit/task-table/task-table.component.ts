@@ -39,7 +39,7 @@ export class TaskTableComponent implements OnInit, OnChanges {
   csvHeader!: string[];
   // 序号筛选列表
   ordinalFilterList: FilterConfig[] = []
-  // 步骤名称刷选列表
+  // 任务名称刷选列表
   taskNameFilterList: FilterConfig[] = []
   // 数据的载入提示
   loadingTip!: LoadingType;
