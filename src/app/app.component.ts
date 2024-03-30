@@ -42,7 +42,6 @@ export class AppComponent {
   getStoreMenu() {
     // 获取已保存的菜单
     const curMuen = this.myLocalStorage.get('currentMenu');
-    console.log("🚀 ~ AppComponent ~ setStoreMenu ~ curMuen:", curMuen)
     this.menuList.forEach((d1) => {
       if (d1.name === curMuen) {
         this.currentMenu = d1;
@@ -69,12 +68,9 @@ export class AppComponent {
     this.router
     .navigate([this.currentMenu.name,])
     .then(
-      (nav) => {
-        console.log('🚀 ~ AppComponent ~ menuBoxClick ~ nav:', nav);
-        console.log(nav); // true if navigation is successful
+      () => {
       },
-      (err) => {
-        console.log(err); // when there's an error
+      () => {
       }
     );
   }

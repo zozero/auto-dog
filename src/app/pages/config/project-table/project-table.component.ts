@@ -52,13 +52,12 @@ export class ProjectTableComponent implements OnInit {
 
   // 更新数据
   async selectClickUpdateDatas(type: string) {
-    console.log("🚀 ~ ProjectTableComponent ~ selectClickUpdateDatas ~ type:", type)
     switch (type) {
-      case '执行端':
+      case 'executionSideInfo':
         this.executionSideInfoList =
           await executionSideTable.queryAllExecutionSideInfos();
         break;
-      case '模拟器端':
+      case 'simulatorInfo':
         this.simulatorInfoList = await simulatorTable.queryAllSimulatorInfos();
         break;
       default:
@@ -67,6 +66,8 @@ export class ProjectTableComponent implements OnInit {
         this.simulatorInfoList = await simulatorTable.queryAllSimulatorInfos();
         break;
     }
+    
+    return true;
   }
 
   onSelectEditEnd(rowItem: any, field: any) {
@@ -75,7 +76,8 @@ export class ProjectTableComponent implements OnInit {
   }
 
   beforeEditStart = (rowItem: any, field: any) => {
-    console.log(rowItem, field);
+    // console.log(rowItem, field);
+    void this.selectClickUpdateDatas(field as string)
     return true;
   };
 
@@ -165,7 +167,10 @@ export class ProjectTableComponent implements OnInit {
 
       })
     }
+  }
 
-
+  // 重置数据
+  async resetData(){
+    this.dataList = await projectTable.queryAllProjectInfos();
   }
 }

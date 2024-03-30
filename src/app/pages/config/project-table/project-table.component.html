@@ -64,7 +64,6 @@
           [beforeEditEnd]="beforeEditEnd"
         >
           <span
-            (click)="selectClickUpdateDatas('执行端')"
             *ngIf="!rowItem['executionSideInfoEdit']"
             >{{ rowItem?.executionSideInfo.ipPort }}</span
           >
@@ -102,7 +101,6 @@
           [beforeEditEnd]="beforeEditEnd"
         >
           <span
-            (click)="selectClickUpdateDatas('模拟器端')"
             *ngIf="!rowItem['simulatorInfoEdit']"
             >{{ rowItem?.simulatorInfo.name }}</span
           >

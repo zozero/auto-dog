@@ -6,11 +6,11 @@
     </d-alert>
   </div>
   <div class="config-list">
-    <app-execution-side-table [dataList]="executionSideInfoList"></app-execution-side-table>
+    <app-execution-side-table [dataList]="executionSideInfoList" (updateInfo)="recvUpdateInfo()"></app-execution-side-table>
     <br />
     <app-simulator-table [dataList]="simulatorInfoList"></app-simulator-table>
     <br />
-    <app-project-table [dataList]="projectInfoList"></app-project-table>
+    <app-project-table #projectTable [dataList]="projectInfoList"></app-project-table>
   </div>
   <hr />
   <div style="padding-top: 20px;">

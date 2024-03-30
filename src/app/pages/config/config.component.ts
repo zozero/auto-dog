@@ -1,5 +1,5 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ExecutionSideTableComponent } from './execution-side-table/execution-side-table.component';
 import { ExecutionSideInfo, ProjectInfo, SimulatorInfo } from '../../core/interface/config-type';
 import { SimulatorTableComponent } from "./simulator-table/simulator-table.component";
@@ -12,26 +12,29 @@ import { simulatorTable } from '../../core/services/dexie-db/simulator-table.ser
 import { projectTable } from '../../core/services/dexie-db/project-table.service';
 
 @Component({
-    selector: 'app-config',
-    standalone: true,
-    templateUrl: './config.component.html',
-    styleUrl: './config.component.scss',
-    imports: [LayoutModule,ExecutionSideTableComponent, SimulatorTableComponent, AlertModule, ProjectTableComponent]
+  selector: 'app-config',
+  standalone: true,
+  templateUrl: './config.component.html',
+  styleUrl: './config.component.scss',
+  imports: [LayoutModule, ExecutionSideTableComponent, SimulatorTableComponent, AlertModule, ProjectTableComponent]
 })
 export class ConfigComponent implements OnInit {
   version: string = '';
-  executionSideInfoList:ExecutionSideInfo[]=[]
-  simulatorInfoList:SimulatorInfo[]=[]
-  projectInfoList:ProjectInfo[]=[]
+  executionSideInfoList: ExecutionSideInfo[] = []
+  simulatorInfoList: SimulatorInfo[] = []
+  projectInfoList: ProjectInfo[] = []
+
+  // 获取任务拖拽组件
+  @ViewChild('projectTable') public projectTableComponent!:ProjectTableComponent ;
   constructor() {
-    
+
   }
   ngOnInit(): void {
     void this.initData();
-    
+
   }
   // 初始化数据
-  async initData(){
+  async initData() {
     await configTable.initConfigData();
 
     await executionSideTable.initExecutionSideInfo();
@@ -42,11 +45,11 @@ export class ConfigComponent implements OnInit {
     await this.getAndSetData();
   }
   // 获取执行侧数据和模拟器数据
-  async getAndSetData(){
+  async getAndSetData() {
     // 获取和设置数据
-    this.executionSideInfoList=await executionSideTable.queryAllExecutionSideInfos();
-    this.simulatorInfoList=await simulatorTable.queryAllSimulatorInfos();
-    this.projectInfoList=await projectTable.queryAllProjectInfos();
+    this.executionSideInfoList = await executionSideTable.queryAllExecutionSideInfos();
+    this.simulatorInfoList = await simulatorTable.queryAllSimulatorInfos();
+    this.projectInfoList = await projectTable.queryAllProjectInfos();
   }
 
 
@@ -58,5 +61,10 @@ export class ConfigComponent implements OnInit {
     if (configData.length) {
       this.version = configData[0].version;
     }
+  }
+
+  // 接收来信息更新的消息
+  async recvUpdateInfo() {
+    await this.projectTableComponent.resetData();
   }
 }

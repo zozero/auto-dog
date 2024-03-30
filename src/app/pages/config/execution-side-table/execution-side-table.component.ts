@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DataTableModule, EditableTip } from 'ng-devui/data-table';
@@ -27,6 +27,8 @@ import { executionSideTable } from '../../../core/services/dexie-db/execution-si
 })
 export class ExecutionSideTableComponent {
   @Input() dataList!: ExecutionSideInfo[];
+  // 发送数据修改的事件
+  @Output () updateInfo: EventEmitter<any> = new EventEmitter();
   constructor(private dialogService: DialogService) {}
   // 	可选，编辑提示，hover背景变色，btn展示编辑按钮
   editableTip = EditableTip.hover;
@@ -66,13 +68,12 @@ export class ExecutionSideTableComponent {
   }
 
   beforeEditStart = (rowItem: any, field: any) => {
-    console.log(rowItem, field);
+    // console.log(rowItem, field);
     return true;
   };
 
   beforeEditEnd = (rowItem: any, field: any) => {
-    console.log('beforeEditEnd');
-    this.updateData(rowItem, field);
+    void this.updateData(rowItem, field);
     if (rowItem && rowItem[field].length < 3) {
       return false;
     } else {
@@ -80,12 +81,14 @@ export class ExecutionSideTableComponent {
     }
   };
 
-  updateData(rowItem: any, field: any) {
+  async updateData(rowItem: any, field: any) {
     const curType = field.replace('Edit', '');
     const data = {
       [curType]: rowItem[curType],
     };
-    void executionSideTable.updateExecutionSideInfo(rowItem.id as number, data);
+    await executionSideTable.updateExecutionSideInfo(rowItem.id as number, data);
+    // 更新时向外部组件发送修改了。
+    this.updateInfo.emit();
   }
 
   deleteData(id: number) {

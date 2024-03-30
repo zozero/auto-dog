@@ -218,7 +218,6 @@ export class DragPeriodicComponent implements OnInit, OnChanges {
         [this.projectInfo.name, new Date(d24)]
       );
       this.taskListToday = lodashFIlter(this.taskListToday, ['status', '未执行']);
-      console.log("this.taskListToday ", this.taskListToday)
       // 状态管理添加新的任务
       this.store.dispatch(TaskActions['加多任务']({
         // 这里必须深度克隆，不然会导致对象类型发生改变

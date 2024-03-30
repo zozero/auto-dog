@@ -89,7 +89,7 @@ export class TaskTableComponent implements OnInit, OnChanges {
           const csvParseOptions = {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             complete: (results: ParseResult, file: any) => {
-              console.log('Parsed: ', results, file);
+              // console.log('Parsed: ', results, file);
               // eslint-disable-next-line prefer-const
               let arr = results.data;
               this.csvHeader = arr[0]
