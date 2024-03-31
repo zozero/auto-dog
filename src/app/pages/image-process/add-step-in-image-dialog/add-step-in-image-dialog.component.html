@@ -5,7 +5,14 @@
       <d-form-control>
         <d-row>
           <d-col [dSpan]="12">
-            <d-select [options]="stepFileList" [isSearch]="true"  name="文件名" [(ngModel)]="currentFile"></d-select>
+            <d-select 
+            (toggleChange)="toggleChange($event)" 
+            [options]="stepFileList" 
+            [isSearch]="true"  
+            name="文件名" 
+            [(ngModel)]="currentFile"
+            (valueChange)="onSelectedValueChange($event)"
+            ></d-select>
           </d-col>
           <d-col [dSpan]="8">
             <input dTextInput  name="创建文件名" placeholder="输入文件名" [(ngModel)]="createFileName"  />

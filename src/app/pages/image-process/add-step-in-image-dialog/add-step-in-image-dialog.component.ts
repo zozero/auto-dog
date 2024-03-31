@@ -12,6 +12,7 @@ import { defaultEncodeObj, defaultStepData } from '../../../core/mock/step-mock'
 import { TableHttpService } from '../../../core/services/https/table-http.service';
 import { Papa } from 'ngx-papaparse';
 import { LayoutModule } from 'ng-devui';
+import { MyLocalStorageService } from '../../../core/services/my-local-storage/my-local-storage.service';
 
 @Component({
   selector: 'app-add-step-in-image-dialog',
@@ -41,10 +42,10 @@ export class AddStepInImageDialogComponent implements OnInit {
   // 用于关闭弹出宽
   closeDialog!: () => void;
   // 步骤文件列表
-  stepFileList: string[]=[];
+  stepFileList: string[] = [];
   // 添加数据的文件
   currentFile!: string;
-  createFileName:string='';
+  createFileName: string = '';
   // 需要添加一些预设参数
   args: StepTableType = cloneDeep(defaultStepData);
   // 输入框组合，各种编码，在提交的时候要重新合成数据
@@ -58,6 +59,7 @@ export class AddStepInImageDialogComponent implements OnInit {
     private loadingService: LoadingService,
     private toastService: ToastService,
     private papa: Papa,
+    private myLocalStorage: MyLocalStorageService,
   ) { }
 
   ngOnInit(): void {
@@ -70,7 +72,12 @@ export class AddStepInImageDialogComponent implements OnInit {
     this.args['名称'] = "去" + this.imageName;
     this.encodeObj['方法编码'] = [this.methodInfo.编码, null]
 
-    this.setStepFileList()
+    // 从本地存储中获取上一次选择的文件
+    const tmpStr = this.myLocalStorage.get('imageInStepName')
+    if (tmpStr) {
+      this.currentFile = tmpStr;
+    }
+
     this.getLastOrder()
   }
 
@@ -91,6 +98,7 @@ export class AddStepInImageDialogComponent implements OnInit {
         this.stepFileList = newArr
         if (!this.currentFile) {
           this.currentFile = this.stepFileList[0]
+          this.myLocalStorage.set('imageInStepName', this.currentFile);
         }
       },
       error: (err: any) => {
@@ -148,7 +156,7 @@ export class AddStepInImageDialogComponent implements OnInit {
     const csvArr = [csvHeader].concat(['']);
     const csvStr = this.papa.unparse(csvArr);
     const csvBlob = new Blob([csvStr], { type: 'text/csv' });
-    const csvFile = new File([csvBlob], this.createFileName+'.csv', { type: 'text/csv' });
+    const csvFile = new File([csvBlob], this.createFileName + '.csv', { type: 'text/csv' });
 
     this.tableHttp.putCreateStepCsvFile(
       this.projectInfo.executionSideInfo?.ipPort as string,
@@ -160,7 +168,8 @@ export class AddStepInImageDialogComponent implements OnInit {
         this.toastService.open({
           value: [{ severity: 'success', summary: '摘要', content: data }],
         });
-        this.setStepFileList();
+        this.currentFile = this.createFileName;
+        this.myLocalStorage.set('imageInStepName', this.currentFile);
       },
       error: (err) => {
         this.tipsDialog.responseErrorState(err.status as number);
@@ -169,5 +178,18 @@ export class AddStepInImageDialogComponent implements OnInit {
       }
     }
     )
+  }
+
+  // 打开或者关闭下拉框
+  toggleChange($event: boolean) {
+    if ($event) {
+      this.setStepFileList();
+    }
+  }
+
+  // 下拉框的值发生了改变
+  onSelectedValueChange($event: string) {
+    console.log("🚀 ~ AddStepInImageDialogComponent ~ onSelectedValueChange ~ $event:", $event)
+    this.myLocalStorage.set('imageInStepName', $event);
   }
 }
