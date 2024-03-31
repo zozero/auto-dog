@@ -203,7 +203,7 @@ export class ExecutePlanComponent implements OnInit {
             })
             this.changeProjectState(firstExeData['projectId'], false)
 
-            
+
             this.tipsService.responseErrorState(err.status as number)
 
           },
@@ -276,10 +276,32 @@ export class ExecutePlanComponent implements OnInit {
       update: UpdateNum
     }))
 
+    this.stopExecuteTask();
+
     // 防止多次误触，或每反应过来
     timer(1000).subscribe(() => {
       this.pauseLoading = false
     })
+  }
+
+  // 停止执行任务
+  stopExecuteTask() {
+    this.executionHttpService.getStopExecute(
+      this.currentProject.executionSideInfo?.ipPort as string,
+      this.currentProject.name
+    ).subscribe({
+      next: (httpData: any) => {
+        this.toastService.open({
+          value: [{ severity: 'success', summary: '摘要', content: httpData }],
+        })
+      },
+      error: (err: any) => {
+        this.tipsService.responseErrorState(err.status as number)
+      },
+      complete: () => {
+      }
+    }
+    )
   }
 
   // 重置暂停按钮
