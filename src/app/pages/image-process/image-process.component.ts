@@ -78,6 +78,7 @@ export class ImageProcessComponent implements OnInit {
 
   }
 
+  // 让执行端取截模拟的图
   toggleLoading() {
     this.showLoading = true;
     this.imageHttp

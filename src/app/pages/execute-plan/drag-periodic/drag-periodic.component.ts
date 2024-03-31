@@ -150,7 +150,7 @@ export class DragPeriodicComponent implements OnInit, OnChanges {
       periodic: data['类型'] as string,
       sort: sort
     }
-    console.log("tableData", tableData)
+    
     tableData['id'] = await executeInfoTable.addtExecuteInfo(tableData)
     return tableData
   }

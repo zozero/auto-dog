@@ -57,6 +57,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: '图片展馆',
+    loadComponent: () =>
+      import('./pages/image-gallery/image-gallery.component').then(
+        (mod) => mod.ImageGalleryComponent
+      ),
+  },
+  {
     path: '**',
     component: PageNotFoundComponent,
   },

@@ -79,13 +79,9 @@ export class StepTableComponent implements OnInit, OnChanges {
     }
   }
   ngOnChanges(changes: SimpleChanges) {
-    if ('projectInfo' in changes) {
+    if ('projectInfo' in changes || 'fileName' in changes) {
       this.getcsvFile();
     }
-    if ('fileName' in changes) {
-      this.getcsvFile();
-    }
-
   }
   // 从执行端获得csv文件，后续可能需要区分文件名
   getcsvFile() {
@@ -102,8 +98,7 @@ export class StepTableComponent implements OnInit, OnChanges {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             complete: (results: ParseResult, file: any) => {
               // console.log('Parsed: ', results, file);
-              // eslint-disable-next-line prefer-const
-              let arr = results.data;
+              const arr = results.data;
               this.csvHeader = arr[0]
               // 丢掉第一行数据
               arr.shift();

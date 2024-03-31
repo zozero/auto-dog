@@ -56,7 +56,6 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
     
   ) { }
   ngOnInit(): void {
-    // this.getcsvFile();
     console.log("ImageMatchTableComponent");
   }
   ngOnChanges(changes: SimpleChanges) {
@@ -76,13 +75,11 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
       )
       .subscribe({
         next: (csv) => {
-          
           const csvParseOptions = {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             complete: (results: ParseResult, _file: any) => {
               // console.log('Parsed: ', results, file);
-              // eslint-disable-next-line prefer-const
-              let arr = results.data;
+              const arr = results.data;
               this.csvHeader = arr[0]
               // 丢掉第一行数据
               arr.shift();

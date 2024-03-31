@@ -11,13 +11,13 @@ export const myMenuListmyMenuList: AppMenuItemType[] = [
     icon: 'icon-more-func',
     name: '执行规划',
   },
+  // {
+  //   icon: 'icon-more-func',
+  //   name: '流程规划',
+  // },
   {
     icon: 'icon-more-func',
     name: '图片处理',
-  },
-  {
-    icon: 'icon-more-func',
-    name: '流程规划',
   },
   {
     icon: 'icon-more-func',
