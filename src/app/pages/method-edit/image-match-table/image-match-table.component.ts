@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { DataTableModule, EditableTip, FilterConfig, SortDirection, SortEventArg } from 'ng-devui/data-table';
 import { FormsModule } from '@angular/forms';
 import { InputGroupModule } from 'ng-devui/input-group';
@@ -12,6 +12,8 @@ import { ModalModule } from 'ng-devui/modal';
 import { TipsDialogService } from '../../../core/services/tips-dialog/tips-dialog.service';
 import { filter, orderBy } from 'lodash-es';
 import { DownloadFileService } from '../../../core/services/https/download-file.service';
+import { Subject } from 'rxjs';
+import { ImagePreviewModule } from 'ng-devui/image-preview';
 
 @Component({
   selector: 'app-image-match-table',
@@ -24,16 +26,20 @@ import { DownloadFileService } from '../../../core/services/https/download-file.
     InputGroupModule,
     DevUIModule,
     CommonModule,
-    ModalModule
+    ModalModule,
+    ImagePreviewModule
   ]
 })
 export class ImageMatchTableComponent implements OnInit, OnChanges {
-    // 按钮点击后的载入提示
+  // 按钮点击后的载入提示
   btnShowLoading = false;
   // 表格数据
   csvData: string[] = [];
   // 专用于过滤的csv列表
   csvFilterList: string[] = [];
+  // 图片地址列表
+  imgSrc: string = '';
+  // 表头信息
   csvHeader!: string[];
   // 序号筛选列表
   ordinalFilterList: FilterConfig[] = []
@@ -46,14 +52,16 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
   // 它就是子菜单
   @Input() projectInfo!: ProjectInfo;
   editableTip = EditableTip.hover;
+  customImageSub = new Subject<HTMLElement>();
   constructor(
     private papa: Papa,
     private tableHttp: TableHttpService,
     private toastService: ToastService,
     private tipsDialog: TipsDialogService,
     private loadingService: LoadingService,
-    private downloadFileService:DownloadFileService
-    
+    private downloadFileService: DownloadFileService,
+    private elementRef: ElementRef
+
   ) { }
   ngOnInit(): void {
     console.log("ImageMatchTableComponent");
@@ -69,10 +77,10 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
     // 数据载入提示
     const loadTip = this.loadingService.open();
     this.tableHttp.getMethodCsvFile(
-        this.projectInfo.executionSideInfo?.ipPort as string,
-        this.projectInfo.name,
-        '图片匹配'
-      )
+      this.projectInfo.executionSideInfo?.ipPort as string,
+      this.projectInfo.name,
+      '图片匹配'
+    )
       .subscribe({
         next: (csv) => {
           const csvParseOptions = {
@@ -94,7 +102,7 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
             },
             encoding: defaultEncode,
             // header:true,
-            newline:undefined
+            newline: undefined
           };
           this.papa.parse(csv, csvParseOptions);
           // Add your options here
@@ -116,7 +124,7 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
       });
   }
 
- 
+
   // 设置序号筛选列表
   setOrdinalFilterList() {
     // 初始化为空
@@ -146,7 +154,7 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
   // 保存csv文件到执行端，这里直接覆盖了
   putCsvFile() {
     // 打开载入效果
-    this.btnShowLoading=true
+    this.btnShowLoading = true
     // 准备数据
     // eslint-disable-next-line prefer-const
     let csvArr = [this.csvHeader].concat(this.csvData);
@@ -166,7 +174,7 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
       )
       .subscribe(
         {
-          next:(data: any) => {
+          next: (data: any) => {
             this.toastService.open({
               value: [{ severity: 'success', summary: '摘要', content: data }],
             })
@@ -174,11 +182,11 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
           error: (err: any) => {
             this.tipsDialog.responseErrorState(err.status as number)
             // 关闭载入效果
-            this.btnShowLoading=false
+            this.btnShowLoading = false
           },
           complete: () => {
             // 关闭载入效果
-            this.btnShowLoading=false
+            this.btnShowLoading = false
           }
         }
       );
@@ -190,11 +198,11 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
     if (event.direction === SortDirection.ASC) {
       // 转成数字才能按照数字排序
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      this.csvFilterList = orderBy(this.csvFilterList, [(data:any) => parseInt(data[field])], ['asc'])
+      this.csvFilterList = orderBy(this.csvFilterList, [(data: any) => parseInt(data[field])], ['asc'])
 
     } else if (event.direction === SortDirection.DESC) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      this.csvFilterList = orderBy(this.csvFilterList, [(data:any) => parseInt(data[field])], ['desc'])
+      this.csvFilterList = orderBy(this.csvFilterList, [(data: any) => parseInt(data[field])], ['desc'])
 
     }
     else {
@@ -226,15 +234,23 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
 
   }
   // 删除数据
-  deleteData(index:number){
-    this.csvData.splice(index,1);
+  deleteData(index: number) {
+    this.csvData.splice(index, 1);
     this.putCsvFile()
-   
+
   }
 
   // 导出为csv文件
-  exportCsvFile(){
-    const csvUrl=this.projectInfo.executionSideInfo?.ipPort+'/方法' + '/表格?'+'项目名='+this.projectInfo.name+'&文件名='+'图片匹配'
+  exportCsvFile() {
+    const csvUrl = this.projectInfo.executionSideInfo?.ipPort + '/方法' + '/表格?' + '项目名=' + this.projectInfo.name + '&文件名=' + '图片匹配'
     this.downloadFileService.exportCsvFile(csvUrl);
+  }
+
+  // 打开图片
+  openImage(name: string) {
+    const tmpStr = this.projectInfo.executionSideInfo?.ipPort + '/项目文件屋/' + this.projectInfo.name + '/图片间/'
+    this.imgSrc = tmpStr + name + '.jpg'
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    this.customImageSub.next(this.elementRef.nativeElement.querySelector('img'));
   }
 }

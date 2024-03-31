@@ -45,8 +45,9 @@
           <td dTableCell [editable]="false"
             [field]="csvHeader[1]" [rowItem]="rowItem">
             <span >
-              {{ rowItem[1] }}
+              <d-button bsStyle="text" (btnClick)="openImage(rowItem[1])">  {{ rowItem[1] }}</d-button>
             </span>
+           
             <!-- <div *ngIf="rowItem[csvHeader[1]+'Edit']" class="edit-padding-fix">
               <input [dAutoFocus]="true" class="devui-form-control" [name]="csvHeader[1]" [(ngModel)]="rowItem[1]" 
                 [attr.maxlength]="100" [attr.minlength]="1" />
@@ -104,5 +105,8 @@
       </ng-template>
     </tbody>
   </d-data-table>
-
+  <!-- 图片预览，默认不显示，等到按钮触发才显示 -->
+  <div dImagePreview [customSub]="customImageSub" [disableDefault]="true" style="display: none;">
+    <img  [attr.src]="imgSrc" style="max-width: 800px" />
+  </div>
 </div>
