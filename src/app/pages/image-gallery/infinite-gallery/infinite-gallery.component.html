@@ -2,10 +2,7 @@
     <div NgxMasonryInfiniteGrid class="container" [gap]="5" [items]="csvDataList" [useRecycle]="false" #ig>
         <div class="item" *ngFor="let item of ig.visibleItems;let i=index">
             <d-card class="card-container">
-                <div class=" thumbnail">
-                    <img dCardMeta [src]="imgSrcList[i]" [alt]="item.data[1]" />
-                </div>
-
+                <img dCardMeta [src]="imgSrcList[i]" [alt]="item.data[1]" />
                 <d-card-header>
                     <d-card-title class="info">{{item.data[0]+'：'+item.data[1]}}</d-card-title>
                 </d-card-header>

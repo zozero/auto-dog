@@ -10,81 +10,52 @@ d-tag {
   margin: 4px;
 }
 
-.card-container {
-    display: inline-block;
-  }
-  
-  .card-icon {
-    cursor: pointer;
-    font-size: $devui-font-size-icon;
-    margin-right: 8px;
-    vertical-align: middle;
-  }
-  
-  .card-icon + span {
-    vertical-align: middle;
-  }
-  
-  .card-block {
-    margin-right: 16px;
-  }
 
-.infinite-gallery-container {
-    height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-    height: 86vh;
-    margin-bottom: 8px;
+.card-icon {
+  cursor: pointer;
+  font-size: $devui-font-size-icon;
+  margin-right: 8px;
+  vertical-align: middle;
 }
 
-.container {
-    width: 100%;
-    height: 600px;
+.card-icon+span {
+  vertical-align: middle;
+}
+
+.card-block {
+  margin-right: 8px;
+}
+
+.infinite-gallery-container {
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 86vh;
+  width: 100%;
+  margin-bottom: 8px;
 }
 
 .item {
-    display: inline-block;
-    width: 19%;
-    opacity: 1;
+  display: inline-block;
+  width: 18%;
+  opacity: 1;
+  img {
+    width: 100%;
+    height: auto;
+  }
 
-    .thumbnail {
-        overflow: hidden;
-        display: flex;
-        align-content: center;
-        align-items: center;
-        justify-content: center;
-
-        img {
-            width: 100%;
-            height: auto;
-
-        }
-    }
-}
-
-.item:hover {
-	box-shadow: 0 1em 1em rgba(121, 123, 128, 0.349);
-}
-
-.item.animate {
-	transition: opacity ease 1s;
-	transition-delay: 0.2s;
-	opacity: 1;
-}
-.masonrygrid.horizontal .item {
-    width: auto;
-    // height: 250px;
-}
-
-
-
-.masonrygrid.horizontal .item .thumbnail img {
-    width: auto;
-    // height: 210px;
-}
-
-.item .info {
+  .info {
     margin-top: 10px;
     font-weight: bold;
     color: #777;
+  }
+}
+
+.item:hover {
+  box-shadow: 0 1em 1em rgba(121, 123, 128, 0.349);
+}
+
+.item.animate {
+  transition: opacity ease 1s;
+  transition-delay: 0.2s;
+  opacity: 1;
 }
