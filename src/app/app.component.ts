@@ -33,6 +33,7 @@ export class AppComponent {
   ) {
     this.getStoreMenu();
     this.setAutoExecute();
+    this.setAutoSave();
     this.translate.setDefaultLang('zh');
     this.systemInfo();
 
@@ -53,8 +54,15 @@ export class AppComponent {
   // 判断自动执行是否设置过，没有就赋值为自动状态
   setAutoExecute(){
     const tmpStr: string | null = this.myLocalStorage.get('autoExe');
-    if (tmpStr === null) {
+    if (tmpStr === null || tmpStr===undefined) {
       this.myLocalStorage.set('autoExe', '1');
+    }
+  }
+   // 判断自动保存是否设置过，没有就赋值为自动状态
+   setAutoSave(){
+    const tmpStr: string | null = this.myLocalStorage.get('autoSave');
+    if (tmpStr === null || tmpStr===undefined) {
+      this.myLocalStorage.set('autoSave', '1');
     }
   }
 

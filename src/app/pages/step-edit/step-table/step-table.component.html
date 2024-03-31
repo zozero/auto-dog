@@ -1,14 +1,18 @@
-<div class="table-content" >
-  <d-button *ngIf="csvData.length>0" style="padding-right: 6px;" bsStyle="primary" [showLoading]="btnShowLoading"
+<div class="table-content">
+  <d-button *ngIf="csvData.length>0" class="my-glob-padding-right" bsStyle="primary" [showLoading]="btnShowLoading"
     (btnClick)="saveStepData()">保存</d-button>
-  <d-button style="padding-right: 6px;" bsStyle="common"(btnClick)="addStepData()">添加</d-button>
-  <d-button style="padding-right: 6px;" *ngIf="csvData.length>0" bsStyle="common" (btnClick)="exportCsvFile()">导出</d-button>
-  
-  <d-toggle dTooltip  [(ngModel)]="isAutoExe" (change)="onChageAutoExe($event)"  [content]="'帮助.图片.自动' | translate" [color]="'#50D4AB'" [checkedContent]="'开'" [uncheckedContent]="'关'" [size]="''"></d-toggle>
+  <d-button class="my-glob-padding-right" bsStyle="common" (btnClick)="addStepData()">添加</d-button>
+  <d-button class="my-glob-padding-right" *ngIf="csvData.length>0" bsStyle="common"
+    (btnClick)="exportCsvFile()">导出</d-button>
+  <d-toggle class="my-glob-padding-right" dTooltip [(ngModel)]="isAutoSave" (change)="onChageAutoSave($event)"
+    [content]="'帮助.表格.自动' | translate" [color]="'#FECC55'"></d-toggle>
+  <d-toggle dTooltip [(ngModel)]="isAutoExe" (change)="onChageAutoExe($event)" [content]="'帮助.图片.自动' | translate"
+    [color]="'#50D4AB'"></d-toggle>
 
-  <d-data-table  style="margin-top: 8px;" [borderType]="'bordered'"   *ngIf="csvData.length>0"  [dataSource]="csvFilterList" [size]="'md'" [fixHeader]="true" [scrollable]="true" dLoading
-    [loading]="loadingTip" [backdrop]="true" [loadingStyle]="'infinity'" tableHeight="100%" [virtualMinBufferPx]="10"
-    [virtualMaxBufferPx]="20" [tableOverflowType]="'overlay'">
+  <d-data-table style="margin-top: 8px;" [borderType]="'bordered'" *ngIf="csvData.length>0" [dataSource]="csvFilterList"
+    [size]="'md'" [fixHeader]="true" [scrollable]="true" dLoading [loading]="loadingTip" [backdrop]="true"
+    [loadingStyle]="'infinity'" tableHeight="100%" [virtualMinBufferPx]="10" [virtualMaxBufferPx]="20"
+    [tableOverflowType]="'overlay'">
     <thead dTableHead>
       <tr dTableRow>
         <th dHeadCell>索引</th>
@@ -23,7 +27,7 @@
         <th dHeadCell>{{ csvHeader[5] }}</th>
         <th dHeadCell>{{ csvHeader[6] }}</th>
         <th dHeadCell>{{ csvHeader[7] }}</th>
-        <th dHeadCell >操作</th>
+        <th dHeadCell>操作</th>
       </tr>
     </thead>
     <tbody dTableBody>
@@ -37,7 +41,7 @@
           </td>
 
           <td dTableCell [editable]="true" [editableTip]="editableTip" [(editing)]="rowItem[csvHeader[1]+'Edit']"
-            [field]="csvHeader[1]" [rowItem]="rowItem">
+            [beforeEditEnd]="beforeEditEnd" [field]="csvHeader[1]" [rowItem]="rowItem">
             <span *ngIf="!rowItem[csvHeader[1]+'Edit']">
               {{ rowItem[1] }}
             </span>
@@ -48,7 +52,7 @@
           </td>
 
           <td dTableCell [editable]="true" [editableTip]="editableTip" [(editing)]="rowItem[csvHeader[2]+'Edit']"
-            [field]="csvHeader[2]" [rowItem]="rowItem">
+            [beforeEditEnd]="beforeEditEnd" [field]="csvHeader[2]" [rowItem]="rowItem">
             <span *ngIf="!rowItem[csvHeader[2]+'Edit']">
               {{ rowItem[2] }}
             </span>
@@ -59,7 +63,7 @@
           </td>
 
           <td dTableCell [editable]="true" [editableTip]="editableTip" [(editing)]="rowItem[csvHeader[3]+'Edit']"
-            [field]="csvHeader[3]" [rowItem]="rowItem">
+            [beforeEditEnd]="beforeEditEnd" [field]="csvHeader[3]" [rowItem]="rowItem">
             <span *ngIf="!rowItem[csvHeader[3]+'Edit']">
               {{ rowItem[3] }}
             </span>
@@ -71,7 +75,7 @@
 
 
           <td dTableCell [editable]="true" [editableTip]="editableTip" [(editing)]="rowItem[csvHeader[4]+'Edit']"
-            [field]="csvHeader[4]" [rowItem]="rowItem">
+            [beforeEditEnd]="beforeEditEnd" [field]="csvHeader[4]" [rowItem]="rowItem">
             <span *ngIf="!rowItem[csvHeader[4]+'Edit']">
               {{ rowItem[4] }}
             </span>
@@ -82,7 +86,7 @@
           </td>
 
           <td dTableCell [editable]="true" [editableTip]="editableTip" [(editing)]="rowItem[csvHeader[5]+'Edit']"
-            [field]="csvHeader[5]" [rowItem]="rowItem">
+            [beforeEditEnd]="beforeEditEnd" [field]="csvHeader[5]" [rowItem]="rowItem">
             <span *ngIf="!rowItem[csvHeader[5]+'Edit']">
               {{ rowItem[5] }}
             </span>
@@ -93,7 +97,7 @@
           </td>
 
           <td dTableCell [editable]="true" [editableTip]="editableTip" [(editing)]="rowItem[csvHeader[6]+'Edit']"
-            [field]="csvHeader[6]" [rowItem]="rowItem">
+            [beforeEditEnd]="beforeEditEnd" [field]="csvHeader[6]" [rowItem]="rowItem">
             <span *ngIf="!rowItem[csvHeader[6]+'Edit']">
               {{ rowItem[6] }}
             </span>
@@ -104,7 +108,7 @@
           </td>
 
           <td dTableCell [editable]="true" [editableTip]="editableTip" [(editing)]="rowItem[csvHeader[7]+'Edit']"
-            [field]="csvHeader[7]" [rowItem]="rowItem">
+            [beforeEditEnd]="beforeEditEnd" [field]="csvHeader[7]" [rowItem]="rowItem">
             <span *ngIf="!rowItem[csvHeader[7]+'Edit']">
               {{ rowItem[7] }}
             </span>
@@ -113,9 +117,10 @@
                 [(ngModel)]="rowItem[7]"></d-input-number>
             </div>
           </td>
-          
-          <td dTableCell >
-            <d-button bsStyle="text" [showLoading]="btnShowLoading" style="margin-right: 8px" (btnClick)="testStep(rowIndex)">测试</d-button>
+
+          <td dTableCell>
+            <d-button bsStyle="text" [showLoading]="btnShowLoading" style="margin-right: 8px"
+              (btnClick)="testStep(rowIndex)">测试</d-button>
             <d-button bsStyle="text" (btnClick)="deleteData(rowIndex)">删除</d-button>
           </td>
         </tr>

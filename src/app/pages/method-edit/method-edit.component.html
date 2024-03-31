@@ -11,7 +11,7 @@
         </d-tabs>
       </section>
       <container-element [ngSwitch]="tabActiveId">
-        <app-image-match-table *ngSwitchCase="imageMethodList[0]['名称']" [projectInfo]="currentProject"></app-image-match-table>
+        <app-image-match-table *ngSwitchCase="imageMethodList[0]['名称']" [methodType]="tabActiveId"  [projectInfo]="currentProject"></app-image-match-table>
       </container-element>
 
     </d-col>

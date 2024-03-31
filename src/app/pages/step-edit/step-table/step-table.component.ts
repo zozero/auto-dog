@@ -59,6 +59,8 @@ export class StepTableComponent implements OnInit, OnChanges {
   editableTip = EditableTip.hover;
   // 是自动执行一次
   isAutoExe: boolean = true;
+  // 是否开启自动保存
+  isAutoSave: boolean = true;
 
   constructor(
     private papa: Papa,
@@ -73,11 +75,17 @@ export class StepTableComponent implements OnInit, OnChanges {
 
   ) { }
   ngOnInit(): void {
+    console.log("StepTableComponent");
     const tmpStr: string | null = this.myLocalStorage.get('autoExe');
     if (tmpStr !=null) {
       this.isAutoExe = Boolean(tmpStr);
     }
+    const tmpStr2: string | null = this.myLocalStorage.get('autoSave');
+    if (tmpStr != null) {
+      this.isAutoSave = Boolean(tmpStr2);
+    }
   }
+  
   ngOnChanges(changes: SimpleChanges) {
     if ('projectInfo' in changes || 'fileName' in changes) {
       this.getcsvFile();
@@ -319,4 +327,20 @@ export class StepTableComponent implements OnInit, OnChanges {
       this.myLocalStorage.set('autoExe', '')
     }
   }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  beforeEditEnd = (rowItem: any, field: any) => {
+    if(this.isAutoSave){
+      this.saveStepData();
+    }
+    return true
+  };
+    // 改变自动执行的状态
+    onChageAutoSave($event: any) {
+      if ($event) {
+        this.myLocalStorage.set('autoSave', '1')
+      }
+      else {
+        this.myLocalStorage.set('autoSave', '')
+      }
+    }
 }

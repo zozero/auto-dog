@@ -13,6 +13,8 @@ import { TaskTableFormComponent } from "../../../shared/components/form/task-tab
 import { DownloadFileService } from '../../../core/services/https/download-file.service';
 import { TestStepDataType, TestTaskDataType } from '../../../core/interface/table-type';
 import { ExecutionHttpService } from '../../../core/services/https/execution-http.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MyLocalStorageService } from '../../../core/services/my-local-storage/my-local-storage.service';
 
 @Component({
   selector: 'app-task-table',
@@ -26,7 +28,8 @@ import { ExecutionHttpService } from '../../../core/services/https/execution-htt
     DevUIModule,
     CommonModule,
     ModalModule,
-    TaskTableFormComponent
+    TaskTableFormComponent,
+    TranslateModule,
   ]
 })
 export class TaskTableComponent implements OnInit, OnChanges {
@@ -48,6 +51,8 @@ export class TaskTableComponent implements OnInit, OnChanges {
 
   @ViewChild('dialogContent', { static: true }) dialogContent!: TemplateRef<any>;
   editableTip = EditableTip.hover;
+  // 是否开启自动保存
+  isAutoSave: boolean = true;
   constructor(
     private papa: Papa,
     private tableHttp: TableHttpService,
@@ -56,13 +61,17 @@ export class TaskTableComponent implements OnInit, OnChanges {
     private dialogService: DialogService,
     private loadingService: LoadingService,
     private executionHttpService: ExecutionHttpService,
-    private downloadFileService: DownloadFileService
+    private downloadFileService: DownloadFileService,
+    private myLocalStorage: MyLocalStorageService
 
   ) { }
 
   ngOnInit(): void {
-    // this.getcsvFile();
     console.log("TaskTableComponent");
+    const tmpStr: string | null = this.myLocalStorage.get('autoSave');
+    if (tmpStr != null) {
+      this.isAutoSave = Boolean(tmpStr);
+    }
 
   }
   // 自动监听到改变事件后执行
@@ -325,8 +334,24 @@ export class TaskTableComponent implements OnInit, OnChanges {
         // 关闭载入效果
         this.btnShowLoading = false
       }
-
     })
-
   }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    beforeEditEnd = (rowItem: any, field: any) => {
+      if (this.isAutoSave) {
+        this.saveTaskData();
+      }
+      return true
+    };
+  
+    // 改变自动执行的状态
+    onChageAutoSave($event: any) {
+      if ($event) {
+        this.myLocalStorage.set('autoSave', '1')
+      }
+      else {
+        this.myLocalStorage.set('autoSave', '')
+      }
+    }
 }

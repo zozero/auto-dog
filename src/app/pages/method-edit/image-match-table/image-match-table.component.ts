@@ -14,6 +14,8 @@ import { filter, orderBy } from 'lodash-es';
 import { DownloadFileService } from '../../../core/services/https/download-file.service';
 import { Subject } from 'rxjs';
 import { ImagePreviewModule } from 'ng-devui/image-preview';
+import { MyLocalStorageService } from '../../../core/services/my-local-storage/my-local-storage.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-image-match-table',
@@ -27,7 +29,8 @@ import { ImagePreviewModule } from 'ng-devui/image-preview';
     DevUIModule,
     CommonModule,
     ModalModule,
-    ImagePreviewModule
+    ImagePreviewModule,
+    TranslateModule
   ]
 })
 export class ImageMatchTableComponent implements OnInit, OnChanges {
@@ -51,8 +54,13 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
   // ng g c method-edit/method-table/imagwMatchTable
   // 它就是子菜单
   @Input() projectInfo!: ProjectInfo;
+  // 方法的类型
+  @Input() methodType: string | number = '图片匹配';
   editableTip = EditableTip.hover;
+  // 用于显示图片预览的
   customImageSub = new Subject<HTMLElement>();
+  // 是否开启自动保存
+  isAutoSave: boolean = true;
   constructor(
     private papa: Papa,
     private tableHttp: TableHttpService,
@@ -60,11 +68,16 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
     private tipsDialog: TipsDialogService,
     private loadingService: LoadingService,
     private downloadFileService: DownloadFileService,
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
+    private myLocalStorage: MyLocalStorageService
 
   ) { }
   ngOnInit(): void {
     console.log("ImageMatchTableComponent");
+    const tmpStr: string | null = this.myLocalStorage.get('autoSave');
+    if (tmpStr != null) {
+      this.isAutoSave = Boolean(tmpStr);
+    }
   }
   ngOnChanges(changes: SimpleChanges) {
     if ('projectInfo' in changes) {
@@ -79,7 +92,7 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
     this.tableHttp.getMethodCsvFile(
       this.projectInfo.executionSideInfo?.ipPort as string,
       this.projectInfo.name,
-      '图片匹配'
+      this.methodType as string
     )
       .subscribe({
         next: (csv) => {
@@ -169,7 +182,7 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
       .putMethodCsvFile(
         this.projectInfo.executionSideInfo?.ipPort as string,
         this.projectInfo.name,
-        '图片匹配',
+        this.methodType as string,
         csvFile
       )
       .subscribe(
@@ -242,7 +255,7 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
 
   // 导出为csv文件
   exportCsvFile() {
-    const csvUrl = this.projectInfo.executionSideInfo?.ipPort + '/方法' + '/表格?' + '项目名=' + this.projectInfo.name + '&文件名=' + '图片匹配'
+    const csvUrl = this.projectInfo.executionSideInfo?.ipPort + '/方法' + '/表格?' + '项目名=' + this.projectInfo.name + '&文件名=' + this.methodType
     this.downloadFileService.exportCsvFile(csvUrl);
   }
 
@@ -252,5 +265,23 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
     this.imgSrc = tmpStr + name + '.jpg'
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     this.customImageSub.next(this.elementRef.nativeElement.querySelector('img'));
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  beforeEditEnd = (rowItem: any, field: any) => {
+    if(this.isAutoSave){
+      this.putCsvFile();
+    }
+    return true
+  };
+
+  // 改变自动执行的状态
+  onChageAutoSave($event: any) {
+    if ($event) {
+      this.myLocalStorage.set('autoSave', '1')
+    }
+    else {
+      this.myLocalStorage.set('autoSave', '')
+    }
   }
 }

@@ -1,10 +1,13 @@
 <div class="table-content">
-  <d-button *ngIf="csvData.length>0" style="padding-right: 6px;" bsStyle="primary" [showLoading]="btnShowLoading"
+  <d-button *ngIf="csvData.length>0" class="my-glob-padding-right" bsStyle="primary" [showLoading]="btnShowLoading"
     (btnClick)="saveTaskData()">保存</d-button>
-  <d-button *ngIf="csvData.length>0" style="padding-right: 6px;" bsStyle="primary" [showLoading]="btnShowLoading"
+  <d-button *ngIf="csvData.length>0" class="my-glob-padding-right" bsStyle="primary" [showLoading]="btnShowLoading"
     (btnClick)="testTask()">测试任务</d-button>
-  <d-button style="padding-right: 6px;" bsStyle="common" (btnClick)="addTaskData()">添加</d-button>
-  <d-button *ngIf="csvData.length>0" bsStyle="common" (btnClick)="exportCsvFile()">导出</d-button>
+  <d-button class="my-glob-padding-right" bsStyle="common" (btnClick)="addTaskData()">添加</d-button>
+  <d-button class="my-glob-padding-right" *ngIf="csvData.length>0" bsStyle="common"
+    (btnClick)="exportCsvFile()">导出</d-button>
+  <d-toggle dTooltip [(ngModel)]="isAutoSave" (change)="onChageAutoSave($event)" [content]="'帮助.表格.自动' | translate"
+    [color]="'#FECC55'"></d-toggle>
   <d-data-table style="margin-top: 8px;" [borderType]="'bordered'" *ngIf="csvData.length>0" [dataSource]="csvFilterList"
     [size]="'md'" [fixHeader]="true" [scrollable]="true" dLoading [loading]="loadingTip" [backdrop]="true"
     [loadingStyle]="'infinity'" tableHeight="100%" [virtualMinBufferPx]="10" [virtualMaxBufferPx]="20"
@@ -34,7 +37,7 @@
           </td>
 
           <td dTableCell [editable]="true" [editableTip]="editableTip" [(editing)]="rowItem[csvHeader[1]+'Edit']"
-            [field]="csvHeader[1]" [rowItem]="rowItem">
+            [beforeEditEnd]="beforeEditEnd" [field]="csvHeader[1]" [rowItem]="rowItem">
             <span *ngIf="!rowItem[csvHeader[1]+'Edit']">
               {{ rowItem[1] }}
             </span>
@@ -45,7 +48,7 @@
           </td>
 
           <td dTableCell [editable]="true" [editableTip]="editableTip" [(editing)]="rowItem[csvHeader[2]+'Edit']"
-            [field]="csvHeader[2]" [rowItem]="rowItem">
+            [beforeEditEnd]="beforeEditEnd" [field]="csvHeader[2]" [rowItem]="rowItem">
             <span *ngIf="!rowItem[csvHeader[2]+'Edit']">
               {{ rowItem[2] }}
             </span>
@@ -56,7 +59,7 @@
           </td>
 
           <td dTableCell [editable]="true" [editableTip]="editableTip" [(editing)]="rowItem[csvHeader[3]+'Edit']"
-            [field]="csvHeader[3]" [rowItem]="rowItem">
+            [beforeEditEnd]="beforeEditEnd" [field]="csvHeader[3]" [rowItem]="rowItem">
             <span *ngIf="!rowItem[csvHeader[3]+'Edit']">
               {{ rowItem[3] }}
             </span>
@@ -67,7 +70,7 @@
           </td>
 
           <td dTableCell [editable]="true" [editableTip]="editableTip" [(editing)]="rowItem[csvHeader[4]+'Edit']"
-            [field]="csvHeader[4]" [rowItem]="rowItem">
+            [beforeEditEnd]="beforeEditEnd" [field]="csvHeader[4]" [rowItem]="rowItem">
             <span *ngIf="!rowItem[csvHeader[4]+'Edit']">
               {{ rowItem[4] }}
             </span>

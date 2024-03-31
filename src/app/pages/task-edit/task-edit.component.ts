@@ -8,21 +8,24 @@ import { CommonModule } from '@angular/common';
 import { ProjectMenusComponent } from '../../shared/components/project-menus/project-menus.component';
 import { TaskTableComponent } from "./task-table/task-table.component";
 import { CreateTaskFileDialogComponent } from './create-task-file-dialog.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { MyLocalStorageService } from '../../core/services/my-local-storage/my-local-storage.service';
 
 @Component({
-    selector: 'app-task-edit',
-    standalone: true,
-    templateUrl: './task-edit.component.html',
-    styleUrl: './task-edit.component.scss',
-    imports: [
-        LayoutModule,
-        CommonModule,
-        ProjectMenusComponent,
-        DevUIModule,
-        LoadingModule,
-        TabsModule,
-        TaskTableComponent
-    ]
+  selector: 'app-task-edit',
+  standalone: true,
+  templateUrl: './task-edit.component.html',
+  styleUrl: './task-edit.component.scss',
+  imports: [
+    LayoutModule,
+    CommonModule,
+    ProjectMenusComponent,
+    DevUIModule,
+    LoadingModule,
+    TabsModule,
+    TaskTableComponent,
+    TranslateModule,
+  ]
 })
 export class TaskEditComponent implements OnInit {
 
@@ -39,9 +42,12 @@ export class TaskEditComponent implements OnInit {
     private dialogService: DialogService,
     private tipsDialog: TipsDialogService,
     private toastService: ToastService,
+    private myLocalStorage: MyLocalStorageService
   ) { }
 
   ngOnInit(): void {
+    console.log("TaskEditComponent");
+
     this.projecMenuInit()
   }
 
