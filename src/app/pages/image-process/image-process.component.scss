@@ -1,9 +1,22 @@
+@import 'ng-devui/styles-var/devui-var.scss';
 .image-process-container{
-
+ 
   .btn-group{
     d-button ,d-toggle {
       margin-right: 8px;
     }
   } 
-  
+  .image-prev{
+    height: 90vh;
+    
+    .icon {
+      font-size: 16em;
+      color: $devui-icon-fill;
+      position: relative;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
 }

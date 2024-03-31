@@ -17,6 +17,7 @@ import { ToggleModule } from 'ng-devui/toggle';
 import { TooltipModule } from 'ng-devui/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { MyLocalStorageService } from '../../core/services/my-local-storage/my-local-storage.service';
+import { IconModule } from 'ng-devui/icon';
 
 @Component({
   selector: 'app-image-process',
@@ -33,7 +34,8 @@ import { MyLocalStorageService } from '../../core/services/my-local-storage/my-l
     TooltipModule,
     AngularCropperjsModule,
     TranslateModule,
-    ToggleModule
+    ToggleModule,
+    IconModule
   ],
 })
 export class ImageProcessComponent implements OnInit {
