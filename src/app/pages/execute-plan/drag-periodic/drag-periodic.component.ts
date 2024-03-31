@@ -18,6 +18,9 @@ import { taskExecuteResultInfoTable } from '../../../core/services/dexie-db/task
 import { BadgeModule } from 'ng-devui/badge';
 import { Store } from '@ngrx/store';
 import { TaskActions } from '../../../store/task/task.actions';
+import { IconModule } from 'ng-devui/icon';
+import { TooltipModule } from 'ng-devui/tooltip';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-drag-periodic',
@@ -30,7 +33,10 @@ import { TaskActions } from '../../../store/task/task.actions';
     ButtonModule,
     InputNumberModule,
     SelectModule,
-    BadgeModule
+    BadgeModule,
+    IconModule,
+    TooltipModule,
+    TranslateModule
   ],
   templateUrl: './drag-periodic.component.html',
   styleUrl: './drag-periodic.component.scss',

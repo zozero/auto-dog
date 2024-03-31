@@ -29,6 +29,11 @@ d-row {
   }
 }
 
+.trash-today {
+  border: 1px solid $devui-success-line;
+  background: $devui-success-bg;
+}
+
 
 .show-drop-area ::ng-deep .dropover-scroll-area,
 .color-example {
@@ -83,7 +88,7 @@ d-row {
 
 .list-group {
   padding: 8px;
-  height: 40vh;
+  height: 37vh;
   overflow-y: auto;
 }
 
@@ -106,8 +111,8 @@ d-row {
     width: 66%;
   }
 
-  .input-number ::ng-deep{
-    input{
+  .input-number ::ng-deep {
+    input {
       text-align: centert !important;
       border: none;
       background: $devui-info-bg;

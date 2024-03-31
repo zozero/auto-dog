@@ -4,7 +4,12 @@
             <!-- 可以放置的区域 -->
             <div class="card card-outline-primary mb-3" dDroppable dDropScrollEnhanced [switchWhileCrossEdge]="true"
                 [dropScope]="['raw']">
-                <div class="card-header">原始任务</div>
+                <div class="card-header">
+                    <d-icon icon="icon-helping" [operable]="true" dTooltip [position]="'right'"
+                        [content]="'帮助.拖动分类.原始' | translate">
+                        <span iconSuffix>原始任务</span>
+                    </d-icon>
+                </div>
                 <div class="card-block">
                     <ul class="list-group drop-el devui-scrollbar" dSortable dDropScrollEnhanced [direction]="'v'"
                         [responseEdgeWidth]="'20px'">
@@ -25,7 +30,12 @@
             <!-- 可以放置的区域 -->
             <div class="card card-outline-primary mb-3" dDroppable dDropScrollEnhanced [switchWhileCrossEdge]="true"
                 [dropScope]="['raw']" (dropEvent)="onDrop($event,'每天')">
-                <div class="card-header">每天任务</div>
+                <div class="card-header">
+                    <d-icon icon="icon-helping" [operable]="true" dTooltip [position]="'right'"
+                        [content]="'帮助.拖动分类.每天' | translate">
+                        <span iconSuffix>每天任务</span>
+                    </d-icon>
+                </div>
                 <div class="card-block">
                     <ul class="list-group drop-el devui-scrollbar" dDropScrollEnhanced [direction]="'v'"
                         [responseEdgeWidth]="'20px'">
@@ -46,7 +56,12 @@
             <!-- 可以放置的区域 -->
             <div class="card card-outline-primary mb-3" dDroppable dDropScrollEnhanced [switchWhileCrossEdge]="true"
                 [dropScope]="['raw']" (dropEvent)="onDrop($event,'每周')">
-                <div class="card-header">每周任务</div>
+                <div class="card-header">
+                    <d-icon icon="icon-helping" [operable]="true" dTooltip [position]="'right'"
+                        [content]="'帮助.拖动分类.每周' | translate">
+                        <span iconSuffix>每周任务</span>
+                    </d-icon>
+                </div>
                 <div class="card-block">
                     <ul class="list-group drop-el devui-scrollbar" dDropScrollEnhanced [direction]="'v'"
                         [responseEdgeWidth]="'20px'">
@@ -68,7 +83,12 @@
             <!-- 可以放置的区域 -->
             <div class="card card-outline-primary mb-3" dDroppable dDropScrollEnhanced [switchWhileCrossEdge]="true"
                 [dropScope]="['raw']" (dropEvent)="onDrop($event,'每月')">
-                <div class="card-header">每月任务</div>
+                <div class="card-header">
+                    <d-icon icon="icon-helping" [operable]="true" dTooltip [position]="'right'"
+                        [content]="'帮助.拖动分类.每月' | translate">
+                        <span iconSuffix>每月任务</span>
+                    </d-icon>
+                </div>
                 <div class="card-block">
                     <ul class="list-group drop-el devui-scrollbar" dDropScrollEnhanced [direction]="'v'"
                         [responseEdgeWidth]="'20px'">
@@ -91,10 +111,15 @@
             <!-- 可以放置的区域 -->
             <div class="card card-outline-primary mb-3" dDroppable dDropScrollEnhanced [switchWhileCrossEdge]="true"
                 [dropScope]="['periodic','today']" (dropEvent)="onDropToday($event)" [defaultDropPosition]="'closest'">
-                <div class="card-header">今日任务</div>
+                <div class="card-header">
+                    <d-icon icon="icon-helping" [operable]="true" dTooltip [position]="'right'"
+                        [content]="'帮助.拖动分类.今日' | translate">
+                        <span iconSuffix>今日任务</span>
+                    </d-icon>
+                </div>
                 <div class="card-block">
-                    <ul class="list-group drop-el devui-scrollbar" dSortable dDropScrollEnhanced [direction]="'v'"
-                        [responseEdgeWidth]="'20px'">
+                    <ul class="list-group drop-el devui-scrollbar trash-today" dSortable dDropScrollEnhanced
+                        [direction]="'v'" [responseEdgeWidth]="'20px'">
                         <!-- 可以拿区的区域 -->
                         <!-- 可以排序，就是可以在内部上下拖拽 -->
                         <li dDraggable *ngFor="let item of taskListToday;let i=index;" [dragScope]="'today'"
@@ -112,12 +137,15 @@
             <!-- 可以放置的区域 -->
             <div class="card card-outline-primary mb-3" dDroppable [switchWhileCrossEdge]="true"
                 [dropScope]="['periodic','today']" (dropEvent)="onDropDelete($event)">
-                <div class="card-header">删除</div>
-                <div class="card-block list-group" dDraggable>
-                    <div class="trash-zone">
-                        <div class="icon icon-delete"></div>
-                        <div class="info">拖这里可以删除它。</div>
-                    </div>
+                <div class="card-header">
+                    <d-icon icon="icon-helping" [operable]="true" dTooltip [position]="'left'"
+                        [content]="'帮助.拖动分类.删除' | translate">
+                        <span iconSuffix>删除任务</span>
+                    </d-icon>
+                </div>
+                <div class="card-block list-group trash-zone" dDraggable>
+                    <div class="icon icon-delete"></div>
+                    <div class="info">拖这里可以删除它。</div>
                 </div>
             </div>
         </d-col>
