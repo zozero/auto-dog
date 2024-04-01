@@ -1,10 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
 export class ImageHttpService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // 截图
   interceptImage(executionSideHttp: string, simulatorHttp: string) {
@@ -13,14 +14,15 @@ export class ImageHttpService {
       responseType: 'blob',
     });
   }
-  
+
+  // 上传图片
   postUploadImage(
     executionSideUrl: string | undefined,
     projectName: string,
     img: File
   ) {
-    // eslint-disable-next-line prefer-const
-    let headers = new HttpHeaders();
+
+    const headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
     headers.append('Accept', 'application/json');
     const options = {
@@ -38,6 +40,29 @@ export class ImageHttpService {
       formData,
       options
     );
-    // return this.http.post(executionSideUrl + '/', formData, options);
+  }
+
+  // 上传预览图片，并返回预览图片
+  postPreviewImage(
+    executionSideUrl: string | undefined,
+    threshold: number[],
+    img: File
+  ): Observable<Blob> {
+    const options = {
+      params: {
+        阈值: threshold[0],
+        阈值类型: threshold[1],
+      },
+      responseType: 'blob' as 'json'
+    };
+
+    const formData = new FormData();
+    formData.append('图片', img);
+    return this.http.post<Blob>(
+      executionSideUrl + '/方法' + '/二值转化',
+      formData,
+      options
+    );
+
   }
 }

@@ -13,7 +13,7 @@ export const defaultImageMatchMethodArgs: ImageMatchMethodType = {
   额外补充: 0,
 };
 
-export const defaultBinarytImageMatchMethodArgs: BinaryImageMatchMethodType = {
+export const defaultBinaryImageMatchMethodArgs: BinaryImageMatchMethodType = {
   图片名: '',
   范围: '',
   阈值: 200,
@@ -27,12 +27,10 @@ export const matchMethodList: MatchMethodType[] = [
   {
     编码: 'A',
     名称: '图片匹配',
-    // 参数: defaultImageMatchMethodArgs,
   },
   {
     编码: 'B',
-    名称: '图片二值化匹配',
-    // 参数: defaultBinarytImageMatchMethodArgs,
+    名称: '二值图片匹配',
   },
 ];
 

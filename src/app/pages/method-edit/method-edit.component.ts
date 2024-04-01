@@ -11,6 +11,7 @@ import { TabsModule } from 'ng-devui/tabs';
 import { matchMethodList } from '../../core/mock/match-mock';
 import { ProjectInfo } from '../../core/interface/config-type';
 import { MatchMethodType } from '../../core/interface/table-type';
+import { BinaryImageMatchTableComponent } from "./binary-image-match-table/binary-image-match-table.component";
 
 @Component({
     selector: 'app-method-edit',
@@ -24,7 +25,8 @@ import { MatchMethodType } from '../../core/interface/table-type';
         DevUIModule,
         LoadingModule,
         ImageMatchTableComponent,
-        TabsModule
+        TabsModule,
+        BinaryImageMatchTableComponent
     ]
 })
 export class MethodEditComponent implements OnInit {

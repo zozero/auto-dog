@@ -1,12 +1,12 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DialogService, FormLayout, SelectModule, ToastService } from 'ng-devui';
+import { DialogService, FormLayout, ImagePreviewModule, SelectModule, ToastService } from 'ng-devui';
 import { FormModule } from 'ng-devui/form';
 import { matchMethodList } from '../../../core/mock/match-mock';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'ng-devui/button';
 import { cloneDeep } from 'lodash-es';
-import { MatchMethodType } from '../../../core/interface/table-type';
+import { BinaryImageMatchMethodType, ImageMatchMethodType, MatchMethodType } from '../../../core/interface/table-type';
 import { ProjectInfo } from '../../../core/interface/config-type';
 import { CropImageInfo } from '../../../core/interface/image-type';
 import { ImageMatchFormComponent } from "../../../shared/components/form/image-match-form/image-match-form.component";
@@ -15,6 +15,8 @@ import { ImageHttpService } from '../../../core/services/https/image-http.servic
 import { TipsDialogService } from '../../../core/services/tips-dialog/tips-dialog.service';
 import { AddStepInImageDialogComponent } from '../add-step-in-image-dialog/add-step-in-image-dialog.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { BinaryImageMatchFormComponent } from "../../../shared/components/form/binary-image-match-form/binary-image-match-form.component";
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-crop-image-upload',
@@ -28,14 +30,20 @@ import { TranslateModule } from '@ngx-translate/core';
     CommonModule,
     ButtonModule,
     TranslateModule,
-    ImageMatchFormComponent
+    ImageMatchFormComponent,
+    ImagePreviewModule,
+    BinaryImageMatchFormComponent
   ]
 })
 export class CropImageUploadComponent implements OnInit {
   @Input() data: any;
   // 图片组件的表单视图
   @ViewChild('imageMatchForm') public imageMatchForm!: ImageMatchFormComponent;
-  // 裁剪的图片信息
+   // 图片组件的表单视图
+  @ViewChild('binaryImageMatchForm') public binaryImageMatchForm!: BinaryImageMatchFormComponent;
+  // 用于获取当前匹配方法的参数
+  currentArgs!:ImageMatchMethodType |BinaryImageMatchMethodType;
+   // 裁剪的图片信息
   imageData!: CropImageInfo;
   // 项目信息
   projectInfo!: ProjectInfo;
@@ -49,6 +57,10 @@ export class CropImageUploadComponent implements OnInit {
   currentMethod: MatchMethodType = this.matchMethodList[0]
   // 发送给匹配方法表单的树
   range: string = '';
+  // 用于显示图片预览的
+  customImageSub = new Subject<HTMLElement>();
+  // 用于预览二值图片
+  imgPreviewSrc: string = '';
 
   constructor(
     private tableHttp: TableHttpService,
@@ -56,6 +68,7 @@ export class CropImageUploadComponent implements OnInit {
     private toastService: ToastService,
     private tipsService: TipsDialogService,
     private dialogService: DialogService,
+    private elementRef: ElementRef,
   ) {
 
   }
@@ -73,67 +86,85 @@ export class CropImageUploadComponent implements OnInit {
   submit() {
     switch (this.currentMethod['名称']) {
       case '图片匹配': {
-        const imageFile = new File(
-          [this.imageData.blob],
-          this.imageMatchForm.args['图片名'] + '.jpg',
-          { type: 'image/jpg' }
-        );
+        this.currentArgs=this.imageMatchForm.args;
 
-        // 上传图片
-        this.imageHttp
-          .postUploadImage(
-            this.projectInfo.executionSideInfo?.ipPort as string,
-            this.projectInfo.name,
-            imageFile
-          )
-          .subscribe({
-            next: (data: any) => {
-              this.toastService.open({
-                value: [{ severity: 'success', summary: '摘要', content: data }],
-              })
-            },
-            error: (err: any) => {
-              this.tipsService.responseErrorState(err.status as number)
-              // 关闭载入效果
-              this.closeDialog();
-            },
-            complete: () => {
-              // 关闭载入效果
-              this.closeDialog();
-            }
-          });
-        // 向csv表格中添加数据
-        this.tableHttp
-          .postMethodAddData(
-            this.projectInfo.executionSideInfo?.ipPort as string,
-            this.projectInfo.name,
-            this.currentMethod['名称'],
-            this.imageMatchForm.args
-          )
-          .subscribe({
-            next: (data: any) => {
-              this.toastService.open({
-                value: [{ severity: 'success', summary: '摘要', content: data }],
-              })
-              // 打开添加步骤的弹出框
-              this.addStepDialog();
-            },
-            error: (err: any) => {
-              this.tipsService.responseErrorState(err.status as number)
-              // 关闭载入效果
-              this.data.close();
-            },
-            complete: () => {
-              // 关闭载入效果
-              this.data.close();
-            }
-          })
+        this.uploadImage();
+        this.addCsvData();
+        break
+      }
+      case '二值图片匹配': {
+        this.currentArgs=this.binaryImageMatchForm.args;
+
+        this.uploadImage();
+        this.addCsvData();
         break
       }
     }
   }
+
+  // 上传图片
+  uploadImage() {
+    const imageFile = new File(
+      [this.imageData.blob],
+      this.currentArgs['图片名'] + '.jpg',
+      { type: 'image/jpg' }
+    );
+
+    // 上传图片
+    this.imageHttp
+      .postUploadImage(
+        this.projectInfo.executionSideInfo?.ipPort as string,
+        this.projectInfo.name,
+        imageFile
+      )
+      .subscribe({
+        next: (data: any) => {
+          this.toastService.open({
+            value: [{ severity: 'success', summary: '摘要', content: data }],
+          })
+        },
+        error: (err: any) => {
+          this.tipsService.responseErrorState(err.status as number)
+          // 关闭对话框
+          this.closeDialog();
+        },
+        complete: () => {
+          // 关闭对话框
+          this.closeDialog();
+        }
+      });
+  }
+  // 向csv表格中添加数据
+  addCsvData() {
+    this.tableHttp
+      .postMethodAddData(
+        this.projectInfo.executionSideInfo?.ipPort as string,
+        this.projectInfo.name,
+        this.currentMethod['名称'],
+        this.currentArgs
+      )
+      .subscribe({
+        next: (data: any) => {
+          this.toastService.open({
+            value: [{ severity: 'success', summary: '摘要', content: data }],
+          })
+          // 打开添加步骤的弹出框
+          this.addStepDialog();
+        },
+        error: (err: any) => {
+          this.tipsService.responseErrorState(err.status as number)
+          // 关闭载入效果
+          this.data.close();
+        },
+        complete: () => {
+          // 关闭载入效果
+          this.data.close();
+        }
+      })
+  }
+
   // 打开添加步骤的弹出框
-  addStepDialog() {
+  addStepDialog( ) {
     const config = {
       id: 'add-step-in-image-dialog',
       maxWidth: '900px',
@@ -141,7 +172,7 @@ export class CropImageUploadComponent implements OnInit {
       title: '快捷添加步骤',
       content: AddStepInImageDialogComponent,
       backdropCloseable: true,
-      onClose: () => console.log('on dialog closed'),
+      // onClose: () => console.log('on dialog closed'),
     };
 
     const addStepDialog = this.dialogService.open({
@@ -152,7 +183,7 @@ export class CropImageUploadComponent implements OnInit {
       data: {
         projectInfo: this.projectInfo,
         methodInfo: this.currentMethod,
-        imageName: this.imageMatchForm.args['图片名'],
+        imageName: this.currentArgs['图片名'],
         close: () => {
           addStepDialog.modalInstance.hide();
         },
@@ -189,4 +220,37 @@ export class CropImageUploadComponent implements OnInit {
       x1 + ' ' + y1 + ' ' + x2 + ' ' + y2;
   }
 
+  // 用于预览二值化图片，该函数是由二值图片匹配表单组件发出的。
+  onPreviewImage(threshold: number[]) {
+    const imageFile = new File(
+      [this.imageData.blob],
+      '预览.jpg',
+      { type: 'image/jpg' }
+    );
+
+    this.imageHttp.postPreviewImage(
+      this.projectInfo.executionSideInfo?.ipPort,
+      threshold,
+      imageFile
+    ).subscribe({
+      next: (img: Blob) => {
+        this.toastService.open({
+          value: [{ severity: 'success', summary: '摘要', content: '转换成功。' }],
+        })
+        console.log(img)
+        this.imgPreviewSrc = URL.createObjectURL(img);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        this.customImageSub.next(this.elementRef.nativeElement.querySelector('img'));
+      },
+      error: (err: any) => {
+        this.tipsService.responseErrorState(err.status as number)
+
+      },
+      complete: () => {
+
+      }
+    })
+
+
+  }
 }
