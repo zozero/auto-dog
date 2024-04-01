@@ -9,7 +9,6 @@ import { ImageHttpService } from '../../../../core/services/https/image-http.ser
 import { cloneDeep } from 'lodash-es';
 import { IconModule } from 'ng-devui/icon';
 import { InputGroupModule } from 'ng-devui/input-group';
-import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-binary-image-match-form',

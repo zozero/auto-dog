@@ -189,7 +189,6 @@ export class AddStepInImageDialogComponent implements OnInit {
 
   // 下拉框的值发生了改变
   onSelectedValueChange($event: string) {
-    console.log("🚀 ~ AddStepInImageDialogComponent ~ onSelectedValueChange ~ $event:", $event)
     this.myLocalStorage.set('imageInStepName', $event);
   }
 }

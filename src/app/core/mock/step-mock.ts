@@ -1,4 +1,5 @@
 import { StepTableType } from "../interface/table-type";
+import { matchMethodList } from "./match-mock";
 
 
 
@@ -20,7 +21,8 @@ export const  defaultEncodeObj={
     行为编码:['A',null,''],
     动后编码:['',null,'',null],
   }
-export const defaultMethodEncode=['A']
+
+  
 export const defaultBehaviorEncode=['A','B']
 export const defaultDirectionEncode=['X','Y']
 

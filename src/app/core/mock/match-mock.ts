@@ -1,7 +1,7 @@
 import {
   BinaryImageMatchMethodType,
-  ImageArgType,
   ImageMatchMethodType,
+  MatchAndMatchMethodType,
   MatchMethodType,
 } from '../interface/table-type';
 
@@ -22,6 +22,16 @@ export const defaultBinaryImageMatchMethodArgs: BinaryImageMatchMethodType = {
   最低相似度: 0.8,
 };
 
+export const defaultMatchAndMatchMethodArgs: MatchAndMatchMethodType = {
+  图片名: '',
+  编码: '',
+  X偏移: 0,
+  Y偏移: 0,
+  算法: 5,
+  最低相似度: 0.8,
+  额外补充: 0,
+};
+
 // 参数无法对应，所以需要额外增加列表
 export const matchMethodList: MatchMethodType[] = [
   {
@@ -32,39 +42,8 @@ export const matchMethodList: MatchMethodType[] = [
     编码: 'B',
     名称: '二值图片匹配',
   },
-];
-
-export const defaultmethodArgList: ImageArgType[] = [
   {
-    参数名: '序号',
-    参数值: '',
-  },
-  {
-    参数名: '图片名',
-    参数值: '',
-  },
-  {
-    参数名: '范围',
-    参数值: '',
-  },
-  {
-    参数名: '算法',
-    参数值: 5,
-  },
-  {
-    参数名: '最低相似度',
-    参数值: 0.8,
-  },
-  {
-    参数名: '值',
-    参数值: 200,
-  },
-  {
-    参数名: '阈值类型',
-    参数值: 0,
-  },
-  {
-    参数名: '额外补充',
-    参数值: 0,
+    编码: 'C',
+    名称: '匹配再匹配',
   },
 ];

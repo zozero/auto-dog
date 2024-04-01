@@ -23,6 +23,17 @@ export interface BinaryImageMatchMethodType {
   最低相似度: number;
 }
 
+export interface MatchAndMatchMethodType {
+  序号?: number;
+  编码: string;
+  图片名: string;
+  X偏移:number;
+  Y偏移:number;
+  算法: number;
+  最低相似度: number;
+  额外补充: number;
+}
+
 export interface ImageArgType {
   参数名: string;
   参数值: string | number;

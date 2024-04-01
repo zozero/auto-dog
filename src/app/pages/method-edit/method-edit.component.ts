@@ -12,6 +12,7 @@ import { matchMethodList } from '../../core/mock/match-mock';
 import { ProjectInfo } from '../../core/interface/config-type';
 import { MatchMethodType } from '../../core/interface/table-type';
 import { BinaryImageMatchTableComponent } from "./binary-image-match-table/binary-image-match-table.component";
+import { MatchAndMatchTableComponent } from "./match-and-match-table/match-and-match-table.component";
 
 @Component({
     selector: 'app-method-edit',
@@ -26,7 +27,8 @@ import { BinaryImageMatchTableComponent } from "./binary-image-match-table/binar
         LoadingModule,
         ImageMatchTableComponent,
         TabsModule,
-        BinaryImageMatchTableComponent
+        BinaryImageMatchTableComponent,
+        MatchAndMatchTableComponent
     ]
 })
 export class MethodEditComponent implements OnInit {

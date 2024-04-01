@@ -13,6 +13,7 @@
     <app-image-match-form #imageMatchForm *ngSwitchCase="'图片匹配'" [range]="range"></app-image-match-form>
     <app-binary-image-match-form #binaryImageMatchForm *ngSwitchCase="'二值图片匹配'" [range]="range"
       (previewImage)="onPreviewImage($event)"></app-binary-image-match-form>
+      <app-match-and-match-form #matchAndMatchForm *ngSwitchCase="'匹配再匹配'" [projectInfo]="projectInfo"></app-match-and-match-form>
   </container-element>
 
   <div class="modal-footer">

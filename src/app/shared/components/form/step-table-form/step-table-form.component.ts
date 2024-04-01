@@ -4,11 +4,11 @@ import { CommonModule } from '@angular/common';
 import { FormLayout, FormModule } from 'ng-devui/form';
 import { FormsModule } from '@angular/forms';
 import { InputNumberModule, LoadingService } from 'ng-devui';
-import { StepTableType, TestStepDataType } from '../../../../core/interface/table-type';
+import { MatchMethodType, StepTableType, TestStepDataType } from '../../../../core/interface/table-type';
 import { TranslateModule } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash-es';
 import { TableHttpService } from '../../../../core/services/https/table-http.service';
-import { defaultBehaviorEncode, defaultDirectionEncode, defaultEncodeObj, defaultMethodEncode, defaultStepData, defaultZJEncode } from '../../../../core/mock/step-mock';
+import { defaultBehaviorEncode, defaultDirectionEncode, defaultEncodeObj, defaultStepData, defaultZJEncode } from '../../../../core/mock/step-mock';
 import { ModalComponent } from 'ng-devui/modal';
 import { SelectModule } from 'ng-devui/select';
 import { InputGroupModule } from 'ng-devui/input-group';
@@ -17,6 +17,7 @@ import { ButtonModule } from 'ng-devui/button';
 import { TipsDialogService } from '../../../../core/services/tips-dialog/tips-dialog.service';
 import { MyLocalStorageService } from '../../../../core/services/my-local-storage/my-local-storage.service';
 import { ExecutionHttpService } from '../../../../core/services/https/execution-http.service';
+import { matchMethodList } from '../../../../core/mock/match-mock';
 
 @Component({
   selector: 'app-step-table-form',
@@ -46,7 +47,7 @@ export class StepTableFormComponent {
   @Input() encodeObj = defaultEncodeObj
 
 
-  defaultMethodEncode = defaultMethodEncode;
+  defaultMethodEncode : MatchMethodType[]= matchMethodList;
   defaultBehaviorEncode = defaultBehaviorEncode;
   defaultDirectionEncode = defaultDirectionEncode
   defaultZJEncode = defaultZJEncode;
@@ -151,7 +152,6 @@ export class StepTableFormComponent {
       名称: this.fileName as string,
       编号: order
     }
-    console.log("🚀 ~ StepTableFormComponent ~ testStep ~ stepData:", stepData)
     this.executionHttpService.postTestStepData(
       this.projectInfo.executionSideInfo?.ipPort as string,
       stepData

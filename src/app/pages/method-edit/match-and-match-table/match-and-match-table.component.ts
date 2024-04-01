@@ -17,8 +17,9 @@ import { ImagePreviewModule } from 'ng-devui/image-preview';
 import { MyLocalStorageService } from '../../../core/services/my-local-storage/my-local-storage.service';
 import { TranslateModule } from '@ngx-translate/core';
 
+
 @Component({
-  selector: 'app-binary-image-match-table',
+  selector: 'app-match-and-match-table',
   standalone: true,
   imports: [
     DataTableModule,
@@ -29,10 +30,10 @@ import { TranslateModule } from '@ngx-translate/core';
     ModalModule,
     ImagePreviewModule,
     TranslateModule],
-  templateUrl: './binary-image-match-table.component.html',
-  styleUrl: './binary-image-match-table.component.scss'
+  templateUrl: './match-and-match-table.component.html',
+  styleUrl: './match-and-match-table.component.scss'
 })
-export class BinaryImageMatchTableComponent implements OnInit, OnChanges  {
+export class MatchAndMatchTableComponent  implements OnInit, OnChanges {
  // 按钮点击后的载入提示
  btnShowLoading = false;
  // 表格数据
@@ -54,7 +55,7 @@ export class BinaryImageMatchTableComponent implements OnInit, OnChanges  {
  // 它就是子菜单
  @Input() projectInfo!: ProjectInfo;
  // 方法的类型
- @Input() methodType: string | number = '二值图片匹配';
+ @Input() methodType: string | number = '匹配再匹配';
  editableTip = EditableTip.hover;
  // 用于显示图片预览的
  customImageSub = new Subject<HTMLElement>();
@@ -72,7 +73,7 @@ export class BinaryImageMatchTableComponent implements OnInit, OnChanges  {
 
  ) { }
  ngOnInit(): void {
-   console.log("BinaryImageMatchTableComponent");
+   console.log("MatchAndMatchTableComponent");
    const tmpStr: string | null = this.myLocalStorage.get('autoSave');
    if (tmpStr != null) {
      this.isAutoSave = Boolean(tmpStr);

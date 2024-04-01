@@ -15,7 +15,7 @@
       </d-form-label>
       <d-form-control>
         <d-input-group >
-          <d-select style="width: 66px;" [allowClear]="true" class="comparison-symbol"  name="界面编码-1"  [(ngModel)]="encodeObj['界面编码'][0]" [options]="defaultMethodEncode"></d-select>
+          <d-select style="width: 66px;" [allowClear]="true" class="comparison-symbol"  name="界面编码-1"  [(ngModel)]="encodeObj['界面编码'][0]" [options]="defaultMethodEncode"  [filterKey]="'编码'"></d-select>
           <d-input-number [min]="1"  [allowEmpty]="true" name="界面编码-2"  [(ngModel)]="encodeObj['界面编码'][1]"></d-input-number>
         </d-input-group>
       </d-form-control>
@@ -28,7 +28,7 @@
       <d-form-control>
         <d-form-control>
           <d-input-group >
-            <d-select style="width: 66px;" [allowClear]="true" name="方法编码-1"  [(ngModel)]="encodeObj['方法编码'][0]" [options]="defaultMethodEncode"></d-select>
+            <d-select style="width: 66px;" [allowClear]="true" name="方法编码-1"  [(ngModel)]="encodeObj['方法编码'][0]" [options]="defaultMethodEncode" [filterKey]="'编码'"></d-select>
             <d-input-number [min]="1"  [allowEmpty]="true" name="方法编码-2"  [(ngModel)]="encodeObj['方法编码'][1]"></d-input-number>
           </d-input-group>
         </d-form-control>
@@ -54,7 +54,7 @@
       </d-form-label>
       <d-form-control>
         <d-input-group >
-          <d-select style="width: 66px;" [allowClear]="true"name="动后编码-1"  [(ngModel)]="encodeObj['动后编码'][0]" [options]="defaultMethodEncode"></d-select>
+          <d-select style="width: 66px;" [allowClear]="true"name="动后编码-1"  [(ngModel)]="encodeObj['动后编码'][0]" [options]="defaultMethodEncode" [filterKey]="'编码'"></d-select>
           <d-input-number [min]="1" [allowEmpty]="true" name="动后编码-2"  [(ngModel)]="encodeObj['动后编码'][1]"></d-input-number>
           <d-select style="width: 66px;" [allowClear]="true" name="动后编码-3"  [(ngModel)]="encodeObj['动后编码'][2]" [options]="defaultZJEncode"></d-select>
           <d-input-number [min]="0" [allowEmpty]="true" name="动后编码-4"  [(ngModel)]="encodeObj['动后编码'][3]"></d-input-number>

@@ -6,7 +6,7 @@ import { matchMethodList } from '../../../core/mock/match-mock';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'ng-devui/button';
 import { cloneDeep } from 'lodash-es';
-import { BinaryImageMatchMethodType, ImageMatchMethodType, MatchMethodType } from '../../../core/interface/table-type';
+import { BinaryImageMatchMethodType, ImageMatchMethodType, MatchAndMatchMethodType, MatchMethodType } from '../../../core/interface/table-type';
 import { ProjectInfo } from '../../../core/interface/config-type';
 import { CropImageInfo } from '../../../core/interface/image-type';
 import { ImageMatchFormComponent } from "../../../shared/components/form/image-match-form/image-match-form.component";
@@ -17,32 +17,36 @@ import { AddStepInImageDialogComponent } from '../add-step-in-image-dialog/add-s
 import { TranslateModule } from '@ngx-translate/core';
 import { BinaryImageMatchFormComponent } from "../../../shared/components/form/binary-image-match-form/binary-image-match-form.component";
 import { Subject } from 'rxjs';
+import { MatchAndMatchFormComponent } from "../../../shared/components/form/match-and-match-form/match-and-match-form.component";
 
 @Component({
-  selector: 'app-crop-image-upload',
-  standalone: true,
-  templateUrl: './crop-image-upload.component.html',
-  styleUrl: './crop-image-upload.component.scss',
-  imports: [
-    FormModule,
-    FormsModule,
-    SelectModule,
-    CommonModule,
-    ButtonModule,
-    TranslateModule,
-    ImageMatchFormComponent,
-    ImagePreviewModule,
-    BinaryImageMatchFormComponent
-  ]
+    selector: 'app-crop-image-upload',
+    standalone: true,
+    templateUrl: './crop-image-upload.component.html',
+    styleUrl: './crop-image-upload.component.scss',
+    imports: [
+        FormModule,
+        FormsModule,
+        SelectModule,
+        CommonModule,
+        ButtonModule,
+        TranslateModule,
+        ImageMatchFormComponent,
+        ImagePreviewModule,
+        BinaryImageMatchFormComponent,
+        MatchAndMatchFormComponent
+    ]
 })
 export class CropImageUploadComponent implements OnInit {
   @Input() data: any;
   // 图片组件的表单视图
   @ViewChild('imageMatchForm') public imageMatchForm!: ImageMatchFormComponent;
    // 图片组件的表单视图
-  @ViewChild('binaryImageMatchForm') public binaryImageMatchForm!: BinaryImageMatchFormComponent;
+   @ViewChild('binaryImageMatchForm') public binaryImageMatchForm!: BinaryImageMatchFormComponent;
+    // 图片组件的表单视图
+  @ViewChild('matchAndMatchForm') public matchAndMatchForm!: MatchAndMatchFormComponent;
   // 用于获取当前匹配方法的参数
-  currentArgs!:ImageMatchMethodType |BinaryImageMatchMethodType;
+  currentArgs!:ImageMatchMethodType |BinaryImageMatchMethodType|MatchAndMatchMethodType;
    // 裁剪的图片信息
   imageData!: CropImageInfo;
   // 项目信息
@@ -95,6 +99,13 @@ export class CropImageUploadComponent implements OnInit {
       case '二值图片匹配': {
         this.currentArgs=this.binaryImageMatchForm.args;
 
+        this.uploadImage();
+        this.addCsvData();
+        break
+      }
+      case '匹配再匹配': {
+        this.currentArgs=this.matchAndMatchForm.retArgs();
+        
         this.uploadImage();
         this.addCsvData();
         break

@@ -13,6 +13,7 @@
       <container-element [ngSwitch]="tabActiveId">
         <app-image-match-table *ngSwitchCase="imageMethodList[0]['名称']" [methodType]="tabActiveId"  [projectInfo]="currentProject"></app-image-match-table>
         <app-binary-image-match-table *ngSwitchCase="imageMethodList[1]['名称']" [methodType]="tabActiveId"  [projectInfo]="currentProject"></app-binary-image-match-table>
+        <app-match-and-match-table *ngSwitchCase="imageMethodList[2]['名称']" [methodType]="tabActiveId"  [projectInfo]="currentProject"></app-match-and-match-table>
       </container-element>
 
     </d-col>

@@ -38,7 +38,7 @@
       </d-row>
       <d-row>
         <d-col [dSpan]="24">
-          <angular-cropper #angularCropper [cropperOptions]="cropConfig" [imageUrl]="rowImageUrl"
+          <angular-cropper #angularCropper [cropperOptions]="cropConfig" [imageUrl]="rowImageUrl" 
             (export)="angularCropperExport($event)" *ngIf="rowImageUrl!==undefined">
           </angular-cropper>
 

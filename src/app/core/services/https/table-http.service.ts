@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BinaryImageMatchMethodType, ImageMatchMethodType, StepTableType, TaskTableType } from '../../interface/table-type';
+import { BinaryImageMatchMethodType, ImageMatchMethodType, MatchAndMatchMethodType, StepTableType, TaskTableType } from '../../interface/table-type';
 @Injectable({
   providedIn: 'root',
 })
@@ -58,7 +58,7 @@ export class TableHttpService {
     executionSideUrl: string,
     projectName: string,
     methodName: string,
-    imageArgs: ImageMatchMethodType | BinaryImageMatchMethodType,
+    imageArgs: ImageMatchMethodType | BinaryImageMatchMethodType | MatchAndMatchMethodType,
   ) {
     // eslint-disable-next-line prefer-const
     let headers = new HttpHeaders();
@@ -331,8 +331,8 @@ export class TableHttpService {
       options
     );
   }
-   // 创建任务表格
-   putCreateTaskCsvFile(executionSideUrl: string, projectName: string, fileName: string, csvFile: File) {
+  // 创建任务表格
+  putCreateTaskCsvFile(executionSideUrl: string, projectName: string, fileName: string, csvFile: File) {
     // eslint-disable-next-line prefer-const
     let headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
@@ -363,5 +363,5 @@ export class TableHttpService {
       }
     });
   }
-  
+
 }
