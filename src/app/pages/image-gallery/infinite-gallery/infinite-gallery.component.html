@@ -7,10 +7,12 @@
                     <d-card-title class="info">{{item.data[0]+'：'+item.data[1]}}</d-card-title>
                 </d-card-header>
                 <d-card-content>
-                    <d-tag [tag]="csvHeader[2]+'：'+item.data[2]" [labelStyle]="'blue-w98'"></d-tag>
-                    <d-tag [tag]="csvHeader[3]+'：'+item.data[3]" [labelStyle]="'aqua-w98'"></d-tag>
-                    <d-tag [tag]="csvHeader[4]+'：'+item.data[4]" [labelStyle]="'olivine-w98'"></d-tag>
-                    <d-tag [tag]="csvHeader[5]+'：'+item.data[5]" [labelStyle]="'green-w98'"></d-tag>
+                    <d-tag *ngIf="item.data[2]"  [tag]="csvHeader[2]+'：'+item.data[2]" [labelStyle]="'blue-w98'"></d-tag>
+                    <d-tag *ngIf="item.data[3]"  [tag]="csvHeader[3]+'：'+item.data[3]" [labelStyle]="'aqua-w98'"></d-tag>
+                    <d-tag *ngIf="item.data[4]" [tag]="csvHeader[4]+'：'+item.data[4]" [labelStyle]="'olivine-w98'"></d-tag>
+                    <d-tag *ngIf="item.data[5]"  [tag]="csvHeader[5]+'：'+item.data[5]" [labelStyle]="'green-w98'"></d-tag>
+                    <d-tag *ngIf="item.data[6]"  [tag]="csvHeader[6]+'：'+item.data[6]" [labelStyle]="'yellow-w98'"></d-tag>
+                    <d-tag *ngIf="item.data[7]"  [tag]="csvHeader[7]+'：'+item.data[7]" [labelStyle]="'orange-w98'"></d-tag>
                 </d-card-content>
                 <d-card-actions [align]="'end'">
                     <div class="card-block">
