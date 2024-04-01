@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BinaryImageMatchMethodType, ImageMatchMethodType, MatchAndMatchMethodType, StepTableType, TaskTableType } from '../../interface/table-type';
+import { BinaryImageMatchMethodType, ImageMatchMethodType, MatchAndMatchMethodType, NoImageMatchMethodType, StepTableType, TaskTableType } from '../../interface/table-type';
 @Injectable({
   providedIn: 'root',
 })
@@ -58,7 +58,7 @@ export class TableHttpService {
     executionSideUrl: string,
     projectName: string,
     methodName: string,
-    imageArgs: ImageMatchMethodType | BinaryImageMatchMethodType | MatchAndMatchMethodType,
+    imageArgs: ImageMatchMethodType | BinaryImageMatchMethodType | MatchAndMatchMethodType | NoImageMatchMethodType,
   ) {
     // eslint-disable-next-line prefer-const
     let headers = new HttpHeaders();

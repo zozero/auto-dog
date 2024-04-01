@@ -1,0 +1,75 @@
+<div class="table-content" *ngIf="csvData.length>0">
+    <d-button bsStyle="primary" class="my-glob-padding-right" [showLoading]="btnShowLoading"
+        (btnClick)="putCsvFile()">保存</d-button>
+    <d-button bsStyle="common" class="my-glob-padding-right" (btnClick)="exportCsvFile()">导出</d-button>
+    <d-toggle dTooltip [(ngModel)]="isAutoSave" (change)="onChageAutoSave($event)" [content]="'帮助.表格.自动' | translate"
+        [color]="'#FECC55'"></d-toggle>
+    <d-data-table style="margin-top: 8px;" [borderType]="'bordered'" [dataSource]="csvFilterList" [size]="'md'"
+        [fixHeader]="true" [scrollable]="true" dLoading [loading]="loadingTip" [backdrop]="true"
+        [loadingStyle]="'infinity'" tableHeight="100%" [virtualMinBufferPx]="10" [virtualMaxBufferPx]="20"
+        [tableOverflowType]="'overlay'">
+        <thead dTableHead>
+            <tr dTableRow>
+                <th dHeadCell>索引</th>
+                <th dHeadCell [sortable]="true" [showSortIcon]="false" (sortChange)="onSortChange($event, 0)"
+                    [filterList]="ordinalFilterList" [filterable]="true" [filterMultiple]="true"
+                    [filterBoxWidth]="'200px'" (filterChange)="filterChangeMutil($event,0)">{{ csvHeader[0] }}</th>
+                <th dHeadCell [filterList]="imgNameFilterList" [filterable]="true" [filterMultiple]="true"
+                    [filterBoxWidth]="'200px'" (filterChange)="filterChangeMutil($event,1)">{{ csvHeader[1] }}</th>
+                <th dHeadCell>{{ csvHeader[2] }}</th>
+                <th dHeadCell>{{ csvHeader[3] }}</th>
+                <th dHeadCell>操作</th>
+            </tr>
+        </thead>
+        <tbody dTableBody>
+            <ng-template let-rowItem="rowItem" let-rowIndex="rowIndex">
+                <tr dTableRow>
+                    <td dTableCell [rowItem]="rowItem" [field]="'index'">
+                        <span>{{ rowIndex + 1 }}</span>
+                    </td>
+                    <td dTableCell [rowItem]="rowItem" [field]="csvHeader[0]">
+                        <span>{{ rowItem[0] }}</span>
+                    </td>
+
+                    <td dTableCell [editable]="false" [field]="csvHeader[1]" [rowItem]="rowItem">
+                        <span>
+                            <d-button bsStyle="text" (btnClick)="openImage(rowItem[1])"> {{ rowItem[1] }}</d-button>
+                        </span>
+                    </td>
+
+                    <td dTableCell [editable]="true" [editableTip]="editableTip"
+                        [(editing)]="rowItem[csvHeader[2]+'Edit']" [beforeEditEnd]="beforeEditEnd"
+                        [field]="csvHeader[2]" [rowItem]="rowItem">
+                        <span *ngIf="!rowItem[csvHeader[2]+'Edit']">
+                            {{ rowItem[2] }}
+                        </span>
+                        <div *ngIf="rowItem[csvHeader[2]+'Edit']" class="edit-padding-fix">
+                            <d-input-number [dAutoFocus]="true" [min]="0" [name]="csvHeader[2]"
+                                [(ngModel)]="rowItem[2]"></d-input-number>
+                        </div>
+                    </td>
+
+                    <td dTableCell [editable]="true" [editableTip]="editableTip"
+                        [(editing)]="rowItem[csvHeader[3]+'Edit']" [beforeEditEnd]="beforeEditEnd"
+                        [field]="csvHeader[3]" [rowItem]="rowItem">
+                        <span *ngIf="!rowItem[csvHeader[3]+'Edit']">
+                            {{ rowItem[3] }}
+                        </span>
+                        <div *ngIf="rowItem[csvHeader[3]+'Edit']" class="edit-padding-fix">
+                            <d-input-number [dAutoFocus]="true" [min]="0" [name]="csvHeader[3]"
+                                [(ngModel)]="rowItem[3]"></d-input-number>
+                        </div>
+                    </td>
+
+                    <td dTableCell>
+                        <d-button bsStyle="text" (btnClick)="deleteData(rowIndex)">删除</d-button>
+                    </td>
+                </tr>
+            </ng-template>
+        </tbody>
+    </d-data-table>
+    <!-- 图片预览，默认不显示，等到按钮触发才显示 -->
+    <div dImagePreview [customSub]="customImageSub" [disableDefault]="true" style="display: none;">
+        <img [attr.src]="imgSrc" style="max-width: 800px" />
+    </div>
+</div>

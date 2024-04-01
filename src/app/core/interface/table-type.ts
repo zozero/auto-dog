@@ -27,11 +27,18 @@ export interface MatchAndMatchMethodType {
   序号?: number;
   编码: string;
   图片名: string;
-  X偏移:number;
-  Y偏移:number;
+  X偏移: number;
+  Y偏移: number;
   算法: number;
   最低相似度: number;
   额外补充: number;
+}
+
+export interface NoImageMatchMethodType {
+  序号?: number;
+  图片名: string;
+  X轴: number;
+  Y轴: number;
 }
 
 export interface ImageArgType {

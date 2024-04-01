@@ -3,6 +3,7 @@ import {
   ImageMatchMethodType,
   MatchAndMatchMethodType,
   MatchMethodType,
+  NoImageMatchMethodType,
 } from '../interface/table-type';
 
 export const defaultImageMatchMethodArgs: ImageMatchMethodType = {
@@ -32,6 +33,12 @@ export const defaultMatchAndMatchMethodArgs: MatchAndMatchMethodType = {
   额外补充: 0,
 };
 
+export const defaultNoImageMatchMethodArgs: NoImageMatchMethodType = {
+  图片名: '',
+  X轴: 0,
+  Y轴: 0,
+};
+
 // 参数无法对应，所以需要额外增加列表
 export const matchMethodList: MatchMethodType[] = [
   {
@@ -45,5 +52,9 @@ export const matchMethodList: MatchMethodType[] = [
   {
     编码: 'C',
     名称: '匹配再匹配',
+  },
+  {
+    编码: 'D',
+    名称: '无图匹配',
   },
 ];

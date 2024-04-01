@@ -1,0 +1,33 @@
+<section>
+    <form dForm [layout]="vertical" ngForm>
+      <d-form-item>
+        <d-form-label [required]="true" [hasHelp]="true" [helpTips]="'帮助.匹配.图片名二' | translate">
+          图片名
+        </d-form-label>
+        <d-form-control>
+          <input dTextInput autocomplete="off" name="图片名" [(ngModel)]="args['图片名']" />
+        </d-form-control>
+      </d-form-item>
+
+      <d-form-item>
+        <d-form-label [required]="true" [hasHelp]="true" [helpTips]="'帮助.匹配.X轴' | translate">
+            X轴
+        </d-form-label>
+        <d-form-control>
+          <d-input-number [min]="0" name="X轴" [(ngModel)]="args['X轴']"></d-input-number>
+        </d-form-control>
+      </d-form-item>
+
+      <d-form-item>
+        <d-form-label [required]="true" [hasHelp]="true" [helpTips]="'帮助.匹配.Y轴' | translate">
+            Y轴
+        </d-form-label>
+        <d-form-control>
+          <d-input-number [min]="0" name="Y轴" [(ngModel)]="args['Y轴']"></d-input-number>
+        </d-form-control>
+      </d-form-item>
+  
+    </form>
+  </section>
+
+  

@@ -1,11 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { FormLayout, FormModule, ImagePreviewModule, InputNumberModule, ToastService } from 'ng-devui';
+import { FormLayout, FormModule, ImagePreviewModule, InputNumberModule } from 'ng-devui';
 import { defaultBinaryImageMatchMethodArgs } from '../../../../core/mock/match-mock';
 import { BinaryImageMatchMethodType } from '../../../../core/interface/table-type';
-import { ImageHttpService } from '../../../../core/services/https/image-http.service';
 import { cloneDeep } from 'lodash-es';
 import { IconModule } from 'ng-devui/icon';
 import { InputGroupModule } from 'ng-devui/input-group';
@@ -35,10 +34,7 @@ export class BinaryImageMatchFormComponent implements OnInit {
   // 表单垂直布局
   vertical: FormLayout = FormLayout.Vertical;
 
-  constructor(
-    private imageHttp: ImageHttpService,
-    private elementRef: ElementRef,
-    private toastService: ToastService) {
+  constructor() {
   }
   ngOnInit(): void {
     console.log("BinaryImageMatchFormComponent");
