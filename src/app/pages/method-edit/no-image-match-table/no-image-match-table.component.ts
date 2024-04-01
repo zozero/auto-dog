@@ -55,7 +55,7 @@ export class NoImageMatchTableComponent  implements OnInit, OnChanges {
  // 它就是子菜单
  @Input() projectInfo!: ProjectInfo;
  // 方法的类型
- @Input() methodType: string | number = '二值图片匹配';
+ @Input() methodType: string | number = '无图匹配';
  editableTip = EditableTip.hover;
  // 用于显示图片预览的
  customImageSub = new Subject<HTMLElement>();

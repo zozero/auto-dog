@@ -222,7 +222,7 @@ export class CropImageUploadComponent implements OnInit {
   setCurrentImageMethodData() {
     // 如果参数列表中有“范围”参数就直接计算范围
     // 范围是左上和右下的坐标
-    const baseNum = 50;
+    const baseNum = 100;
     // 四舍五入的计算
     // 不要超出屏幕的范围
     let x1 = Math.round(this.imageData.info.x - baseNum);

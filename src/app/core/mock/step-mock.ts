@@ -1,5 +1,4 @@
 import { StepTableType } from "../interface/table-type";
-import { matchMethodList } from "./match-mock";
 
 
 
@@ -23,7 +22,7 @@ export const  defaultEncodeObj={
   }
 
   
-export const defaultBehaviorEncode=['A','B']
+export const defaultBehaviorEncode=['A','B','C','D']
 export const defaultDirectionEncode=['X','Y']
 
 export const defaultZJEncode=['Z','J']
