@@ -16,8 +16,6 @@ function createWindow(): BrowserWindow {
   win = new BrowserWindow({
     x: zx,
     y: zy,
-    // width: size.width,
-    // height: size.height,
 
     width: 1920,
     height: 1080,
@@ -59,6 +57,7 @@ function createWindow(): BrowserWindow {
 
   return win;
 }
+
 
 try {
   // This method will be called when Electron has finished

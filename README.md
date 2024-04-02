@@ -1,6 +1,7 @@
 <p align="center">
-  <img src="./src/assets/icons/favicon.256x256.png" alt="自动化小犬" style="border-radius:50%">
+  <img src="./src/assets/icons/auto-dog.png" alt="自动化小犬" style="border-radius:50%">
 </p>
+<h2 align="center">自动化小犬</h2>
 
 <h3 align="center">你的手机模拟器是你的狗子，现在请让你狗子变得成熟吧！</h3>
 
@@ -19,7 +20,7 @@
 
 - 你需要一台不错的电脑。
 - 你需要在电脑上面下载安卓模拟器，如果你可以获取安卓手机的root权限也可以。
-- 你需要到[这里](123123)去下载执行端的代码，然后运行它。具体如何运行可以查看那里的教程。
+- 你需要到[这里](https://github.com/zozero/auto-dog-execute)去下载执行端的代码，然后运行它。具体如何运行可以查看那里的教程。
 
 ### 方法一
 ```bash
@@ -36,8 +37,13 @@ $ npm install
 
 你可以直接点击[这里](123123)下载，里面有多个版本，你可以选择这个文件，解压缩后就可以运行。
 
-## 教程视频
+## 视频教程
 
+<!-- <div style="display:flex">
+  <iframe style="margin-right:30px" width="560" height="315" src="//player.bilibili.com/player.html?aid=1302094640&bvid=BV1Ru4m1K7Au&cid=1478615586&p=1"  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen> </iframe>
+
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/mvgxN8sDywo?si=jRyuZcquZM4uVOfa" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
+</div>
 
 ## 菜单说明
 
@@ -398,6 +404,12 @@ $ npm install
 
 如果你使用的是手机，最好找一台没有任何个人信息和财产的无用手机。
 
+## 赞助
+
+<p align="center">
+    <img src="./src/assets/捐赠.png" alt="捐赠" style="border-radius:50%" />
+</p>  
+<h3 align="center">贫穷常伴吾身，急需救援一波</h3>
 
 ## 许可证
 

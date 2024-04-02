@@ -5,7 +5,7 @@
     "name": "zozero",
     "email": "null@null.null"
   },
-  "version": "14.0.0",
+  "version": "1.0.0",
   "main": "main.js",
   "private": true,
   "dependencies": {

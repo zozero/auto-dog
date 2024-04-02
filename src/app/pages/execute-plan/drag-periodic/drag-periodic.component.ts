@@ -150,7 +150,7 @@ export class DragPeriodicComponent implements OnInit, OnChanges {
       periodic: data['类型'] as string,
       sort: sort
     }
-    
+
     tableData['id'] = await executeInfoTable.addtExecuteInfo(tableData)
     return tableData
   }
@@ -429,6 +429,11 @@ export class DragPeriodicComponent implements OnInit, OnChanges {
 
       await taskExecuteResultInfoTable.updateTaskExecuteResultInfo(
         this.taskListToday[i]['id'] as number,
+        { sort: i }
+      )
+      // 还需要更改任务的排序
+      await executeInfoTable.updateExecuteInfo(
+        this.taskListToday[i]['executeInfo']['id'] as number,
         { sort: i }
       )
     }

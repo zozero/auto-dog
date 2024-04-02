@@ -1,8 +1,8 @@
 {
   "name": "auto-dog",
-  "version": "14.0.0",
+  "version": "1.0.0",
   "description": "自动化小犬",
-  "homepage": "https://github.com/maximegris/angular-electron",
+  "homepage": "https://github.com/zozero/auto-dog",
   "author": {
     "name": "zozero",
     "email": "null@null.null"
