@@ -8,10 +8,9 @@ const args = process.argv.slice(1),
 
 function createWindow(): BrowserWindow {
   const size = screen.getPrimaryDisplay().workAreaSize;
-  // 设置应用初始位置
+  // 设置应用初始位置，在屏幕中心打开
   const zx = Math.ceil(size.width / 2 - 1920 / 2);
   const zy = Math.ceil(size.height / 2 - 1080 / 2);
-  console.log('🚀 ~ createWindow ~ size:', size);
 
   // Create the browser window.
   win = new BrowserWindow({
