@@ -121,7 +121,6 @@ export class ExecutePlanComponent implements OnInit {
     let tmpSubscribe: Subscription = new Subscription()
 
     tmpSubscribe = exeDatas.subscribe((exeData) => {
-      //  exeDatas.subscribe((exeData) => {
       if (tmpSubscribe === null || tmpSubscribe === undefined) {
         return;
       }

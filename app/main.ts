@@ -24,8 +24,10 @@ function createWindow(): BrowserWindow {
       allowRunningInsecureContent: serve,
       contextIsolation: false,
     },
-    title:'自动化小犬'
+    title:'自动化小犬',
   });
+  // 移除菜单栏
+  // win.setMenu(null);
 
   if (serve) {
     const debug = require('electron-debug');

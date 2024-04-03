@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ElectronService } from './core/services';
 import { TranslateService } from '@ngx-translate/core';
-import { APP_CONFIG } from '../environments/environment';
+// import { APP_CONFIG } from '../environments/environment';
 import {  AppMenuItemType } from './core/interface/app-type';
 import { Router } from '@angular/router';
 import { MyLocalStorageService } from './core/services/my-local-storage/my-local-storage.service';
