@@ -64,7 +64,11 @@ $ npm run start
 
 ## 视频教程
 
-[![IMAGE ALT TEXT](https://i1.hdslb.com/bfs/archive/a827b2f9488446872f71e4f96724ead9499a456c.jpg@320w_200h)](https://www.bilibili.com/video/BV1jx4y1v7is/?vd_source=94eb18e525a1fa647feaa8beb70f4ba2 "视频 小犬")
+<!-- <div style="display:flex">
+  <iframe style="margin-right:30px" width="560" height="315" src="//player.bilibili.com/player.html?aid=1302094640&bvid=BV1Ru4m1K7Au&cid=1478615586&p=1"  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen> </iframe>
+
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/mvgxN8sDywo?si=jRyuZcquZM4uVOfa" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+ </div> -->
 
 ## 菜单说明
 
