@@ -47,7 +47,7 @@ $ git clone https://github.com/zozero/auto-dog
 进入到项目目录
 
 ```bash
-$ cd clone auto-dog
+$ cd auto-dog
 ```
 
 安装依赖
@@ -64,11 +64,11 @@ $ npm run start
 
 ## 视频教程
 
-<!-- <div style="display:flex">
-  <iframe style="margin-right:30px" width="560" height="315" src="//player.bilibili.com/player.html?aid=1302094640&bvid=BV1Ru4m1K7Au&cid=1478615586&p=1"  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen> </iframe>
+<div style="display:flex">
+  <iframe style="margin-right:30px" width="560" height="315" src="//player.bilibili.com/player.html?aid=1002606941&bvid=BV1jx4y1v7is&cid=1492745193&p=1"  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen> 
+  </iframe>
+</div>
 
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/mvgxN8sDywo?si=jRyuZcquZM4uVOfa" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
- </div> -->
 
 ## 菜单说明
 
