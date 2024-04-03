@@ -68,7 +68,7 @@ export class ExecutePlanComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // // console.log("ExecutePlanComponent");
+    // console.log("ExecutePlanComponent");
     this.projecMenuInit();
   }
 
@@ -108,6 +108,9 @@ export class ExecutePlanComponent implements OnInit {
 
   // 执行按钮点击
   onClickExecute() {
+    // 重置暂停状态
+    this.onResetPause();
+    // 执行任务
     this.getProjectTaskResult();
   }
 
@@ -302,7 +305,10 @@ export class ExecutePlanComponent implements OnInit {
   }
 
   // 重置暂停按钮
-  onResetPause(id: number) {
+  onResetPause(id: number = -1) {
+    if (id === -1) {
+      id = this.currentProject.id as number
+    }
     // 开始前，修改项目执行状态，无法暂停正在进行中的任务
     const UpdateNum = {
       id: id,

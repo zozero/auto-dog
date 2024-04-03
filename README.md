@@ -24,22 +24,33 @@
 
 ### 方法一
 
-这是最简单的方法，你只需要点击下载[百度网盘]()里的`自动化小犬完整版.zip`文件解压后就可以直接使用。
+这是最简单的方法，你只需要点击[百度网盘](https://pan.baidu.com/s/1qtLPN5_FTD0JkrlTo_NfvQ?pwd=tw9q)下载`自动化小犬完整版.zip`文件就可以直接使用。
 
-解压后首先双击运行`接入口.exe`，然后再双击运行`自动化小犬.exe`，最后打开你的模拟器。
+解压后双击运行`接入口.exe`，然后在双击运行`自动化小犬.exe`，最后打开你的模拟器。
 
-如果你访问不到百度网盘的话，这里有[微软]()的网盘。
+这个方法让你无需下载执行端的文件。
 
 ### 方法二
+
+可以直接下载我编译好的文件来使用，点击[这里](https://github.com/zozero/auto-dog/releases)，再GitHub上下载`auto-dog-windows.exe`，下载后可以直接运行，但需要注意你必须先去[这里](https://github.com/zozero/auto-dog-execute)下载执行端相关的文件。才能完整的使用。
+
+### 方法二
+
+如果你有足够的编程知识，你运行这些命令编译它。
+
+下载源代码
 ```bash
 $ git clone https://github.com/zozero/auto-dog
 ```
+进入到项目目录
 ```bash
 $ cd clone auto-dog
 ```
+安装依赖
 ```bash
 $ npm install 
 ```
+运行项目
 ```bash
 $ npm run start 
 ```
@@ -49,8 +60,8 @@ $ npm run start
 <!-- <div style="display:flex">
   <iframe style="margin-right:30px" width="560" height="315" src="//player.bilibili.com/player.html?aid=1302094640&bvid=BV1Ru4m1K7Au&cid=1478615586&p=1"  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen> </iframe>
 
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/mvgxN8sDywo?si=jRyuZcquZM4uVOfa" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
-</div>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/mvgxN8sDywo?si=jRyuZcquZM4uVOfa" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+ </div> -->
 
 ## 菜单说明
 
@@ -70,7 +81,7 @@ $ npm run start
 ### 执行规划
 它的原始任务来源于执行端的对应项目下任务间的逗号分隔文件文件（csv文件）。这个功能实现时相当复杂，可能无法预料发生问题或错误。不过我已经尽可能修复了。
 
-如果没有数据，可到任务编辑里面去添加。你最好按照（图片处理->方法编辑->步骤编辑->任务编辑->执行规划）这个流程使用。
+如果没有数据，可到任务编辑里面去添加。你最好按照`图片处理->方法编辑->步骤编辑->任务编辑->执行规划`这个流程使用。
 
 你可以把原始任务拖动到每天任务、每周任务、每月任务。而每天任务、每周任务、每月任务可以拖动到今日任务种，如果时间恰当它会自动添加到今日任务中。你也可以把每天任务、每周任务、每月任务、今日任务拖到删除任务中。
 
