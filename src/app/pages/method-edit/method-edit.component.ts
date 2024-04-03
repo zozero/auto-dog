@@ -71,11 +71,11 @@ export class MethodEditComponent implements OnInit {
   }
  
   activeTabChange(tab:any) {
-    console.log(tab);
+    // console.log(tab);
   }
   // 过滤使用，暂时没打算添加
   // onFirstFilterChange($event: any) {
-  //   console.log(
+  //   // console.log(
   //     '🚀 ~ MethodEditComponent ~ onFirstFilterChange ~ event:',
   //     $event
   //   );

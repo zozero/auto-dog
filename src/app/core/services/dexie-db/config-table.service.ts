@@ -17,7 +17,7 @@ export class ConfigTableService extends DexieDBService {
   oneTable: Table = this.configDataTable;
   constructor() {
     super();
-    console.log(new Date().toLocaleString('zh-CN'));
+    // console.log(new Date().toLocaleString('zh-CN'));
   }
   // 初始化配置数据
   async initConfigData() {

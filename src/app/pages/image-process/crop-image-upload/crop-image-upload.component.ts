@@ -198,7 +198,7 @@ export class CropImageUploadComponent implements OnInit {
       title: '快捷添加步骤',
       content: AddStepInImageDialogComponent,
       backdropCloseable: true,
-      // onClose: () => console.log('on dialog closed'),
+      // onClose: () => // console.log('on dialog closed'),
     };
 
     const addStepDialog = this.dialogService.open({
@@ -269,7 +269,7 @@ export class CropImageUploadComponent implements OnInit {
         this.toastService.open({
           value: [{ severity: 'success', summary: '摘要', content: '转换成功。' }],
         })
-        console.log(img)
+        // console.log(img)
         this.imgPreviewSrc = URL.createObjectURL(img);
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         this.customImageSub.next(this.elementRef.nativeElement.querySelector('img'));

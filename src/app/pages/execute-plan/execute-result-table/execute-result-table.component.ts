@@ -49,7 +49,7 @@ export class ExecuteResultTableComponent implements OnInit, OnChanges {
     private tipsDialog: TipsDialogService,
   ) { }
   ngOnInit(): void {
-    console.log("ExecuteEditComponent")
+    // // console.log("ExecuteEditComponent")
     this.store.pipe(select(selectTaskList)).subscribe(() => {
       void this.getExecuteResultInfoList();
     })

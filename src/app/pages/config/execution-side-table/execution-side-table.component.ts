@@ -68,7 +68,7 @@ export class ExecutionSideTableComponent {
   }
 
   beforeEditStart = (rowItem: any, field: any) => {
-    // console.log(rowItem, field);
+    // // console.log(rowItem, field);
     return true;
   };
 

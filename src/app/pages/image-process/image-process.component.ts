@@ -139,7 +139,7 @@ export class ImageProcessComponent implements OnInit {
       title: '截图数据处理上传',
       content: CropImageUploadComponent,
       backdropCloseable: true,
-      // onClose: () => console.log('on dialog closed'),
+      // onClose: () => // console.log('on dialog closed'),
     };
 
     const imageUploadDialogHandler = this.dialogService.open({

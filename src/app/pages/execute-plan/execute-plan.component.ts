@@ -68,7 +68,7 @@ export class ExecutePlanComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log("ExecutePlanComponent");
+    // // console.log("ExecutePlanComponent");
     this.projecMenuInit();
   }
 
@@ -112,7 +112,6 @@ export class ExecutePlanComponent implements OnInit {
   }
 
   getProjectTaskResult() {
-    console.log("开始执行吧")
     // 告诉状态管理，该项目有任务正在进行
     // this.changeProjectState(this.currentProject.id as number, true)
     // 克隆数据这样即使this.currentProject改变了也不会影响到内部的项目运行。
@@ -208,7 +207,6 @@ export class ExecutePlanComponent implements OnInit {
 
           },
           complete: () => {
-            console.log("complete")
             if (firstExeData !== undefined) {
               // 更改项目状态
               this.changeProjectState(firstExeData['projectId'], false)

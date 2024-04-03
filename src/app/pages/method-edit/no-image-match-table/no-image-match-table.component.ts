@@ -73,7 +73,7 @@ export class NoImageMatchTableComponent  implements OnInit, OnChanges {
 
  ) { }
  ngOnInit(): void {
-   console.log("BinaryImageMatchTableComponent");
+   // console.log("BinaryImageMatchTableComponent");
    const tmpStr: string | null = this.myLocalStorage.get('autoSave');
    if (tmpStr != null) {
      this.isAutoSave = Boolean(tmpStr);
@@ -99,7 +99,7 @@ export class NoImageMatchTableComponent  implements OnInit, OnChanges {
          const csvParseOptions = {
            // eslint-disable-next-line @typescript-eslint/no-unused-vars
            complete: (results: ParseResult, _file: any) => {
-             // console.log('Parsed: ', results, file);
+             // // console.log('Parsed: ', results, file);
              const arr = results.data;
              this.csvHeader = arr[0]
              // 丢掉第一行数据

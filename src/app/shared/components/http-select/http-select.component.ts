@@ -46,7 +46,7 @@ export class HttpSelectComponent implements OnInit {
 
   // 设置当前需要传输的网络地址，即执行端地址和模拟器地址
   // async setHttpDatas() {
-  //   console.log('🚀 ~ AppComponent ~ setHttpDatas ~ setHttpDatas:');
+  //   // console.log('🚀 ~ AppComponent ~ setHttpDatas ~ setHttpDatas:');
 
   // }
 }

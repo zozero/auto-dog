@@ -45,7 +45,7 @@ export class MatchAndMatchFormComponent implements OnInit {
     private loadingService: LoadingService,) {
   }
   ngOnInit(): void {
-    console.log("BinaryImageMatchFormComponent");
+    // console.log("BinaryImageMatchFormComponent");
     this.getLastOrder('图片匹配');
   }
 

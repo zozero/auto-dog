@@ -72,7 +72,7 @@ export class StepEditComponent implements OnInit {
   }
   // 当前激活的栏
   activeTabChange(tab: any) {
-    console.log(tab);
+    // console.log(tab);
   }
   // 添加或者删除文件
   addOrDelStepTable($event: { id: string | number, operation: string }) {

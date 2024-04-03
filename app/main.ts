@@ -1,4 +1,4 @@
-import { app, BrowserWindow, screen } from 'electron';
+import { app, BrowserWindow, screen,ipcMain, shell } from 'electron';
 import * as path from 'path';
 import * as fs from 'fs';
 
@@ -57,6 +57,11 @@ function createWindow(): BrowserWindow {
 
   return win;
 }
+
+// 这里接收了来自于浏览器内部即angular组件的请求动作，需要重新渲染才行
+ipcMain.on('浏览器打开链接', (event, url) => {
+  shell.openExternal(url)  // 打开链接
+})
 
 
 try {

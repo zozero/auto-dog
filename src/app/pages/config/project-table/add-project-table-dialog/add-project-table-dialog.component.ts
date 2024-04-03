@@ -53,24 +53,13 @@ export class AddProjectTableDialogComponent {
 
     this.mydata.simulatorInfo =
       this.simulatorInfoList[this.simulatorInfoList.length - 1];
-    console.log(
-      '🚀 ~ AddProjectTableDialogComponent ~ setInitData ~ this.mydata:',
-      this.mydata
-    );
+
   }
 
   async addData() {
     return await projectTable
       .addtProjectInfo(cloneDeep(this.mydata))
       .catch((err) => {
-        console.log(
-          '🚀 ~ AddProjectTableDialogComponent ~ addData ~ err:',
-          err
-        );
-        console.log(
-          '🚀 ~ AddProjectTableDialogComponent ~ addData ~ this.mydata:',
-          this.mydata
-        );
         this.dialogService.openToEqualDialog('名称');
         return 0;
       });

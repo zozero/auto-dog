@@ -75,7 +75,7 @@ export class StepTableComponent implements OnInit, OnChanges {
 
   ) { }
   ngOnInit(): void {
-    console.log("StepTableComponent");
+    // console.log("StepTableComponent");
     const tmpStr: string | null = this.myLocalStorage.get('autoExe');
     if (tmpStr !=null) {
       this.isAutoExe = Boolean(tmpStr);
@@ -105,7 +105,7 @@ export class StepTableComponent implements OnInit, OnChanges {
           const csvParseOptions = {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             complete: (results: ParseResult, file: any) => {
-              // console.log('Parsed: ', results, file);
+              // // console.log('Parsed: ', results, file);
               const arr = results.data;
               this.csvHeader = arr[0]
               // 丢掉第一行数据
@@ -131,7 +131,7 @@ export class StepTableComponent implements OnInit, OnChanges {
           this.ordinalFilterList = []
           this.stepNameFilterList = []
 
-          // console.log("err", err);
+          // // console.log("err", err);
           // 状态为零可能是服务器没开
           this.tipsService.responseErrorState(err.status as number)
           // 关闭载入提示

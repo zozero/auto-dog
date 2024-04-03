@@ -35,7 +35,7 @@ export class AppComponent {
     this.setAutoExecute();
     this.setAutoSave();
     this.translate.setDefaultLang('zh');
-    this.systemInfo();
+    // this.systemInfo();
 
   }
 
@@ -84,14 +84,14 @@ export class AppComponent {
   }
 
   systemInfo(){
-    console.log('APP_CONFIG', APP_CONFIG);
+    // console.log('APP_CONFIG', APP_CONFIG);
     if (this.electronService.isElectron) {
-      console.log(process.env);
-      console.log('Run in electron');
-      console.log('Electron ipcRenderer', this.electronService.ipcRenderer);
-      console.log('NodeJS childProcess', this.electronService.childProcess);
+      // console.log(process.env);
+      // console.log('Run in electron');
+      // console.log('Electron ipcRenderer', this.electronService.ipcRenderer);
+      // console.log('NodeJS childProcess', this.electronService.childProcess);
     } else {
-      console.log('Run in browser');
+      // console.log('Run in browser');
     }
   }
 

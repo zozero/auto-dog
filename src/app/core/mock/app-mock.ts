@@ -35,6 +35,10 @@ export const myMenuListmyMenuList: AppMenuItemType[] = [
     icon: 'icon-more-func',
     name: '任务编辑',
   },
+  {
+    icon: 'icon-more-func',
+    name: '关于小犬',
+  },
 ];
 
 export const defaultEncode="gbk"

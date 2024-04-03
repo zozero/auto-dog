@@ -36,7 +36,7 @@ export class NoImageMatchFormComponent  implements OnInit {
   constructor() {
   }
   ngOnInit(): void {
-    console.log("NoImageMatchFormComponent");
+    // console.log("NoImageMatchFormComponent");
     this.args['X轴'] = this.coordinate[0];
     this.args['Y轴'] = this.coordinate[1];
   }

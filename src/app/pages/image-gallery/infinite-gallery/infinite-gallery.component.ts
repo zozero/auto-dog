@@ -53,7 +53,7 @@ export class InfiniteGalleryComponent implements OnInit, OnChanges {
     protected renderer: Renderer2
   ) { }
   ngOnInit(): void {
-    console.log("InfiniteGalleryComponent");
+    // console.log("InfiniteGalleryComponent");
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -76,7 +76,7 @@ export class ProjectTableComponent implements OnInit {
   }
 
   beforeEditStart = (rowItem: any, field: any) => {
-    // console.log(rowItem, field);
+    // // console.log(rowItem, field);
     void this.selectClickUpdateDatas(field as string)
     return true;
   };

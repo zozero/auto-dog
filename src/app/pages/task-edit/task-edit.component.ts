@@ -46,7 +46,7 @@ export class TaskEditComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log("TaskEditComponent");
+    // console.log("TaskEditComponent");
 
     this.projecMenuInit()
   }
@@ -78,7 +78,7 @@ export class TaskEditComponent implements OnInit {
   }
   // 当前激活的栏
   activeTabChange(tab: any) {
-    console.log(tab);
+    // console.log(tab);
   }
   // 添加或者删除文件
   addOrDelTaskTable($event: { id: string | number, operation: string }) {

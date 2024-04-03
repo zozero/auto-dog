@@ -67,7 +67,7 @@ export class TaskTableComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit(): void {
-    console.log("TaskTableComponent");
+    // console.log("TaskTableComponent");
     const tmpStr: string | null = this.myLocalStorage.get('autoSave');
     if (tmpStr != null) {
       this.isAutoSave = Boolean(tmpStr);
@@ -95,7 +95,7 @@ export class TaskTableComponent implements OnInit, OnChanges {
           const csvParseOptions = {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             complete: (results: ParseResult, file: any) => {
-              // console.log('Parsed: ', results, file);
+              // // console.log('Parsed: ', results, file);
               const arr = results.data;
               this.csvHeader = arr[0]
               // 丢掉第一行数据
@@ -121,7 +121,7 @@ export class TaskTableComponent implements OnInit, OnChanges {
           this.ordinalFilterList = []
           this.taskNameFilterList = []
 
-          // console.log("err", err);
+          // // console.log("err", err);
           // 状态为零可能是服务器没开
           this.tipsService.responseErrorState(err.status as number)
           // 关闭载入提示

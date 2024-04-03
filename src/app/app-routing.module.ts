@@ -21,13 +21,13 @@ const routes: Routes = [
         (mod) => mod.ImageProcessComponent
       ),
   },
-  {
-    path: '流程规划',
-    loadComponent: () =>
-      import('./pages/workflow-planed/workflow-planed.component').then(
-        (mod) => mod.WorkflowPlanedComponent
-      ),
-  },
+  // {
+  //   path: '流程规划',
+  //   loadComponent: () =>
+  //     import('./pages/workflow-planed/workflow-planed.component').then(
+  //       (mod) => mod.WorkflowPlanedComponent
+  //     ),
+  // },
   {
     path: '方法编辑',
     loadComponent: () =>
@@ -61,6 +61,13 @@ const routes: Routes = [
     loadComponent: () =>
       import('./pages/image-gallery/image-gallery.component').then(
         (mod) => mod.ImageGalleryComponent
+      ),
+  },
+  {
+    path: '关于小犬',
+    loadComponent: () =>
+      import('./pages/about-dog/about-dog.component').then(
+        (mod) => mod.AboutDogComponent
       ),
   },
   {

@@ -37,7 +37,7 @@ export class BinaryImageMatchFormComponent implements OnInit {
   constructor() {
   }
   ngOnInit(): void {
-    console.log("BinaryImageMatchFormComponent");
+    // console.log("BinaryImageMatchFormComponent");
     this.args['范围'] = this.range;
   }
 

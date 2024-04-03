@@ -24,10 +24,10 @@
 
 ### 方法一
 ```bash
-$ git clone  
+$ git clone https://github.com/zozero/auto-dog
 ```
 ```bash
-$ cd clone  
+$ cd clone auto-dog
 ```
 ```bash
 $ npm install 

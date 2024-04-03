@@ -43,14 +43,15 @@ export class SimulatorTableComponent {
     rowItem[field] = false;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   beforeEditStart = (rowItem: any, field: any) => {
-    console.log(rowItem, field);
+    // // console.log(rowItem, field);
     return true;
   };
 
   beforeEditEnd = (rowItem: any, field: any) => {
     void this.updateData(rowItem, field);
-    console.log(rowItem, field);
+    // // console.log(rowItem, field);
     return true;
   };
 

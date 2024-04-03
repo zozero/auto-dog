@@ -64,7 +64,7 @@ export class DragPeriodicComponent implements OnInit, OnChanges {
     private tipsDialog: TipsDialogService,
   ) { }
   ngOnInit(): void {
-    console.log("DragPeriodicComponent")
+    // // console.log("DragPeriodicComponent")
 
   }
   // 自动监听到改变事件后执行

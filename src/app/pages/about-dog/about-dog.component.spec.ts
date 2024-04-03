@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WorkflowPlanedComponent } from './workflow-planed.component';
+import { AboutDogComponent } from './about-dog.component';
 
-describe('WorkflowPlanedComponent', () => {
-  let component: WorkflowPlanedComponent;
-  let fixture: ComponentFixture<WorkflowPlanedComponent>;
+describe('AboutDogComponent', () => {
+  let component: AboutDogComponent;
+  let fixture: ComponentFixture<AboutDogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [WorkflowPlanedComponent]
+      imports: [AboutDogComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(WorkflowPlanedComponent);
+    fixture = TestBed.createComponent(AboutDogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

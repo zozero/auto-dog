@@ -59,6 +59,6 @@ export class ImageGalleryComponent implements OnInit {
   }
 
   activeTabChange(tab:any) {
-    console.log(tab);
+    // console.log(tab);
   }
 }
