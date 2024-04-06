@@ -64,6 +64,12 @@ function createWindow(): BrowserWindow {
 ipcMain.on('浏览器打开链接', (event, url) => {
   shell.openExternal(url)  // 打开链接
 })
+// 重启应用
+ipcMain.on('重启应用', (event) => {
+  app.relaunch({ args: process.argv.slice(1).concat(['--relaunch']) })
+  app.exit(0)
+})
+
 
 
 try {

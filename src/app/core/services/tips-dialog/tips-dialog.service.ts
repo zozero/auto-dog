@@ -83,4 +83,23 @@ export class TipsDialogService {
       value: [{ severity: 'success', summary: '摘要', content: info }],
     });
   }
+
+   // 提示不能空白
+   openToEmptyDialog(filed: string) {
+    const results = this.dialogService.open({
+      ...this.config,
+      dialogtype: 'failed',
+      content: '<span style="color:red;font:16px both;">' + filed + '</span>不能空白。',
+      buttons: [
+        {
+          cssClass: 'primary',
+          text: '确定',
+          handler: () => {
+            results.modalInstance.hide();
+          },
+        },
+      ],
+    });
+    return results;
+  }
 }

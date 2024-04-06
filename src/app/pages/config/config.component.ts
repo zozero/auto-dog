@@ -13,6 +13,7 @@ import { projectTable } from '../../core/services/dexie-db/project-table.service
 import { ButtonModule } from 'ng-devui/button';
 import { dexieDB } from '../../core/services/dexie-db/dexie-db.service';
 import { MyLocalStorageService } from '../../core/services/my-local-storage/my-local-storage.service';
+import { ElectronService } from '../../core/services/electron/electron.service';
 
 
 @Component({
@@ -38,6 +39,7 @@ export class ConfigComponent implements OnInit {
   // 获取任务拖拽组件
   @ViewChild('projectTable') public projectTableComponent!: ProjectTableComponent;
   constructor(
+    private electron: ElectronService,
     private dialogService: DialogService,
     private myLocalStorage: MyLocalStorageService
 
@@ -97,7 +99,7 @@ export class ConfigComponent implements OnInit {
       ...config,
       dialogtype: 'failed',
       title: '警告!!!',
-      content: "不会真的有人点它吧！不是吧！不是吧。它会清空整个数据啊！！！但它不会影响执行端的数据。删库跑路，居家必备，重置后你必须刷新或重启应用。",
+      content: "不会真的有人点它吧！不是吧！不是吧。它会清空整个数据啊！！！但它不会影响执行端的数据。删库跑路，居家必备。",
       buttons: [
         {
           cssClass: 'danger',
@@ -105,7 +107,8 @@ export class ConfigComponent implements OnInit {
           handler: () => {
             void dexieDB.initTable();
             this.myLocalStorage.clear();
-            results.modalInstance.hide();
+            this.reluanchApp();
+            // results.modalInstance.hide();
           },
         },
         {
@@ -118,5 +121,22 @@ export class ConfigComponent implements OnInit {
         },
       ],
     });
+  }
+
+  // 重启应用
+  reluanchApp() {
+    // 如果是浏览器就刷新页面
+    if (window.require === undefined) {
+      const a = document.createElement('a');
+      a.href = '#';
+      document.body.appendChild(a);
+      a.click();
+    }
+    else {
+      // 由于浏览器和主线程不在一起所以必须通过ipc进行通讯，以下是定义了一个通讯
+      // 发送名叫open-url动作，它在app/main.ts文件里面接收。  
+      this.electron.ipcRenderer.send('重启应用')
+      return
+    }
   }
 }

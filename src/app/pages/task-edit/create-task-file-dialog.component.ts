@@ -61,6 +61,11 @@ export class CreateTaskFileDialogComponent implements OnInit {
 
   // 添加步骤表格
   createTaskCsvFile() {
+    this.fileName=this.fileName.trim();
+    if(this.fileName===''){
+      this.tipsDialog.openToEmptyDialog('任务文件名');
+      return;
+    }
     // 准备数据
     // eslint-disable-next-line prefer-const,
     let csvHeader: string[] = Object.keys(defaultTaskData);
