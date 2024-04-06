@@ -34,6 +34,5 @@ export class AboutDogComponent {
       // 发送名叫open-url动作，它在app/main.ts文件里面接收。
       this.electron.ipcRenderer.send('浏览器打开链接', url)
     }
-
   }
 }

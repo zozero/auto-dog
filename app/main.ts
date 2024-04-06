@@ -1,4 +1,4 @@
-import { app, BrowserWindow, screen,ipcMain, shell } from 'electron';
+import { app, BrowserWindow, screen, ipcMain, shell, utilityProcess } from 'electron';
 import * as path from 'path';
 import * as fs from 'fs';
 
@@ -24,7 +24,7 @@ function createWindow(): BrowserWindow {
       allowRunningInsecureContent: serve,
       contextIsolation: false,
     },
-    title:'自动化小犬',
+    title: '自动化小犬',
   });
   // 移除菜单栏
   // win.setMenu(null);
@@ -73,10 +73,13 @@ ipcMain.on('重启应用', (event) => {
 
 
 try {
+
+
   // This method will be called when Electron has finished
   // initialization and is ready to create browser windows.
   // Some APIs can only be used after this event occurs.
   // Added 400 ms to fix the black background issue while using transparent window. More detais at https://github.com/electron/electron/issues/15947
+
   app.on('ready', () => setTimeout(createWindow, 400));
 
   // Quit when all windows are closed.
@@ -95,7 +98,30 @@ try {
       createWindow();
     }
   });
+
+  // 运行执行端，因为需要管理员权限，不在启用
+  // runExecute();
 } catch (e) {
   // Catch Error
   // throw e;
+}
+
+// 运行其他程序，该函数需要管理员权限。
+function runExecute() {
+  const pathUrl = path.join(__dirname, 'test.txt')
+  console.log(pathUrl)
+  // Example code in main.js
+  const { execFile } = require('child_process');
+
+  // Replace 'path/to/your/external-program.exe' with the actual path to your executable
+  const externalProgramPath = pathUrl;
+
+  // Execute the external program
+  execFile(externalProgramPath, (error: any, stdout: any, stderr: any) => {
+    if (error) {
+      console.error(`Error executing ${externalProgramPath}: ${error.message}`);
+      return;
+    }
+    console.log(`External program output: ${stdout}`);
+  });
 }
