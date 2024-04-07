@@ -1,0 +1,62 @@
+<div *ngIf="currentProject" class="image-process-container">
+    <h2>多图处理 {{ currentProject.name }}</h2>
+    <d-row>
+        <d-col [dSpan]="4">
+            <app-project-menus (sendCurrentProject)="getCurrentProject($event)"></app-project-menus>
+        </d-col>
+        <d-col [dSpan]="20" style="padding-left: 6px;padding-right: 6px;" >
+            <d-row style="margin-bottom: 6px;">
+                <d-col [dSpan]="12">
+                    <d-row [dJustify]="'start'">
+                        <d-col>
+                            <d-input-number [min]="1" [(ngModel)]="screenshotCount" class="input-number" dTooltip
+                                [content]="'提示.多图处理.截屏次数' | translate"></d-input-number>
+                            <d-input-number [min]="0.1" [step]="0.1" [(ngModel)]="screenshotInterval"
+                                class="input-number" dTooltip [content]="'提示.多图处理.间隔' | translate"></d-input-number>
+                            <d-button class="my-glob-padding-right" [showLoading]="showLoading"
+                                (btnClick)="onScreenshot()">
+                                截屏
+                            </d-button>
+                            <d-button (btnClick)="onCropImage()">
+                                截图
+                            </d-button>
+                        </d-col>
+                    </d-row>
+                </d-col>
+
+                <d-col [dSpan]="12">
+                    <d-row [dJustify]="'end'">
+                        <d-col>
+                            <section class="btn-group">
+                                <d-toggle dTooltip [(ngModel)]="isAutoExe" (change)="onChageAutoExe($event)"
+                                    [content]="'帮助.图片.自动' | translate" [color]="'#50D4AB'" [size]="'lg'">
+                                </d-toggle>
+                                <d-button bsStyle="primary" (btnClick)="resetCanvasImage()">
+                                    重置
+                                </d-button>
+                                <d-button bsStyle="common" (btnClick)="submitCropImage()">
+                                    提交
+                                </d-button>
+                            </section>
+                        </d-col>
+                    </d-row>
+                </d-col>
+            </d-row>
+            <d-row class="content">
+                <app-screenshot-tabs [screenshotList]="screenshotList"
+                        (tabIdEmit)="onChangeScreenshotTab($event)"></app-screenshot-tabs>
+             
+                <div class="zhong" >
+                    <angular-cropper #angularCropper [cropperOptions]="cropConfig"  [imageUrl]="currentScreenshotUrl"
+                        (export)="angularCropperExport($event)" *ngIf="currentScreenshotUrl!=='' ">
+                    </angular-cropper>
+                    <div *ngIf="currentScreenshotUrl==='' " style="width: 100%; height: 65vh;">
+                        <div class="icon icon-insert-image"></div>
+                    </div>
+                </div>
+                <app-crop-tabs *ngIf="screenshotList.length>0"
+                    [cropList]="screenshotList[currentScreenshotTabId].cropImageInfos"></app-crop-tabs>
+            </d-row>
+        </d-col>
+    </d-row>
+</div>

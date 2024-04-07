@@ -21,6 +21,13 @@ const routes: Routes = [
         (mod) => mod.ImageProcessComponent
       ),
   },
+  {
+    path: '多图处理',
+    loadComponent: () =>
+      import('./pages/multi-image-process/multi-image-process.component').then(
+        (mod) => mod.MultiImageProcessComponent
+      ),
+  },
   // {
   //   path: '流程规划',
   //   loadComponent: () =>

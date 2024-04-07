@@ -1,0 +1,35 @@
+@import 'ng-devui/styles-var/devui-var.scss';
+
+.image-process-container {
+  .content{
+    padding-top: 6px;
+    background-color: $devui-primary-bg;
+  }
+  
+  .btn-group {
+
+    d-button,
+    d-toggle {
+      margin-right: 8px;
+    }
+  }
+
+  .zhong {
+    max-width: 100%;
+    margin: 8px 0;
+    overflow-y: auto;
+    max-height: 66vh;
+    .icon {
+      font-size: 16em;
+      color: $devui-icon-fill;
+      position: relative;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+
+
+
+}

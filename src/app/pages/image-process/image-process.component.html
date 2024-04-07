@@ -9,8 +9,8 @@
         <d-col [dSpan]="12">
           <d-row [dJustify]="'start'">
             <d-col>
-              <d-button [showLoading]="showLoading" (btnClick)="toggleLoading()">
-                模拟器截屏
+              <d-button [showLoading]="showLoading" (btnClick)="onScreenshot()">
+                截屏
               </d-button>
             </d-col>
           </d-row>
@@ -26,8 +26,8 @@
                 <d-button bsStyle="primary" (btnClick)="resetCanvasImage()">
                   重置
                 </d-button>
-                <d-button bsStyle="common" (btnClick)="cropImage()">
-                  截图
+                <d-button bsStyle="common" (btnClick)="submitCropImage()">
+                  提交
                 </d-button>
               </section>
             </d-col>
@@ -39,11 +39,11 @@
       <d-row>
         <d-col [dSpan]="24">
           <angular-cropper #angularCropper [cropperOptions]="cropConfig" [imageUrl]="rowImageUrl" 
-            (export)="angularCropperExport($event)" *ngIf="rowImageUrl!==undefined">
+            (export)="angularCropperExport($event)" *ngIf="rowImageUrl!=='' ">
           </angular-cropper>
 
           <div class="image-prev">
-            <div *ngIf="rowImageUrl===undefined" class="icon icon-insert-image"></div>
+            <div *ngIf="rowImageUrl==='' " class="icon icon-insert-image"></div>
           </div>
         </d-col>
       </d-row>

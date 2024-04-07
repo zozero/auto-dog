@@ -1,0 +1,17 @@
+<section>
+    <d-tabs 
+    [type]="'wrapped'" 
+    [scrollMode]="true" 
+    [(activeTab)]="tabActiveId" 
+    type="options"
+    [closeable]="true"
+    (addOrDeleteTabChange)="onAddOrDeleteTable($event)"
+    (activeTabChange)="onActiveTabChange($event)"
+    >
+        <d-tab *ngFor="let item of screenshotList;let i=index" [id]="i">
+            <ng-template dTabTitle>
+                <img [src]="item.url" style="width: 120px;" alt="">
+            </ng-template>
+        </d-tab>
+    </d-tabs>
+</section>

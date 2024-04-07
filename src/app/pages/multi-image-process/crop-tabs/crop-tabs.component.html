@@ -1,0 +1,12 @@
+<section>
+    <d-tabs [type]="'wrapped'" [scrollMode]="true" type="options" [closeable]="true"
+        (addOrDeleteTabChange)="onAddOrDeleteTable($event)">
+        <d-tab *ngFor="let item of cropList;let i=index" [id]="i">
+            <ng-template dTabTitle>
+                <div dImagePreview>
+                    <img [attr.src]="item.url" style="max-width: 800px;height: 80px;" />
+                </div>
+            </ng-template>
+        </d-tab>
+    </d-tabs>
+</section>
