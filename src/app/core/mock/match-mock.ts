@@ -89,7 +89,6 @@ export const cropMatchMethodList: MatchMethodType[] = [
   },
 ];
 
-
 // 参数无法对应，所以需要额外增加列表
 // 多图匹配方法列表
 export const multiImageMatchMethodList: MatchMethodType[] = [
