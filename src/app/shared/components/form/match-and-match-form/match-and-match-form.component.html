@@ -1,24 +1,27 @@
 <section>
     <form dForm [layout]="vertical" ngForm>
         <d-form-item>
-            <d-form-label [required]="true" [hasHelp]="true" [helpTips]="'帮助.匹配.图片名' | translate">
-                图片名
-            </d-form-label>
-            <d-form-control>
-                <input dTextInput autocomplete="off" name="图片名" [(ngModel)]="args['图片名']" />
-            </d-form-control>
-        </d-form-item>
-
-        
-        <d-form-item>
-            <d-form-label [required]="true" [hasHelp]="true" [helpTips]="'帮助.匹配.编码' | translate">
-                编码
+            <d-form-label [required]="true" [hasHelp]="true" [helpTips]="'帮助.匹配.前编码' | translate">
+                前编码
             </d-form-label>
             <d-form-control>
                 <d-input-group>
-                    <d-select style="width: 66px;" name="编码-1" [(ngModel)]="encodeArr[0]"
-                    (valueChange)="onChangeValue($event)"  [options]="['A','B','E']"></d-select>
-                    <input dTextInput autocomplete="off" name="编码-2" [(ngModel)]="encodeArr[1]" />
+                    <d-select style="width: 66px;" name="前编码-1" [(ngModel)]="beforeEncodeArr[0]"
+                        (valueChange)="onChangeValue($event,'前编码')" [options]="methodEncodeList"></d-select>
+                    <input dTextInput autocomplete="off" name="前编码-2" [(ngModel)]="beforeEncodeArr[1]" />
+                </d-input-group>
+            </d-form-control>
+        </d-form-item>
+
+        <d-form-item>
+            <d-form-label [required]="true" [hasHelp]="true" [helpTips]="'帮助.匹配.后编码' | translate">
+                后编码
+            </d-form-label>
+            <d-form-control>
+                <d-input-group>
+                    <d-select style="width: 66px;" name="后编码-1" [(ngModel)]="afterEncodeArr[0]"
+                        (valueChange)="onChangeValue($event,'后编码')" [options]="methodEncodeList"></d-select>
+                    <input dTextInput autocomplete="off" name="后编码-2" [(ngModel)]="afterEncodeArr[1]" />
                 </d-input-group>
             </d-form-control>
         </d-form-item>
@@ -40,34 +43,10 @@
                 <d-input-number name="Y偏移" [(ngModel)]="args['Y偏移']"></d-input-number>
             </d-form-control>
         </d-form-item>
-
-        <d-form-item>
-            <d-form-label [required]="true" [hasHelp]="true" [helpTips]="'帮助.匹配.算法' | translate">
-                算法
-            </d-form-label>
-            <d-form-control>
-                <d-input-number [min]="0" name="算法" [(ngModel)]="args['算法']"></d-input-number>
-            </d-form-control>
-        </d-form-item>
-
-        <d-form-item>
-            <d-form-label [required]="true" [hasHelp]="true" [helpTips]="'帮助.匹配.最低相似度' | translate">
-                最低相似度
-            </d-form-label>
-            <d-form-control>
-                <d-input-number [max]="1.0" [min]="0.0" [step]="0.1" name="最低相似度"
-                    [(ngModel)]="args['最低相似度']"></d-input-number>
-            </d-form-control>
-        </d-form-item>
-
-        <d-form-item>
-            <d-form-label [required]="true" [hasHelp]="true" [helpTips]="'帮助.匹配.额外补充' | translate">
-                额外补充
-            </d-form-label>
-            <d-form-control>
-                <d-input-number [max]="1" [min]="0" name="额外补充" [(ngModel)]="args['额外补充']"></d-input-number>
-            </d-form-control>
-        </d-form-item>
-
+        
     </form>
 </section>
+
+<div class="footer">
+    <d-button (btnClick)="submit()" [showLoading]="btnShowLoading" bsStyle="primary" circled="true">提交</d-button>
+</div>

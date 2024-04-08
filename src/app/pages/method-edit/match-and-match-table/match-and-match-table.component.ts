@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { DataTableModule, EditableTip, FilterConfig, SortDirection, SortEventArg } from 'ng-devui/data-table';
 import { FormsModule } from '@angular/forms';
 import { InputGroupModule } from 'ng-devui/input-group';
@@ -8,7 +8,7 @@ import { Papa, ParseResult } from 'ngx-papaparse';
 import { CommonModule } from '@angular/common';
 import { ProjectInfo } from '../../../core/interface/config-type';
 import { defaultEncode } from '../../../core/mock/app-mock';
-import { ModalModule } from 'ng-devui/modal';
+import { DialogService, ModalModule } from 'ng-devui/modal';
 import { TipsDialogService } from '../../../core/services/tips-dialog/tips-dialog.service';
 import { filter, orderBy } from 'lodash-es';
 import { DownloadFileService } from '../../../core/services/https/download-file.service';
@@ -16,22 +16,25 @@ import { Subject } from 'rxjs';
 import { ImagePreviewModule } from 'ng-devui/image-preview';
 import { MyLocalStorageService } from '../../../core/services/my-local-storage/my-local-storage.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatchAndMatchFormComponent } from "../../../shared/components/form/match-and-match-form/match-and-match-form.component";
 
 
 @Component({
-  selector: 'app-match-and-match-table',
-  standalone: true,
-  imports: [
-    DataTableModule,
-    FormsModule,
-    InputGroupModule,
-    DevUIModule,
-    CommonModule,
-    ModalModule,
-    ImagePreviewModule,
-    TranslateModule],
-  templateUrl: './match-and-match-table.component.html',
-  styleUrl: './match-and-match-table.component.scss'
+    selector: 'app-match-and-match-table',
+    standalone: true,
+    templateUrl: './match-and-match-table.component.html',
+    styleUrl: './match-and-match-table.component.scss',
+    imports: [
+        DataTableModule,
+        FormsModule,
+        InputGroupModule,
+        DevUIModule,
+        CommonModule,
+        ModalModule,
+        ImagePreviewModule,
+        TranslateModule,
+        MatchAndMatchFormComponent
+    ]
 })
 export class MatchAndMatchTableComponent  implements OnInit, OnChanges {
  // 按钮点击后的载入提示
@@ -56,6 +59,7 @@ export class MatchAndMatchTableComponent  implements OnInit, OnChanges {
  @Input() projectInfo!: ProjectInfo;
  // 方法的类型
  @Input() methodType: string | number = '匹配再匹配';
+ @ViewChild('matchAndMatchForm', { static: true }) matchAndMatchForm!: TemplateRef<any>;
  editableTip = EditableTip.hover;
  // 用于显示图片预览的
  customImageSub = new Subject<HTMLElement>();
@@ -65,6 +69,7 @@ export class MatchAndMatchTableComponent  implements OnInit, OnChanges {
    private papa: Papa,
    private tableHttp: TableHttpService,
    private toastService: ToastService,
+   private dialogService: DialogService,
    private tipsDialog: TipsDialogService,
    private loadingService: LoadingService,
    private downloadFileService: DownloadFileService,
@@ -275,7 +280,7 @@ export class MatchAndMatchTableComponent  implements OnInit, OnChanges {
    return true
  };
 
- // 改变自动执行的状态
+ // 改变自动保存的状态
  onChageAutoSave($event: any) {
    if ($event) {
      this.myLocalStorage.set('autoSave', '1')
@@ -283,5 +288,22 @@ export class MatchAndMatchTableComponent  implements OnInit, OnChanges {
    else {
      this.myLocalStorage.set('autoSave', '')
    }
+ }
+
+ addMatchAndMatchData(){
+  this.dialogService.open({
+    id: 'add-match-and-match-data',
+    width: '460px',
+    maxHeight: '600px',
+    title: '添加匹配再匹配',
+    contentTemplate: this.matchAndMatchForm,
+    backdropCloseable: true,
+    onClose: () => {
+      this.getcsvFile();
+    },
+    buttons: [
+
+    ],
+  });
  }
 }

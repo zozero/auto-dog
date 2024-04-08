@@ -8,13 +8,14 @@ import { LoadingModule } from 'ng-devui/loading';
 import { ToastService } from 'ng-devui/toast';
 import { ImageMatchTableComponent } from "./image-match-table/image-match-table.component";
 import { TabsModule } from 'ng-devui/tabs';
-import { matchMethodList } from '../../core/mock/match-mock';
+import { matchMethodTotalList } from '../../core/mock/match-mock';
 import { ProjectInfo } from '../../core/interface/config-type';
 import { MatchMethodType } from '../../core/interface/table-type';
 import { BinaryImageMatchTableComponent } from "./binary-image-match-table/binary-image-match-table.component";
 import { MatchAndMatchTableComponent } from "./match-and-match-table/match-and-match-table.component";
 import { NoImageMatchTableComponent } from './no-image-match-table/no-image-match-table.component';
 import { MultiImageMatchTableComponent } from "./multi-image-match-table/multi-image-match-table.component";
+import { cloneDeep } from 'lodash-es';
 
 @Component({
     selector: 'app-method-edit',
@@ -38,9 +39,9 @@ import { MultiImageMatchTableComponent } from "./multi-image-match-table/multi-i
 export class MethodEditComponent implements OnInit {
   currentProject!: ProjectInfo;
 
-  imageMethodList:MatchMethodType[] =matchMethodList
+  imageMethodList:MatchMethodType[] =cloneDeep(matchMethodTotalList)
 
-  tabActiveId: string | number =matchMethodList[0]["名称"];
+  tabActiveId: string | number =this.imageMethodList[0]["名称"];
 
   constructor(
     private tableHttp: TableHttpService,

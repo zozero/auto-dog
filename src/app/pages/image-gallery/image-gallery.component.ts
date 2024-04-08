@@ -13,7 +13,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MyLocalStorageService } from '../../core/services/my-local-storage/my-local-storage.service';
 import { InfiniteGalleryComponent } from "./infinite-gallery/infinite-gallery.component";
 import { MatchMethodType } from '../../core/interface/table-type';
-import { matchMethodList } from '../../core/mock/match-mock';
+import { matchMethodTotalList } from '../../core/mock/match-mock';
 import { cloneDeep } from 'lodash-es';
 
 
@@ -35,7 +35,7 @@ import { cloneDeep } from 'lodash-es';
 })
 export class ImageGalleryComponent implements OnInit {
   currentProject!: ProjectInfo;
-  imageMethodList: MatchMethodType[] = cloneDeep(matchMethodList)
+  imageMethodList: MatchMethodType[] = cloneDeep(matchMethodTotalList)
 
   tabActiveId: string | number = this.imageMethodList[0]["名称"];
 

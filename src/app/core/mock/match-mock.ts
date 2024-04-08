@@ -25,13 +25,10 @@ export const defaultBinaryImageMatchMethodArgs: BinaryImageMatchMethodType = {
 };
 
 export const defaultMatchAndMatchMethodArgs: MatchAndMatchMethodType = {
-  图片名: '',
-  编码: '',
+  前编码: '',
+  后编码: '',
   X偏移: 0,
   Y偏移: 0,
-  算法: 5,
-  最低相似度: 0.8,
-  额外补充: 0,
 };
 
 export const defaultNoImageMatchMethodArgs: NoImageMatchMethodType = {
@@ -49,7 +46,7 @@ export const defaulmultitImageMatchMethodArgs: MultiImageMatchMethodType = {
 };
 
 // 参数无法对应，所以需要额外增加列表
-export const matchMethodList: MatchMethodType[] = [
+export const matchMethodTotalList: MatchMethodType[] = [
   {
     编码: 'A',
     名称: '图片匹配',
@@ -73,6 +70,22 @@ export const matchMethodList: MatchMethodType[] = [
   {
     编码: 'F',
     名称: '你只看一次',
+  },
+];
+
+// 裁剪图片匹配方法列表
+export const cropMatchMethodList: MatchMethodType[] = [
+  {
+    编码: 'A',
+    名称: '图片匹配',
+  },
+  {
+    编码: 'B',
+    名称: '二值图片匹配',
+  },
+  {
+    编码: 'D',
+    名称: '无图匹配',
   },
 ];
 

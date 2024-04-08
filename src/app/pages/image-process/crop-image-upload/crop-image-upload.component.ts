@@ -2,11 +2,11 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DialogService, FormLayout, ImagePreviewModule, SelectModule, ToastService } from 'ng-devui';
 import { FormModule } from 'ng-devui/form';
-import { matchMethodList } from '../../../core/mock/match-mock';
+import { cropMatchMethodList } from '../../../core/mock/match-mock';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'ng-devui/button';
 import { cloneDeep } from 'lodash-es';
-import { BinaryImageMatchMethodType, ImageMatchMethodType, MatchAndMatchMethodType, MatchMethodType, NoImageMatchMethodType } from '../../../core/interface/table-type';
+import { BinaryImageMatchMethodType, ImageMatchMethodType, MatchMethodType, NoImageMatchMethodType } from '../../../core/interface/table-type';
 import { ProjectInfo } from '../../../core/interface/config-type';
 import { CropImageInfo } from '../../../core/interface/image-type';
 import { ImageMatchFormComponent } from "../../../shared/components/form/image-match-form/image-match-form.component";
@@ -45,12 +45,10 @@ export class CropImageUploadComponent implements OnInit {
   @ViewChild('imageMatchForm') public imageMatchForm!: ImageMatchFormComponent;
   // 二值图片匹配的表单视图
   @ViewChild('binaryImageMatchForm') public binaryImageMatchForm!: BinaryImageMatchFormComponent;
-  // 匹配再匹配的表单视图
-  @ViewChild('matchAndMatchForm') public matchAndMatchForm!: MatchAndMatchFormComponent;
   // 无图匹配的表单视图
   @ViewChild('noImageMatchForm') public noImageMatchForm!: NoImageMatchFormComponent;
   // 用于获取当前匹配方法的参数
-  currentArgs!: ImageMatchMethodType | BinaryImageMatchMethodType | MatchAndMatchMethodType | NoImageMatchMethodType;
+  currentArgs!: ImageMatchMethodType | BinaryImageMatchMethodType | NoImageMatchMethodType;
   // 裁剪的图片信息
   imageData!: CropImageInfo;
   // 项目信息
@@ -60,7 +58,7 @@ export class CropImageUploadComponent implements OnInit {
   // 页面显示参数
   layoutDirection: FormLayout = FormLayout.Vertical;
   // 用于选择方法类型，从而使用不同表单
-  matchMethodList: MatchMethodType[] = cloneDeep(matchMethodList);
+  matchMethodList: MatchMethodType[] = cloneDeep(cropMatchMethodList);
   // 当前图片匹配方法
   currentMethod: MatchMethodType = this.matchMethodList[0]
   // 发送给匹配方法表单的范围
@@ -106,13 +104,6 @@ export class CropImageUploadComponent implements OnInit {
       }
       case '二值图片匹配': {
         this.currentArgs = this.binaryImageMatchForm.args;
-
-        this.uploadImage();
-        this.addCsvData();
-        break
-      }
-      case '匹配再匹配': {
-        this.currentArgs = this.matchAndMatchForm.retArgs();
 
         this.uploadImage();
         this.addCsvData();

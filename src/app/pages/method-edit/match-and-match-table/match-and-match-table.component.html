@@ -1,10 +1,11 @@
-<div class="table-content" *ngIf="csvData.length>0">
-    <d-button bsStyle="primary"  class="my-glob-padding-right" [showLoading]="btnShowLoading"
-      (btnClick)="putCsvFile()">保存</d-button>
-    <d-button bsStyle="common" class="my-glob-padding-right" (btnClick)="exportCsvFile()">导出</d-button>
+<div class="table-content" >
+    <d-button  *ngIf="csvData.length>0" bsStyle="primary"  class="my-glob-padding-right" [showLoading]="btnShowLoading"
+      (btnClick)="putCsvFile()" >保存</d-button>
+      <d-button class="my-glob-padding-right" bsStyle="common" (btnClick)="addMatchAndMatchData()">添加</d-button>
+    <d-button  *ngIf="csvData.length>0" bsStyle="common" class="my-glob-padding-right" (btnClick)="exportCsvFile()">导出</d-button>
     <d-toggle dTooltip [(ngModel)]="isAutoSave" (change)="onChageAutoSave($event)" [content]="'帮助.表格.自动' | translate"
       [color]="'#FECC55'"></d-toggle>
-    <d-data-table style="margin-top: 8px;" [borderType]="'bordered'" [dataSource]="csvFilterList" [size]="'md'"
+    <d-data-table *ngIf="csvData.length>0" style="margin-top: 8px;" [borderType]="'bordered'" [dataSource]="csvFilterList" [size]="'md'"
       [fixHeader]="true" [scrollable]="true" dLoading [loading]="loadingTip" [backdrop]="true" [loadingStyle]="'infinity'"
       tableHeight="100%" [virtualMinBufferPx]="10" [virtualMaxBufferPx]="20" [tableOverflowType]="'overlay'">
       <thead dTableHead>
@@ -18,9 +19,6 @@
           <th dHeadCell>{{ csvHeader[2] }}</th>
           <th dHeadCell>{{ csvHeader[3] }}</th>
           <th dHeadCell>{{ csvHeader[4] }}</th>
-          <th dHeadCell>{{ csvHeader[5] }}</th>
-          <th dHeadCell>{{ csvHeader[6] }}</th>
-          <th dHeadCell>{{ csvHeader[7] }}</th>
           <th dHeadCell>操作</th>
         </tr>
       </thead>
@@ -34,11 +32,16 @@
               <span>{{ rowItem[0] }}</span>
             </td>
   
-            <td dTableCell [editable]="false" [field]="csvHeader[1]" [rowItem]="rowItem">
-              <span>
-                <d-button bsStyle="text" (btnClick)="openImage(rowItem[1])"> {{ rowItem[1] }}</d-button>
-              </span>
-            </td>
+            <td dTableCell [editable]="true" [editableTip]="editableTip" [(editing)]="rowItem[csvHeader[1]+'Edit']"
+            [beforeEditEnd]="beforeEditEnd" [field]="csvHeader[1]" [rowItem]="rowItem">
+            <span *ngIf="!rowItem[csvHeader[1]+'Edit']">
+              {{ rowItem[1] }}
+            </span>
+            <div *ngIf="rowItem[csvHeader[1]+'Edit']" class="edit-padding-fix">
+              <input [dAutoFocus]="true" class="devui-form-control" [name]="csvHeader[1]" [(ngModel)]="rowItem[1]"
+                [attr.maxlength]="100" [attr.minlength]="1" />
+            </div>
+          </td>
   
             <td dTableCell [editable]="true" [editableTip]="editableTip" [(editing)]="rowItem[csvHeader[2]+'Edit']"
               [beforeEditEnd]="beforeEditEnd" [field]="csvHeader[2]" [rowItem]="rowItem">
@@ -72,39 +75,7 @@
                 [(ngModel)]="rowItem[4]"></d-input-number>
             </div>
           </td>
-          
-          <td dTableCell [editable]="true" [editableTip]="editableTip" [(editing)]="rowItem[csvHeader[5]+'Edit']"
-          [beforeEditEnd]="beforeEditEnd" [field]="csvHeader[5]" [rowItem]="rowItem">
-          <span *ngIf="!rowItem[csvHeader[5]+'Edit']">
-            {{ rowItem[5] }}
-          </span>
-          <div *ngIf="rowItem[csvHeader[5]+'Edit']" class="edit-padding-fix">
-            <d-input-number [dAutoFocus]="true" [min]="0" [name]="csvHeader[5]"
-              [(ngModel)]="rowItem[5]"></d-input-number>
-          </div>
-        </td>
-
-            <td dTableCell [editable]="true" [editableTip]="editableTip" [(editing)]="rowItem[csvHeader[6]+'Edit']"
-              [beforeEditEnd]="beforeEditEnd" [field]="csvHeader[6]" [rowItem]="rowItem">
-              <span *ngIf="!rowItem[csvHeader[6]+'Edit']">
-                {{ rowItem[6] }}
-              </span>
-              <div *ngIf="rowItem[csvHeader[6]+'Edit']" class="edit-padding-fix">
-                <d-input-number [dAutoFocus]="true" [max]="1.0" [min]="0.0" [step]="0.1" [name]="csvHeader[6]"
-                  [(ngModel)]="rowItem[6]"></d-input-number>
-              </div>
-            </td>
-  
-            <td dTableCell [editable]="true" [editableTip]="editableTip" [(editing)]="rowItem[csvHeader[7]+'Edit']"
-              [beforeEditEnd]="beforeEditEnd" [field]="csvHeader[7]" [rowItem]="rowItem">
-              <span *ngIf="!rowItem[csvHeader[7]+'Edit']">
-                {{ rowItem[7] }}
-              </span>
-              <div *ngIf="rowItem[csvHeader[7]+'Edit']" class="edit-padding-fix">
-                <d-input-number [dAutoFocus]="true" [max]="1" [min]="0.0" [name]="csvHeader[7]"
-                  [(ngModel)]="rowItem[7]"></d-input-number>
-              </div>
-            </td>
+        
   
             <td dTableCell>
               <d-button bsStyle="text" (btnClick)="deleteData(rowIndex)">删除</d-button>
@@ -117,4 +88,11 @@
     <div dImagePreview [customSub]="customImageSub" [disableDefault]="true" style="display: none;">
       <img [attr.src]="imgSrc" style="max-width: 800px" />
     </div>
+
+    
   </div>
+
+  <!-- 添加步骤数据对话框 -->
+<ng-template #matchAndMatchForm let-modalInstance="modalInstance" let-modalContentInstance="modalContentInstance">
+    <app-match-and-match-form [modalInstance]="modalInstance" [modalContentInstance]="modalContentInstance" [projectInfo]="projectInfo"></app-match-and-match-form>
+</ng-template>
