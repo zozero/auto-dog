@@ -1,20 +1,27 @@
 <div *ngIf="currentProject">
   <h2>方法表格编辑 {{ currentProject.name }}</h2>
   <d-row>
-    <d-col [dSpan]="4" >
+    <d-col [dSpan]="4">
       <app-project-menus (sendCurrentProject)="getCurrentProject($event)"></app-project-menus>
     </d-col>
     <d-col [dSpan]="20" style="padding-left: 6px;padding-right: 6px;">
       <section>
-        <d-tabs type="wrapped" [(activeTab)]="tabActiveId" (activeTabChange)="activeTabChange($event)">
+        <!-- <d-tabs type="wrapped" [(activeTab)]="tabActiveId" (activeTabChange)="activeTabChange($event)"> -->
+        <d-tabs type="wrapped" [(activeTab)]="tabActiveId">
           <d-tab *ngFor="let item of imageMethodList" [id]="item['名称']" [title]="item['名称']"></d-tab>
         </d-tabs>
       </section>
       <container-element [ngSwitch]="tabActiveId">
-        <app-image-match-table *ngSwitchCase="imageMethodList[0]['名称']" [methodType]="tabActiveId"  [projectInfo]="currentProject"></app-image-match-table>
-        <app-binary-image-match-table *ngSwitchCase="imageMethodList[1]['名称']" [methodType]="tabActiveId"  [projectInfo]="currentProject"></app-binary-image-match-table>
-        <app-match-and-match-table *ngSwitchCase="imageMethodList[2]['名称']" [methodType]="tabActiveId"  [projectInfo]="currentProject"></app-match-and-match-table>
-        <app-no-image-match-table *ngSwitchCase="imageMethodList[3]['名称']" [methodType]="tabActiveId"  [projectInfo]="currentProject"></app-no-image-match-table>
+        <app-image-match-table *ngSwitchCase="imageMethodList[0]['名称']" [methodType]="tabActiveId"
+          [projectInfo]="currentProject"></app-image-match-table>
+        <app-binary-image-match-table *ngSwitchCase="imageMethodList[1]['名称']" [methodType]="tabActiveId"
+          [projectInfo]="currentProject"></app-binary-image-match-table>
+        <app-match-and-match-table *ngSwitchCase="imageMethodList[2]['名称']" [methodType]="tabActiveId"
+          [projectInfo]="currentProject"></app-match-and-match-table>
+        <app-no-image-match-table *ngSwitchCase="imageMethodList[3]['名称']" [methodType]="tabActiveId"
+          [projectInfo]="currentProject"></app-no-image-match-table>
+        <app-multi-image-match-table *ngSwitchCase="imageMethodList[4]['名称']" [methodType]="tabActiveId"
+        [projectInfo]="currentProject"></app-multi-image-match-table>
       </container-element>
 
     </d-col>

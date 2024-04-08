@@ -6,7 +6,7 @@
         </d-col>
         <d-col [dSpan]="20" style="padding-left: 6px;padding-right: 6px;">
             <section>
-                <d-tabs type="wrapped" [(activeTab)]="tabActiveId" (activeTabChange)="activeTabChange($event)">
+                <d-tabs type="wrapped" [(activeTab)]="tabActiveId">
                   <d-tab *ngFor="let item of imageMethodList" [id]="item['名称']" [title]="item['名称']"></d-tab>
                 </d-tabs>
               </section>

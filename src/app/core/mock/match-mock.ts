@@ -66,6 +66,14 @@ export const matchMethodList: MatchMethodType[] = [
     编码: 'D',
     名称: '无图匹配',
   },
+  {
+    编码: 'E',
+    名称: '多图匹配',
+  },
+  {
+    编码: 'F',
+    名称: '你只看一次',
+  },
 ];
 
 

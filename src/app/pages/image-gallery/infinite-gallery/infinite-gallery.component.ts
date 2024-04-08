@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, Input, OnChanges, OnInit, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnChanges, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
 import { NgxInfiniteGridComponent, NgxInfiniteGridModule } from '@egjs/ngx-infinitegrid';
 import { InfiniteGridItem } from '@egjs/infinitegrid';
 import { defaultEncode } from '../../../core/mock/app-mock';
@@ -26,7 +26,7 @@ import { cloneDeep } from 'lodash-es';
   templateUrl: './infinite-gallery.component.html',
   styleUrl: './infinite-gallery.component.scss'
 })
-export class InfiniteGalleryComponent implements OnInit, OnChanges {
+export class InfiniteGalleryComponent implements  OnChanges {
   // 它就是项目菜单
   @Input() projectInfo!: ProjectInfo;
   // 方法的类型
@@ -52,11 +52,7 @@ export class InfiniteGalleryComponent implements OnInit, OnChanges {
     private changeDetectorRef: ChangeDetectorRef,
     protected renderer: Renderer2
   ) { }
-  ngOnInit(): void {
-    // console.log("InfiniteGalleryComponent");
-  }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ngOnChanges(changes: SimpleChanges) {
     if ('projectInfo' in changes || 'methodType' in changes) {
       this.getcsvFile();
