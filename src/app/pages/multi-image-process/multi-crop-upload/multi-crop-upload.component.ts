@@ -1,8 +1,8 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ProjectInfo } from '../../../core/interface/config-type';
 import { CropImageInfo, ScreenshotInfo } from '../../../core/interface/image-type';
 import { CommonModule } from '@angular/common';
-import { GalleryModule, GalleryItem, ImageItem } from 'ng-gallery';
+import { GalleryModule, GalleryItem, ImageItem, GalleryComponent } from 'ng-gallery';
 import { ButtonModule, DialogService, FormLayout, FormModule, SelectModule, ToastService } from 'ng-devui';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -28,13 +28,14 @@ import { TipsDialogService } from '../../../core/services/tips-dialog/tips-dialo
     SelectModule,
     ButtonModule,
     TranslateModule,
-    MultiImageMatchFormComponent
+    MultiImageMatchFormComponent,
   ]
 })
 export class MultiCropUploadComponent implements OnInit {
   @Input() data: any;
   // 图片匹配的表单视图
   @ViewChild('multiImageMatchForm') public multiImageMatchForm!: MultiImageMatchFormComponent;
+  @ViewChild(GalleryComponent) gallery!: GalleryComponent;
   // 用于获取当前匹配方法的参数
   currentArgs!: MultiImageMatchMethodType;
 
@@ -63,6 +64,7 @@ export class MultiCropUploadComponent implements OnInit {
     private toastService: ToastService,
     private tipsService: TipsDialogService,
     private dialogService: DialogService,
+    private cdRef: ChangeDetectorRef
   ) {
 
   }
@@ -147,7 +149,7 @@ export class MultiCropUploadComponent implements OnInit {
     switch (this.currentMethod['名称']) {
       case '多图匹配': {
         this.currentArgs = this.multiImageMatchForm.args;
-        this.currentArgs['数量']=this.currentImageList.length
+        this.currentArgs['数量'] = this.currentImageList.length
 
         this.uploadImage();
         this.addCsvData();
@@ -258,8 +260,10 @@ export class MultiCropUploadComponent implements OnInit {
       ],
     });
   }
-
+  // 下拉选择框改变时执行
   onSelectValueChange($event: MatchMethodType) {
     this.setCurrentImageList($event['名称']);
+    // this.gallery.load(this.currentImageList);
+    this.gallery.set(0);
   }
 }

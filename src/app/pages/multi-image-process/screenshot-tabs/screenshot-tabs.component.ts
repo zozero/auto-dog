@@ -14,19 +14,19 @@ import { CommonModule } from '@angular/common';
 })
 export class ScreenshotTabsComponent {
   @Input() screenshotList: ScreenshotInfo[] = []
-  @Output() tabIdEmit:EventEmitter<any> = new EventEmitter();
+  @Output() tabIdEmit: EventEmitter<any> = new EventEmitter();
 
-  tabActiveId = 0;
+  tabActiveId: number | string = 0;
 
   // 添加或者删除数据
   onAddOrDeleteTable($event: any) {
-    if( $event.operation==='delete'){
-      this.screenshotList.splice($event.id as number,1)
+    if ($event.operation === 'delete') {
+      this.screenshotList.splice($event.id as number, 1)
     }
   }
 
   // 图片栏活动改变后运行
-  onActiveTabChange(id:number|string){
+  onActiveTabChange(id: number | string) {
     this.tabIdEmit.emit(id)
   }
 }
