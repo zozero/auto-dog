@@ -20,7 +20,6 @@ export class CropTabsComponent {
   tabActiveId = 0;
 
   constructor(){
-    console.log("cropList",this.cropList)
   }
   onAddOrDeleteTable($event: any) {
     if( $event.operation==='delete'){

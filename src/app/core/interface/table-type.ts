@@ -41,6 +41,16 @@ export interface NoImageMatchMethodType {
   Y轴: number;
 }
 
+export interface MultiImageMatchMethodType {
+  序号?: number;
+  图片名: string;
+  数量?: number;
+  范围: string;
+  算法: number;
+  最低相似度: number;
+  额外补充: number;
+}
+
 export interface ImageArgType {
   参数名: string;
   参数值: string | number;

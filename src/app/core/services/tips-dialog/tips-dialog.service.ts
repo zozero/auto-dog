@@ -41,7 +41,7 @@ export class TipsDialogService {
   // 各种请求数据错误提示框
   openErrorDialog(info: string) {
     const config = {
-      id: 'dialog-service',
+      id: 'dialog-error-service',
       width: '346px',
       maxHeight: '600px',
       zIndex: 1050,

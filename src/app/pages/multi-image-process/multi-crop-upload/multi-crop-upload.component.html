@@ -1,0 +1,22 @@
+<div class="multi-crop-upload-container">
+    <gallery style="width: 50vh;margin-bottom: 20px;" *ngIf="currentImageList.length>0" [items]="currentImageList"
+        thumbPosition="bottom"></gallery>
+    <form dForm [layout]="layoutDirection" ngForm>
+        <d-form-item>
+            <d-form-label [required]="true" [hasHelp]="true"
+                [helpTips]="'帮助.匹配.匹配方法选择' | translate">匹配方法选择</d-form-label>
+            <d-form-control>
+                <d-select [options]="matchMethodList" name="名称" [filterKey]="'名称'"
+                    [(ngModel)]="currentMethod" (valueChange)="onSelectValueChange($event)"></d-select>
+            </d-form-control>
+        </d-form-item>
+    </form>
+
+    <container-element [ngSwitch]="currentMethod['名称']">
+        <app-multi-image-match-form #multiImageMatchForm *ngSwitchCase="'多图匹配'" [range]="range"></app-multi-image-match-form>
+    </container-element>
+
+    <div class="modal-footer">
+        <d-button (click)="submit()" bsStyle="primary" circled="true">提交</d-button>
+    </div>
+</div>

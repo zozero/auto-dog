@@ -17,11 +17,11 @@ import { TooltipModule } from 'ng-devui/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { MyLocalStorageService } from '../../core/services/my-local-storage/my-local-storage.service';
 import { IconModule } from 'ng-devui/icon';
-import { CropImageUploadComponent } from '../image-process/crop-image-upload/crop-image-upload.component';
 import { InputNumberModule } from 'ng-devui';
 import { interval, take } from 'rxjs';
 import { CropTabsComponent } from "./crop-tabs/crop-tabs.component";
 import { ScreenshotTabsComponent } from './screenshot-tabs/screenshot-tabs.component';
+import { MultiCropUploadComponent } from './multi-crop-upload/multi-crop-upload.component';
 
 @Component({
   selector: 'app-multi-image-process',
@@ -53,6 +53,8 @@ export class MultiImageProcessComponent implements OnInit {
   screenshotInterval = 0.3;
   // 点击按钮与执行端交互的进行时提示
   showLoading = false;
+  // 用于计算载入关闭的时间
+  showLoadingCount = 1;
   // 裁剪的配件
   cropConfig = {
     // 双击后可以拖动图片，再次双击后恢复
@@ -81,6 +83,7 @@ export class MultiImageProcessComponent implements OnInit {
     private tipsService: TipsDialogService,
     private myLocalStorage: MyLocalStorageService
   ) { }
+
   ngOnInit(): void {
     void this.menu.initCurrentProject().then((data) => {
       this.currentProject = data;
@@ -95,6 +98,9 @@ export class MultiImageProcessComponent implements OnInit {
 
   // 让执行端取截模拟的屏幕
   onScreenshot() {
+    this.showLoading = true;
+    this.showLoadingCount = 1;
+
     // 计算间隔时长。
     const durationNum = Math.floor(this.screenshotInterval * 1000);
     // 设置rxjs的间隔方法。
@@ -111,7 +117,6 @@ export class MultiImageProcessComponent implements OnInit {
 
   // 请求模拟器的屏幕截图数据
   onRequestScreenShot() {
-    this.showLoading = true;
     this.imageHttp
       .interceptImage(
         this.currentProject.executionSideInfo?.ipPort as string,
@@ -142,8 +147,13 @@ export class MultiImageProcessComponent implements OnInit {
           this.showLoading = false
         },
         complete: () => {
-          // 关闭载入效果
-          this.showLoading = false
+          if (this.screenshotCount === this.showLoadingCount) {
+            // 关闭载入效果
+            this.showLoading = false
+          }
+          else {
+            this.showLoadingCount++
+          }
         }
       })
   }
@@ -165,11 +175,7 @@ export class MultiImageProcessComponent implements OnInit {
 
   // 截图后会自动触发angularCropperExport函数
   submitCropImage() {
-    console.log("screenshotList", this.screenshotList)
-    console.log("currentScreenshotTabId", this.currentScreenshotTabId)
-    // if (this.currentImageUrl) {
-    //   this.angularCropper.exportCanvas();
-    // }
+    this.showMultiCropUpload();
   }
   // 导出截图，当执行图片导出时，组件会自动触发该函数
   angularCropperExport(data: any) {
@@ -218,13 +224,13 @@ export class MultiImageProcessComponent implements OnInit {
 
 
   // 显示图片上传的对话框
-  showUploadCropImage(imageData: CropImageInfo) {
+  showMultiCropUpload() {
     const config = {
-      id: 'crop—image-dialog',
+      id: 'multi-crop—Upload-dialog',
       maxWidth: '900px',
-      maxHeight: '600px',
-      title: '截图数据处理上传',
-      content: CropImageUploadComponent,
+      maxHeight: '800px',
+      title: '多图数据上传',
+      content: MultiCropUploadComponent,
       backdropCloseable: true,
       // onClose: () => // console.log('on dialog closed'),
     };
@@ -235,7 +241,7 @@ export class MultiImageProcessComponent implements OnInit {
       dialogtype: 'standard',
       showAnimation: false,
       data: {
-        imageData: imageData,
+        screenshotList: this.screenshotList,
         projectInfo: this.currentProject,
         close: () => {
           imageUploadDialogHandler.modalInstance.hide();
@@ -326,13 +332,12 @@ export class MultiImageProcessComponent implements OnInit {
   // 裁剪图片
   async cropImage(data: ScreenshotInfo, cropImageInfo: ImageInfo): Promise<Blob> {
     // 必须要等到图片载入完成才行，不然可能有概率截取到全黑的图片，所以要承诺返回
-    const img =await new Promise<HTMLImageElement>((resolve) => {
+    const img = await new Promise<HTMLImageElement>((resolve) => {
       const imgIn = new Image();
       imgIn.onload = () => resolve(imgIn);
       imgIn.src = data.url;
     });
 
-    console.log(data.url)
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d')!;
     // 设置裁剪的区域，这里只是一个示例，实际可根据需求设置

@@ -57,6 +57,8 @@ export class MatchAndMatchFormComponent implements OnInit {
         name = '图片匹配'
       } else if (this.encodeArr[0] === 'B') {
         name = '二值图片匹配'
+      }else if (this.encodeArr[0] === 'E') {
+        name = '多图匹配'
       }
       else {
         return;

@@ -63,7 +63,7 @@ export class CropImageUploadComponent implements OnInit {
   matchMethodList: MatchMethodType[] = cloneDeep(matchMethodList);
   // 当前图片匹配方法
   currentMethod: MatchMethodType = this.matchMethodList[0]
-  // 发送给匹配方法表单的树
+  // 发送给匹配方法表单的范围
   range: string = '';
   // 用于显示图片预览的
   customImageSub = new Subject<HTMLElement>();
@@ -218,6 +218,7 @@ export class CropImageUploadComponent implements OnInit {
       ],
     });
   }
+  
   // 设置当前输入列表的数据，每一次点击截取的时候都需要重新计算一遍
   setCurrentImageMethodData() {
     // 如果参数列表中有“范围”参数就直接计算范围

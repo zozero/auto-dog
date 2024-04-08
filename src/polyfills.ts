@@ -46,7 +46,7 @@
  * Zone JS is required by default for Angular itself.
  */
 import 'zone.js';  // Included with Angular CLI.
-
+import 'hammerjs'; // ng-gallery依赖 HammerJS 支持使用鼠标拖动滑块，如果您不需要此功能，可以跳过安装 HammerJS。
 
 /***************************************************************************************************
  * APPLICATION IMPORTS

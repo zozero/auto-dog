@@ -32,8 +32,8 @@ export class ImageHttpService {
       },
     };
 
-    // eslint-disable-next-line prefer-const
-    let formData = new FormData();
+    const formData = new FormData();
+    // 图片：是执行端接口的变量名
     formData.append('图片', img);
     return this.http.post(
       executionSideUrl + '/方法' + '/上传截图',
@@ -64,5 +64,35 @@ export class ImageHttpService {
       options
     );
 
+  }
+
+  // 上传多张图片
+  postUploadMultiImage(
+    executionSideUrl: string | undefined,
+    projectName: string,
+    imgList: File[]
+  ) {
+
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
+    headers.append('Accept', 'application/json');
+    const options = {
+      headers: headers,
+      params: {
+        项目名: projectName,
+      },
+    };
+
+    const formData = new FormData();
+    for (let i = 0; i < imgList.length; i++) {
+      console.log("i", i)
+      // 图片列表：是执行端接口的变量名
+      formData.append('图片列表', imgList[i]);
+    }
+    return this.http.post(
+      executionSideUrl + '/方法' + '/上传多张截图',
+      formData,
+      options
+    );
   }
 }

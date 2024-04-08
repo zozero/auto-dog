@@ -27,6 +27,7 @@ import { metaReducers, reducers } from './store';
 import { EffectsModule } from '@ngrx/effects';
 import { TaskEffects } from './store/task/task.effects';
 import { ProjectEffects } from './store/project/project.effects';
+import { GALLERY_CONFIG, GalleryConfig } from 'ng-gallery';
 
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>  new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -67,7 +68,15 @@ const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>  new Transl
     EffectsModule.forRoot([TaskEffects, ProjectEffects]),
   
   ],
-  providers: [],
+  providers: [
+    {
+      provide: GALLERY_CONFIG,
+      useValue: {
+        autoHeight: true,
+        imageSize: 'cover'
+      } as GalleryConfig
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
