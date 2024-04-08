@@ -66,11 +66,8 @@ export class MultiImageProcessComponent implements OnInit {
   currentScreenshotTabId = 0;
   // 原图地址，即模拟器的屏幕
   currentScreenshotUrl: string = '';
-  currentCropList:CropImageInfo [] =[]
-  // 裁剪后的图片地址
-  cropImageBlobUrl!: string;
-  // 裁剪后的图片
-  cropImageBlob!: Blob;
+  currentCropList: CropImageInfo[] = []
+
   // 是自动执行一次
   isAutoExe: boolean = true;
 
@@ -135,8 +132,9 @@ export class MultiImageProcessComponent implements OnInit {
           }).catch(error => {
             console.error(error.message);
           });
-
-          this.currentScreenshotUrl = tmpUrl;
+          if (this.currentScreenshotUrl === '') {
+            this.currentScreenshotUrl = tmpUrl;
+          }
         },
         error: (err: any) => {
           this.tipsService.responseErrorState(err.status as number)
@@ -175,25 +173,29 @@ export class MultiImageProcessComponent implements OnInit {
   }
   // 导出截图，当执行图片导出时，组件会自动触发该函数
   angularCropperExport(data: any) {
-    this.cropImageBlob = data.blob
-    this.cropImageBlobUrl = URL.createObjectURL(this.cropImageBlob);
+    const cropImageInfo = this.setDataInCropImageInfo(data.blob as Blob)
+    // 推送数据到截屏列表
+    this.screenshotList[this.currentScreenshotTabId].cropImageInfos.push(cropImageInfo)
+    this.currentCropList = this.screenshotList[this.currentScreenshotTabId].cropImageInfos;
+
+  }
+
+  // 设置数据到裁剪图片信息中
+  setDataInCropImageInfo(data: Blob) {
+    const cropImageBlob = data;
+    const cropImageBlobUrl = URL.createObjectURL(cropImageBlob);
     const imageInfo: ImageInfo = this.getCropImageInfo();
     const rowImageInfo = this.getNaturalSize();
     const cropImageInfo: CropImageInfo = {
-      url: this.cropImageBlobUrl,
-      blob: this.cropImageBlob,
+      url: cropImageBlobUrl,
+      blob: cropImageBlob,
       info: imageInfo,
       rowImageInfo: rowImageInfo,
-      cropArgs: []
+
     };
     // 推送裁剪的专用于人工智能算法yolo的参数
-    cropImageInfo.cropArgs?.push(this.calculateUploadCropArgs(imageInfo, rowImageInfo));
-    // 推送数据到截屏列表
-    this.screenshotList[this.currentScreenshotTabId].cropImageInfos.push(cropImageInfo)
-    this.currentCropList=this.screenshotList[this.currentScreenshotTabId].cropImageInfos;
-    console.log("this.screenshotList", this.screenshotList)
-    console.log("this.currentScreenshotTabId", this.currentScreenshotTabId)
-    // this.showUploadCropImage(cropImageInfo);
+    cropImageInfo.cropArgs = this.calculateUploadCropArgs(imageInfo, rowImageInfo);
+    return cropImageInfo;
   }
 
   // 计算专用于人工智能算法yolo的参数
@@ -306,6 +308,44 @@ export class MultiImageProcessComponent implements OnInit {
   onChangeScreenshotTab($event: number) {
     this.currentScreenshotTabId = $event;
     this.currentScreenshotUrl = this.screenshotList[$event].url;
-    this.currentCropList=this.screenshotList[$event].cropImageInfos;
+    this.currentCropList = this.screenshotList[$event].cropImageInfos;
+  }
+
+  // 同区连剪
+  async onCutSameArea() {
+    if (this.screenshotList.length > 0) {
+      const cropImageInfo = this.getCropImageInfo();
+      for (let i = 0; i < this.screenshotList.length; i++) {
+        const newBlob = await this.cropImage(this.screenshotList[i], cropImageInfo)
+        const newCropImageInfo: CropImageInfo = this.setDataInCropImageInfo(newBlob)
+        this.screenshotList[i].cropImageInfos.push(newCropImageInfo);
+      }
+    }
+  }
+
+  // 裁剪图片
+  async cropImage(data: ScreenshotInfo, cropImageInfo: ImageInfo): Promise<Blob> {
+    // 必须要等到图片载入完成才行，不然可能有概率截取到全黑的图片，所以要承诺返回
+    const img =await new Promise<HTMLImageElement>((resolve) => {
+      const imgIn = new Image();
+      imgIn.onload = () => resolve(imgIn);
+      imgIn.src = data.url;
+    });
+
+    console.log(data.url)
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d')!;
+    // 设置裁剪的区域，这里只是一个示例，实际可根据需求设置
+    const x = Math.floor(cropImageInfo.x); // 起始X坐标
+    const y = Math.floor(cropImageInfo.y); // 起始Y坐标
+    const width = Math.floor(cropImageInfo.width); // 要裁剪的宽度
+    const height = Math.floor(cropImageInfo.height); // 要裁剪的高度
+    canvas.width = width;
+    canvas.height = height;
+    ctx.drawImage(img, x, y, width, height, 0, 0, width, height);
+
+    //  console.log(canvas.toDataURL("image/jpeg"));
+    const newBlob = new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 1));
+    return newBlob as Promise<Blob>
   }
 }

@@ -4,7 +4,7 @@ export interface CropImageInfo {
   info: ImageInfo;
   rowImageInfo: RowImageInfo;
   // 专用于人工智能算法yolo的参数
-  cropArgs?:UploadCropArgs[];
+  cropArgs?:UploadCropArgs;
 }
 
 export interface RowImageInfo {

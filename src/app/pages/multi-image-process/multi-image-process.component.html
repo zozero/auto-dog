@@ -17,8 +17,12 @@
                                 (btnClick)="onScreenshot()">
                                 截屏
                             </d-button>
-                            <d-button (btnClick)="onCropImage()">
+                            <d-button class="my-glob-padding-right" [bsStyle]=" 'common' " (btnClick)="onCropImage()">
                                 截图
+                            </d-button>
+                            <d-button [bsStyle]=" 'common' " (btnClick)="onCutSameArea()"  dTooltip
+                            [content]="'提示.多图处理.同区连剪' | translate" [position]="'bottom'">
+                                同区连剪
                             </d-button>
                         </d-col>
                     </d-row>
