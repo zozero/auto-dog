@@ -1,4 +1,4 @@
-import { StepTableType } from "../interface/table-type";
+import { BehaviorEncodeType, StepTableType } from "../interface/table-type";
 
 
 
@@ -22,7 +22,42 @@ export const  defaultEncodeObj={
   }
 
   
-export const defaultBehaviorEncode=['A','B','C','D']
-export const defaultDirectionEncode=['X','Y']
+export const defaultBehaviorEncode:BehaviorEncodeType[]=[
+  {
+    编码: 'A',
+    名称: '点击',
+  },
+  {
+    编码: 'B',
+    名称: '滑动',
+  },
+  {
+    编码: 'C',
+    名称: '返回',
+  },
+  {
+    编码: 'D',
+    名称: '主界面',
+  },
+]
+export const defaultDirectionEncode:BehaviorEncodeType[]=[
+  {
+    编码: 'X',
+    名称: '横轴',
+  },
+  {
+    编码: 'Y',
+    名称: '纵轴',
+  },
+]
 
-export const defaultZJEncode=['Z','J']
+export const defaultZJEncode:BehaviorEncodeType[]=[
+  {
+    编码: 'Z',
+    名称: '真则执行',
+  },
+  {
+    编码: 'J',
+    名称: '假则执行',
+  },
+]

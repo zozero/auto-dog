@@ -13,6 +13,13 @@ export interface MatchMethodType {
   // 参数: ImageMatchMethodType | BinaryImageMatchMethodType;
 }
 
+
+export interface BehaviorEncodeType {
+  编码: string;
+  名称: string;
+  // 参数: ImageMatchMethodType | BinaryImageMatchMethodType;
+}
+
 export interface BinaryImageMatchMethodType {
   序号?: number;
   图片名: string;
@@ -25,13 +32,10 @@ export interface BinaryImageMatchMethodType {
 
 export interface MatchAndMatchMethodType {
   序号?: number;
-  编码: string;
-  图片名: string;
+  前编码: string;
+  后编码: string;
   X偏移: number;
   Y偏移: number;
-  算法: number;
-  最低相似度: number;
-  额外补充: number;
 }
 
 export interface NoImageMatchMethodType {

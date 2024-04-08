@@ -15,7 +15,7 @@
       </d-form-label>
       <d-form-control>
         <d-input-group >
-          <d-select style="width: 66px;" [allowClear]="true" class="comparison-symbol"  name="界面编码-1"  [(ngModel)]="encodeObj['界面编码'][0]" [options]="defaultMethodEncode"  [filterKey]="'编码'"></d-select>
+          <d-select [allowClear]="true" class="my-method-select-width comparison-symbol"  name="界面编码-1"  [(ngModel)]="encodeObj['界面编码'][0]" [options]="defaultMethodEncode" [valueParser]="selectValueParser" [filterKey]="'名称'" [valueKey]="'编码'"></d-select>
           <d-input-number [min]="1"  [allowEmpty]="true" name="界面编码-2"  [(ngModel)]="encodeObj['界面编码'][1]"></d-input-number>
         </d-input-group>
       </d-form-control>
@@ -28,7 +28,7 @@
       <d-form-control>
         <d-form-control>
           <d-input-group >
-            <d-select style="width: 66px;" [allowClear]="true" name="方法编码-1"  [(ngModel)]="encodeObj['方法编码'][0]" [options]="defaultMethodEncode" [filterKey]="'编码'"></d-select>
+            <d-select class="my-method-select-width" [allowClear]="true" name="方法编码-1"  [(ngModel)]="encodeObj['方法编码'][0]" [options]="defaultMethodEncode" [valueParser]="selectValueParser" [filterKey]="'名称'" [valueKey]="'编码'"></d-select>
             <d-input-number [min]="1"  [allowEmpty]="true" name="方法编码-2"  [(ngModel)]="encodeObj['方法编码'][1]"></d-input-number>
           </d-input-group>
         </d-form-control>
@@ -41,9 +41,9 @@
       </d-form-label>
       <d-form-control>
         <d-input-group >
-          <d-select style="width: 66px;" [allowClear]="true" name="行为编码-1"  [(ngModel)]="encodeObj['行为编码'][0]" [options]="defaultBehaviorEncode"></d-select>
+          <d-select  class="my-behavior-select-width"  [allowClear]="true" name="行为编码-1"  [(ngModel)]="encodeObj['行为编码'][0]" [options]="defaultBehaviorEncode"  [valueParser]="selectValueParser" [filterKey]="'名称'" [valueKey]="'编码'"></d-select>
           <d-input-number  [allowEmpty]="true" name="行为编码-2"  [(ngModel)]="encodeObj['行为编码'][1]"></d-input-number>
-          <d-select style="width: 66px;" [allowClear]="true"  name="行为编码-3"  [(ngModel)]="encodeObj['行为编码'][2]" [options]="defaultDirectionEncode"></d-select>
+          <d-select class="my-behavior-select-width" [allowClear]="true"  name="行为编码-3"  [(ngModel)]="encodeObj['行为编码'][2]" [options]="defaultDirectionEncode" [valueParser]="selectValueParser" [filterKey]="'名称'" [valueKey]="'编码'"></d-select>
         </d-input-group>
       </d-form-control>
     </d-form-item>
@@ -54,9 +54,9 @@
       </d-form-label>
       <d-form-control>
         <d-input-group >
-          <d-select style="width: 66px;" [allowClear]="true"name="动后编码-1"  [(ngModel)]="encodeObj['动后编码'][0]" [options]="defaultMethodEncode" [filterKey]="'编码'"></d-select>
+          <d-select class="my-method-select-width" [allowClear]="true"name="动后编码-1"  [(ngModel)]="encodeObj['动后编码'][0]" [options]="defaultMethodEncode" [valueParser]="selectValueParser" [filterKey]="'名称'" [valueKey]="'编码'"></d-select>
           <d-input-number [min]="1" [allowEmpty]="true" name="动后编码-2"  [(ngModel)]="encodeObj['动后编码'][1]"></d-input-number>
-          <d-select style="width: 66px;" [allowClear]="true" name="动后编码-3"  [(ngModel)]="encodeObj['动后编码'][2]" [options]="defaultZJEncode"></d-select>
+          <d-select  class="my-behavior-select-width" [allowClear]="true" name="动后编码-3"  [(ngModel)]="encodeObj['动后编码'][2]" [options]="defaultZJEncode" [valueParser]="selectValueParser" [filterKey]="'名称'" [valueKey]="'编码'"></d-select>
           <d-input-number [min]="0" [allowEmpty]="true" name="动后编码-4"  [(ngModel)]="encodeObj['动后编码'][3]"></d-input-number>
         </d-input-group>
       </d-form-control>

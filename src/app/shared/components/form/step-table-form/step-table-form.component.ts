@@ -17,7 +17,7 @@ import { ButtonModule } from 'ng-devui/button';
 import { TipsDialogService } from '../../../../core/services/tips-dialog/tips-dialog.service';
 import { MyLocalStorageService } from '../../../../core/services/my-local-storage/my-local-storage.service';
 import { ExecutionHttpService } from '../../../../core/services/https/execution-http.service';
-import { matchMethodList } from '../../../../core/mock/match-mock';
+import { matchMethodTotalList } from '../../../../core/mock/match-mock';
 
 @Component({
   selector: 'app-step-table-form',
@@ -46,8 +46,7 @@ export class StepTableFormComponent {
   // 输入框组合，各种编码，在提交的时候要重新合成数据
   @Input() encodeObj = defaultEncodeObj
 
-
-  defaultMethodEncode : MatchMethodType[]= matchMethodList;
+  defaultMethodEncode : MatchMethodType[]= cloneDeep(matchMethodTotalList);
   defaultBehaviorEncode = defaultBehaviorEncode;
   defaultDirectionEncode = defaultDirectionEncode
   defaultZJEncode = defaultZJEncode;
@@ -141,6 +140,7 @@ export class StepTableFormComponent {
       }
     })
   }
+  
   // 测试数据的可行性
   testStep(order: number) {
     // 打开载入效果
@@ -170,5 +170,13 @@ export class StepTableFormComponent {
         this.btnShowLoading = false
       }
     })
+  }
+  selectValueParser(data:MatchMethodType){
+    if(data.名称===undefined){
+      return ''
+    }else{
+      return data.编码+"："+data.名称
+    }
+   
   }
 }

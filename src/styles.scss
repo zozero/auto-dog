@@ -1,6 +1,8 @@
 @import '~ng-devui/devui-layout.css';
+
 /* You can add global styles to this file, and also import other style files */
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -16,14 +18,23 @@ html, body {
 
   // 针对小屏幕的样式 
   @media (max-height: 900px) {
-      height: 66vh;
+    height: 66vh;
   }
+
   // 针对小屏幕的样式 
   @media (max-height: 600px) {
-      height: 56vh;
+    height: 56vh;
   }
 }
 
-.my-glob-padding-right{
+.my-glob-padding-right {
   padding-right: 6px;
+}
+
+.my-method-select-width {
+  width: 130px;
+}
+
+.my-behavior-select-width {
+  width: 108px;
 }

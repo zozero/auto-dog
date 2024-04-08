@@ -175,7 +175,7 @@ export class StepTableComponent implements OnInit, OnChanges {
   addStepData() {
     this.dialogService.open({
       id: 'add-step-data',
-      width: '346px',
+      width: '460px',
       maxHeight: '600px',
       title: '添加步骤',
       contentTemplate: this.dialogContent,
@@ -187,7 +187,6 @@ export class StepTableComponent implements OnInit, OnChanges {
 
       ],
     });
-
 
   }
 
