@@ -8,7 +8,7 @@ import {
 export const simulatorType = ['安卓', '其他'];
 
 export const defaultConfigData: ConfigData = {
-  version: '1.0',
+  version: '1.2',
 };
 // 执行端
 export const defaultExecutionSideInfo: ExecutionSideInfo = {

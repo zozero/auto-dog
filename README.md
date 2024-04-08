@@ -24,7 +24,7 @@
 
 ### 方法一
 
-这是最简单的方法，你只需要点击[百度网盘](https://pan.baidu.com/s/1qtLPN5_FTD0JkrlTo_NfvQ?pwd=tw9q)下载`自动化小犬完整版.zip`文件就可以直接使用。
+这是最简单的方法，你只需要点击[百度网盘](https://pan.baidu.com/s/15aH6DApb4kxGmXWBqEEwXQ?pwd=r83e)下载最新版本的`自动化小犬完整版.zip`文件就可以直接使用。
 
 解压后双击运行`接入口.exe`，然后在双击运行`自动化小犬.exe`，最后打开你的模拟器。
 
