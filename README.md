@@ -564,6 +564,7 @@ $ npm run start
 
 <p align="center">
     <img src="./src/assets/捐赠.png" alt="捐赠" style="border-radius:50%" />
+    <img src="./src/assets/微信赞赏码.jpg" alt="微信赞赏码" style="border-radius:50%" />
 </p>  
 <h3 align="center">贫穷常伴吾身，急需救援一波</h3>
 
