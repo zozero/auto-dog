@@ -5,6 +5,7 @@ import {
   MatchMethodType,
   MultiImageMatchMethodType,
   NoImageMatchMethodType,
+  YOLOMatchMethodType,
 } from '../interface/table-type';
 
 export const defaultImageMatchMethodArgs: ImageMatchMethodType = {
@@ -44,6 +45,14 @@ export const defaulmultitImageMatchMethodArgs: MultiImageMatchMethodType = {
   最低相似度: 0.8,
   额外补充: 0,
 };
+
+
+export const defaulYoloMatchMethodArgs: YOLOMatchMethodType = {
+  分类: '',
+  轮回数: 160,
+  置信度: 0.8
+};
+
 
 // 参数无法对应，所以需要额外增加列表
 export const matchMethodTotalList: MatchMethodType[] = [

@@ -14,6 +14,7 @@ import { AddStepInImageDialogComponent } from '../../image-process/add-step-in-i
 import { TableHttpService } from '../../../core/services/https/table-http.service';
 import { ImageHttpService } from '../../../core/services/https/image-http.service';
 import { TipsDialogService } from '../../../core/services/tips-dialog/tips-dialog.service';
+import { YoloFormComponent } from "../../../shared/components/form/yolo-form/yolo-form.component";
 
 @Component({
   selector: 'app-multi-crop-upload',
@@ -29,15 +30,17 @@ import { TipsDialogService } from '../../../core/services/tips-dialog/tips-dialo
     ButtonModule,
     TranslateModule,
     MultiImageMatchFormComponent,
+    YoloFormComponent
   ]
 })
 export class MultiCropUploadComponent implements OnInit {
   @Input() data: any;
   // 图片匹配的表单视图
   @ViewChild('multiImageMatchForm') public multiImageMatchForm!: MultiImageMatchFormComponent;
+  @ViewChild('yoloForm') public yoloForm!: YoloFormComponent;
   @ViewChild(GalleryComponent) gallery!: GalleryComponent;
   // 用于获取当前匹配方法的参数
-  currentArgs!: MultiImageMatchMethodType;
+  currentMultiImageArgs!: MultiImageMatchMethodType;
 
   // 裁剪的图片信息
   screenshotList!: ScreenshotInfo[];
@@ -148,18 +151,18 @@ export class MultiCropUploadComponent implements OnInit {
   submit() {
     switch (this.currentMethod['名称']) {
       case '多图匹配': {
-        this.currentArgs = this.multiImageMatchForm.args;
-        this.currentArgs['数量'] = this.currentImageList.length
+        this.currentMultiImageArgs = this.multiImageMatchForm.args;
+        this.currentMultiImageArgs['数量'] = this.currentImageList.length
 
         this.uploadImage();
         this.addCsvData();
         break
       }
       case '你只看一次': {
-        // this.currentArgs = this.noImageMatchForm.args;
-
-        // this.uploadImage();
-        // this.addCsvData();
+        this.yoloForm.submitData();
+        this.yoloForm.updateCsvFile();
+        // 这个弹窗
+        this.closeDialog();
         break
       }
     }
@@ -173,7 +176,7 @@ export class MultiCropUploadComponent implements OnInit {
       imageFileList.push(
         new File(
           [this.currentImageBlobList[i]],
-          this.currentArgs['图片名'] + '-' + (i + 1) + '.jpg',
+          this.currentMultiImageArgs['图片名'] + '-' + (i + 1) + '.jpg',
           { type: 'image/jpeg' }
         ))
     }
@@ -209,7 +212,7 @@ export class MultiCropUploadComponent implements OnInit {
         this.projectInfo.executionSideInfo?.ipPort as string,
         this.projectInfo.name,
         this.currentMethod['名称'],
-        this.currentArgs
+        this.currentMultiImageArgs
       )
       .subscribe({
         next: (data: any) => {
@@ -251,7 +254,7 @@ export class MultiCropUploadComponent implements OnInit {
       data: {
         projectInfo: this.projectInfo,
         methodInfo: this.currentMethod,
-        imageName: this.currentArgs['图片名'],
+        imageName: this.currentMultiImageArgs['图片名'],
         close: () => {
           addStepDialog.modalInstance.hide();
         },

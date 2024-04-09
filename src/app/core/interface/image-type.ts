@@ -24,7 +24,7 @@ export interface ImageInfo {
 
 // 用于上传的裁剪过的参数，专用于人工智能算法yolo
 export interface UploadCropArgs{
-  分类?:string;
+  分类?:number;
   比例中心点:number[];
   比例尺寸:number[];
 }

@@ -14,6 +14,7 @@
 
     <container-element [ngSwitch]="currentMethod['名称']">
         <app-multi-image-match-form #multiImageMatchForm *ngSwitchCase="'多图匹配'" [range]="range"></app-multi-image-match-form>
+        <app-yolo-form #yoloForm *ngSwitchCase="'你只看一次'" [projectInfo]="projectInfo" [screenshotList]="screenshotList"></app-yolo-form>
     </container-element>
 
     <div class="modal-footer">

@@ -1,0 +1,51 @@
+<section>
+  <form dForm [layout]="vertical" ngForm>
+    <d-form-item>
+      <d-form-label [required]="true" [hasHelp]="true" [helpTips]="'帮助.匹配.分类' | translate">
+        分类
+      </d-form-label>
+      <d-form-control>
+        <!-- <input dTextInput autocomplete="off" name="分类" [(ngModel)]="args['分类']" /> -->
+        <d-row>
+          <d-col [dSpan]="12">
+            <d-select  
+            [options]="classList" 
+            name="分类" 
+            [isSearch]="true" 
+            [(ngModel)]="currentClass"
+            [placeholder]="'选择分类'" 
+            [valueParser]="selectValueParser" 
+            [filterKey]="'分类'" 
+            ></d-select>
+          </d-col>
+          <d-col [dSpan]="8">
+            <input dTextInput  name="添加分类" placeholder="输入分类名" [(ngModel)]="createClassName" />
+          </d-col>
+          <d-col [dSpan]="4">
+            <d-button bsStyle="common" (btnClick)="addClass()"  [showLoading]="btnShowLoading">创建</d-button>
+          </d-col>
+        </d-row>
+      
+      </d-form-control>
+    </d-form-item>
+
+    <d-form-item>
+      <d-form-label [required]="true" [hasHelp]="true" [helpTips]="'帮助.匹配.轮回数' | translate">
+        轮回数
+      </d-form-label>
+      <d-form-control>
+        <d-input-number [min]="1" name="轮回数" [(ngModel)]="args['轮回数']"></d-input-number>
+      </d-form-control>
+    </d-form-item>
+
+    <d-form-item>
+      <d-form-label [required]="true" [hasHelp]="true" [helpTips]="'帮助.匹配.置信度' | translate">
+        置信度
+      </d-form-label>
+      <d-form-control>
+        <d-input-number [max]="1.0" [min]="0.0" [step]="0.1" name="置信度" [(ngModel)]="args['置信度']"></d-input-number>
+      </d-form-control>
+    </d-form-item>
+
+  </form>
+</section>

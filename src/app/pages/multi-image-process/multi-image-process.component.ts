@@ -48,7 +48,7 @@ import { MultiCropUploadComponent } from './multi-crop-upload/multi-crop-upload.
 export class MultiImageProcessComponent implements OnInit {
   currentProject!: ProjectInfo;
   // 截屏次数
-  screenshotCount = 1;
+  screenshotCount = 2;
   //每次截屏间隔
   screenshotInterval = 0.3;
   // 点击按钮与执行端交互的进行时提示
@@ -210,7 +210,7 @@ export class MultiImageProcessComponent implements OnInit {
     let centerX = (imageInfo.x + imageInfo.width / 2) / rowImageInfo.width
     centerX = parseFloat(centerX.toFixed(6))
     let centerY = (imageInfo.y + imageInfo.height / 2) / rowImageInfo.height
-    centerY = parseFloat(centerX.toFixed(6))
+    centerY = parseFloat(centerY.toFixed(6))
     // 计算比例尺寸，保留小数点后6位
     const imgSizeWidth = parseFloat((imageInfo.width / rowImageInfo.width).toFixed(6))
     const imgSizeHeight = parseFloat((imageInfo.height / rowImageInfo.height).toFixed(6))

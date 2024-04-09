@@ -55,6 +55,13 @@ export interface MultiImageMatchMethodType {
   额外补充: number;
 }
 
+export interface YOLOMatchMethodType {
+  序号?: number;
+  分类: string;
+  轮回数: number;
+  置信度: number;
+}
+
 export interface ImageArgType {
   参数名: string;
   参数值: string | number;
@@ -70,7 +77,6 @@ export interface StepTableType {
   循环次数: number;
   循环间隔: number;
 }
-
 
 
 export interface TestStepDataType {

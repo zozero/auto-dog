@@ -354,8 +354,6 @@ export class ExecutePlanComponent implements OnInit {
         },
       ],
     });
-
-
   }
 
   // 清空任务结果信息

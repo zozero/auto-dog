@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BinaryImageMatchMethodType, ImageMatchMethodType, MatchAndMatchMethodType, MultiImageMatchMethodType, NoImageMatchMethodType, StepTableType, TaskTableType } from '../../interface/table-type';
+import { BinaryImageMatchMethodType, ImageMatchMethodType, MatchAndMatchMethodType, MultiImageMatchMethodType, NoImageMatchMethodType, StepTableType, TaskTableType, YOLOMatchMethodType } from '../../interface/table-type';
 @Injectable({
   providedIn: 'root',
 })
@@ -58,9 +58,9 @@ export class TableHttpService {
     executionSideUrl: string,
     projectName: string,
     methodName: string,
-    imageArgs: ImageMatchMethodType | BinaryImageMatchMethodType | MatchAndMatchMethodType | NoImageMatchMethodType|MultiImageMatchMethodType,
+    imageArgs: ImageMatchMethodType | BinaryImageMatchMethodType | MatchAndMatchMethodType | NoImageMatchMethodType | MultiImageMatchMethodType | YOLOMatchMethodType,
   ) {
-    
+
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
     headers.append('Accept', 'application/json');
@@ -81,8 +81,7 @@ export class TableHttpService {
 
   // 覆盖csv数据
   putMethodCsvFile(executionSideUrl: string, projectName: string, methodName: string, csvFile: File) {
-    // eslint-disable-next-line prefer-const
-    let headers = new HttpHeaders();
+    const headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
     headers.append('Accept', 'application/json');
     const options = {
@@ -92,10 +91,36 @@ export class TableHttpService {
         方法名: methodName
       },
     };
-    // eslint-disable-next-line prefer-const
-    let formData = new FormData();
+
+    const formData = new FormData();
     formData.append('csv文件', csvFile);
     return this.http.put(executionSideUrl + '/方法' + '/覆盖', formData, options);
+  }
+
+  // 修改csv数据
+  postUpdateMethodAddData(
+    executionSideUrl: string,
+    projectName: string,
+    methodName: string,
+    args: YOLOMatchMethodType
+  ) {
+
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
+    headers.append('Accept', 'application/json');
+    const options = {
+      headers: headers,
+      params: {
+        项目名: projectName,
+        方法名: methodName,
+      },
+    };
+
+    return this.http.post(
+      executionSideUrl + '/方法' + '/修改',
+      args,
+      options
+    );
   }
 
   // 创建步骤表格
@@ -151,7 +176,6 @@ export class TableHttpService {
       }
     });
   }
-
 
   // 获得步骤csv文件
   getStepCsvFile(
