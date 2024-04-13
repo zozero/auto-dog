@@ -6,10 +6,10 @@ import { Update } from '@ngrx/entity';
 export const ProjectActions = createActionGroup({
   source: 'Project',
   events: {
-    '加个任务': props<ProjectStateType>(),
-    '加多任务': props<{ projects: ProjectStateType[] }>(),
-    '删除任务': props<{ id: number }>(),
-    '单改任务': props<{ update: Update<ProjectStateType> }>(),
-    '多改任务': props<{ updates: Update<ProjectStateType>[] }>(),
+    '加个项目': props<ProjectStateType>(),
+    '加多项目': props<{ projects: ProjectStateType[] }>(),
+    '删除项目': props<{ id: number }>(),
+    '单改项目': props<{ update: Update<ProjectStateType> }>(),
+    '多改项目': props<{ updates: Update<ProjectStateType>[] }>(),
   }
 });

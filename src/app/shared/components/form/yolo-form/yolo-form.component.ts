@@ -11,10 +11,10 @@ import { cloneDeep, findIndex } from 'lodash-es';
 import { SelectModule } from 'ng-devui/select';
 import { ScreenshotInfo } from '../../../../core/interface/image-type';
 import { AiHttpService } from '../../../../core/services/https/ai-http.service';
-import { classEncodeType } from '../../../../core/interface/http-type';
 import { TipsDialogService } from '../../../../core/services/tips-dialog/tips-dialog.service';
 import { TableHttpService } from '../../../../core/services/https/table-http.service';
-import { Papa } from 'ngx-papaparse';
+import { Papa, ParseResult } from 'ngx-papaparse';
+import { defaultEncode } from '../../../../core/mock/app-mock';
 
 @Component({
   selector: 'app-yolo-form',
@@ -38,11 +38,11 @@ export class YoloFormComponent implements OnInit {
   // 参数对，初始一个预设的值
   args: YOLOMatchMethodType = cloneDeep(defaulYoloMatchMethodArgs);
   // 分类列表
-  classList: classEncodeType[] = [];
+  classList: string[] = [];
   // 专用于创建分类的
   createClassName: string = ''
   // 当前分类
-  currentClass!: classEncodeType;
+  currentClass!: string;
   // 表单垂直布局
   vertical: FormLayout = FormLayout.Vertical;
   // 按钮点击后的载入提示
@@ -58,12 +58,13 @@ export class YoloFormComponent implements OnInit {
     private cdRef: ChangeDetectorRef,
     private papa: Papa,
     private dialogService: DialogService,
+    private tableHttp: TableHttpService,
     private tableHttpService: TableHttpService
   ) {
   }
 
   ngOnInit(): void {
-    this.getClassNumber();
+    this.getClassList();
   }
 
   // 生成标签文本文件
@@ -86,7 +87,8 @@ export class YoloFormComponent implements OnInit {
       for (let j = 0; j < infoLength; j++) {
         const tmpArg = infoList[j].cropArgs!
         const range = String(tmpArg.比例中心点[0]) + ' ' + String(tmpArg.比例中心点[1]) + ' ' + String(tmpArg.比例尺寸[0]) + ' ' + String(tmpArg.比例尺寸[1])
-        textData = textData + this.args['序号'] + ' ' + range + '\r\n'
+        // 由于不同配置文件训练不同的模型，所以这边固定为80。
+        textData = textData + String(80) + ' ' + range + '\r\n'
       }
 
       console.log(textData)
@@ -103,41 +105,54 @@ export class YoloFormComponent implements OnInit {
   }
 
   // 获得分类的号码，例如80
-  getClassNumber(type:string='') {
-    this.aiHttpService.getClassList(
+  getClassList() {
+    this.btnShowLoading = true
+    this.tableHttp.getMethodCsvFile(
       this.projectInfo.executionSideInfo?.ipPort as string,
-      this.projectInfo.name
-    ).subscribe({
-      next: (data: any) => {
-        // 转对象为数组
-        for (const i in data) {
-          this.classList.push({
-            分类: data[i] as string,
-            编号: parseInt(i)
-          })
-        }
-        this.classList = this.classList.reverse();
-        this.currentClass = this.classList[0];
-        // 这边需要赋值给参数
-        // this.onSelectValueChange(this.currentClass)
-        this.cdRef.detectChanges();
-        // 如果从提交那里过来的话,防止异步设置错误数据
-        console.log("type",type)
-        if(type==='submit'){
-          
-          this.addCsvFile()
-        }
-      }
-    })
-  }
+      this.projectInfo.name,
+      '你只看一次'
+    )
+      .subscribe({
+        next: (csv) => {
+          const csvParseOptions = {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            complete: (results: ParseResult, _file: any) => {
+              const arr = results.data;
+              // 丢掉第一行数据
+              arr.shift();
+              this.classList = arr;
+              // 删除掉最后一行的空数据
+              this.classList.pop();
 
-  // 用于选择框解析显示的值。
-  selectValueParser(data: classEncodeType) {
-    if (data['分类'] === undefined) {
-      return ''
-    } else {
-      return data['编号'] + "：" + data['分类']
-    }
+              if(this.classList.length>0){
+                const tmpData = this.classList[this.classList.length - 1]
+                this.args = {
+                  序号: parseInt(tmpData[0]),
+                  分类: tmpData[1],
+                  轮回数: parseInt(tmpData[2]),
+                  置信度: parseFloat(tmpData[3]),
+                }
+              }
+             
+            },
+
+            encoding: defaultEncode,
+            // header:true,
+            newline: undefined
+          };
+          this.papa.parse(csv, csvParseOptions);
+          // Add your options here
+        },
+        error: (err: any) => {
+          this.tipsService.responseErrorState(err.status as number)
+          // 关闭载入效果
+          this.btnShowLoading = false
+        },
+        complete: () => {
+          // 关闭载入效果
+          this.btnShowLoading = false
+        }
+      });
   }
 
   // 当下拉选择框数据改变后执行
@@ -155,49 +170,24 @@ export class YoloFormComponent implements OnInit {
       this.tipsService.openToEqualDialog('分类名')
       return;
     }
-    const config = {
-      id: 'add-class-dialog',
-      width: '346px',
-      maxHeight: '600px',
-      zIndex: 1050,
-      backdropCloseable: true,
-      html: true,
-    };
-    const results = this.dialogService.open({
-      ...config,
-      dialogtype: 'warning',
-      title: '警告!',
-      content: "添加后无法常规移除，训练后绝对不能移除。<br /><br />还没训练之前可在执行端的对应文件内移除。<br /><br />路径：项目文件屋/xxx项目/智能间/你只看一次/配置.yaml。",
-      buttons: [
-        {
-          cssClass: 'primary',
-          text: '确定',
-          handler: () => {
-            this.submitAddClass();
-            results.modalInstance.hide();
-          },
-        },
-        {
-          id: 'btn-cancel',
-          cssClass: 'common',
-          text: '取消',
-          handler: () => {
-            results.modalInstance.hide();
-          },
-        },
-      ],
-    });
+    // 必须把序号去掉，不然会导致序号相同
+    this.args['序号'] = undefined
+    this.args['分类'] = this.createClassName;
+    this.submitAddClass();
+    this.createConfigFile();
+
   }
 
   // 提交添加分类
   submitAddClass() {
-    this.aiHttpService.getAddYoloClass(
+    this.tableHttpService.postMethodAddData(
       this.projectInfo.executionSideInfo?.ipPort as string,
       this.projectInfo.name,
-      this.createClassName
+      '你只看一次',
+      this.args
     ).subscribe({
       next: (data: any) => {
-        this.getClassNumber('submit');
+        this.getClassList();
         // 全局提示成功消息
         this.tipsService.globTipsInfo(data as string)
       },
@@ -214,10 +204,27 @@ export class YoloFormComponent implements OnInit {
     })
   }
 
+  // 当创建分类的时候，创建yolo对应的配置文件
+  createConfigFile(){
+    this.aiHttpService.getAddYoloClass(
+      this.projectInfo.executionSideInfo?.ipPort as string,
+      this.projectInfo.name,
+      this.createClassName
+    ).subscribe({
+      next: (data: any) => {
+        // 全局提示成功消息
+        this.tipsService.globTipsInfo(data as string)
+      },
+      error: (err: any) => {
+        this.tipsService.responseErrorState(err.status as number)
+      },
+      complete: () => {
+      }
+    })
+  }
+
   // 提交数据
   submitData() {
-    this.args['分类'] = this.currentClass['分类'];
-    this.args['序号'] = this.currentClass['编号'];
     this.generateLabelText();
 
     this.aiHttpService.postYoloData(
@@ -241,9 +248,6 @@ export class YoloFormComponent implements OnInit {
 
   // 添加你只看一次方法的一条数据,由于创建时不会重复这里就不做判断了
   addCsvFile() {
-    this.args['分类'] = this.currentClass['分类'];
-    this.args['序号'] = this.currentClass['编号'];
-
     // // 准备数据 
     // const csvData: string[] = values(this.args) as string[]
     // const csvHeader: string[] = Object.keys(this.args);
@@ -253,7 +257,7 @@ export class YoloFormComponent implements OnInit {
     // const csvStr = this.papa.unparse(csvArr);
     // const csvBlob = new Blob([csvStr], { type: 'text/csv' });
     // const csvFile = new File([csvBlob], 'something.csv', { type: 'text/csv' });
-    console.log("this.args",this.args)
+    console.log("this.args", this.args)
     this.tableHttpService.postMethodAddData(
       this.projectInfo.executionSideInfo?.ipPort as string,
       this.projectInfo.name,
@@ -273,10 +277,7 @@ export class YoloFormComponent implements OnInit {
   }
 
   // 更新csv文件,因为特殊需求才需如此,否则真还不如覆盖整个文件.
-  updateCsvFile(){
-    this.args['分类'] = this.currentClass['分类'];
-    this.args['序号'] = this.currentClass['编号'];
-
+  updateCsvFile() {
     this.tableHttpService.postUpdateMethodAddData(
       this.projectInfo.executionSideInfo?.ipPort as string,
       this.projectInfo.name,
@@ -297,7 +298,7 @@ export class YoloFormComponent implements OnInit {
 
   // 检查分类名是否重复
   checkClassRepeat() {
-    const index: number = findIndex(this.classList, (o) => o['分类'] === this.createClassName)
+    const index: number = findIndex(this.classList, (o: any) => o[1] === this.createClassName)
     if (index === -1) {
       return false
     } else {

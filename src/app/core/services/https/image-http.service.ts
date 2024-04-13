@@ -95,4 +95,27 @@ export class ImageHttpService {
       options
     );
   }
+
+  // 获得分类图片列表
+  getImageClassList(
+    executionSideHttp: string,
+    projectName: string,
+    classNmae: string
+
+  ) {
+    // 禁止获取缓存文件，由于频繁的操作执行端的文件，可能无法在短时间更新，为了防止这样的错误，在这添加头部，告诉它不要缓存。
+    const headers: HttpHeaders = new HttpHeaders({
+      'Cache-Control': 'no-store, no-cache, must-revalidate, pre-check=0',
+      'Pragma': 'no-cache',
+      'Expires': '0',
+    })
+    return this.http.get(executionSideHttp + '/你只看一次' + '/图片列表', {
+      headers: headers,
+      params: {
+        项目名: projectName,
+        分类名: classNmae
+      },
+      transferCache: false
+    });
+  }
 }

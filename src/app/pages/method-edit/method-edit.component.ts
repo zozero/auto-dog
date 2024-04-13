@@ -16,6 +16,7 @@ import { MatchAndMatchTableComponent } from "./match-and-match-table/match-and-m
 import { NoImageMatchTableComponent } from './no-image-match-table/no-image-match-table.component';
 import { MultiImageMatchTableComponent } from "./multi-image-match-table/multi-image-match-table.component";
 import { cloneDeep } from 'lodash-es';
+import { YoloMatchTableComponent } from "./yolo-match-table/yolo-match-table.component";
 
 @Component({
     selector: 'app-method-edit',
@@ -33,7 +34,8 @@ import { cloneDeep } from 'lodash-es';
         BinaryImageMatchTableComponent,
         MatchAndMatchTableComponent,
         NoImageMatchTableComponent,
-        MultiImageMatchTableComponent
+        MultiImageMatchTableComponent,
+        YoloMatchTableComponent
     ]
 })
 export class MethodEditComponent implements OnInit {

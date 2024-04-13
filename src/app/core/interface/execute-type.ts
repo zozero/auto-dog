@@ -66,4 +66,6 @@ export interface ProjectStateType {
     // subscriptHandle?:Subscription
     // 激活状态，使用了本地存储功能，所以它暂时没有用
     activing?: boolean;
+    // 是否正在训练
+    training?:boolean;
 }

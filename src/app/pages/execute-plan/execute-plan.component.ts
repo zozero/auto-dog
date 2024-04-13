@@ -171,7 +171,7 @@ export class ExecutePlanComponent implements OnInit {
           changes: { executing: true }
         }
         // 状态管理添加新的任务
-        this.store.dispatch(ProjectActions['单改任务']({
+        this.store.dispatch(ProjectActions['单改项目']({
           update: UpdateNum
         }))
 
@@ -244,7 +244,7 @@ export class ExecutePlanComponent implements OnInit {
       changes: { executing: state }
     }
     // 状态管理添加新的任务
-    this.store.dispatch(ProjectActions['单改任务']({
+    this.store.dispatch(ProjectActions['单改项目']({
       update: UpdateNum
     }))
   }
@@ -255,7 +255,7 @@ export class ExecutePlanComponent implements OnInit {
       changes: { executing: true }
     }
     // 状态管理添加新的任务
-    this.store.dispatch(ProjectActions['单改任务']({
+    this.store.dispatch(ProjectActions['单改项目']({
       update: UpdateNum
     }))
 
@@ -272,7 +272,7 @@ export class ExecutePlanComponent implements OnInit {
       changes: { pause: true }
     }
     // 状态管理添加新的任务
-    this.store.dispatch(ProjectActions['单改任务']({
+    this.store.dispatch(ProjectActions['单改项目']({
       update: UpdateNum
     }))
 
@@ -315,7 +315,7 @@ export class ExecutePlanComponent implements OnInit {
       changes: { pause: false }
     }
     // 状态管理添加新的任务
-    this.store.dispatch(ProjectActions['单改任务']({
+    this.store.dispatch(ProjectActions['单改项目']({
       update: UpdateNum
     }))
   }

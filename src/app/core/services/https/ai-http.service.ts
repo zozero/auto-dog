@@ -29,7 +29,7 @@ export class AiHttpService {
     });
   }
 
-  // 添加你只看一次的分类数量
+  // 添加你只看一次的分类
   getAddYoloClass(executionSideUrl: string, projectName: string, className: string) {
     const headers = new HttpHeaders();
     headers.append('Accept', 'application/json');
@@ -77,4 +77,46 @@ export class AiHttpService {
       options
     );
   }
+
+
+  // 使用yolo对当前模拟器屏幕进行指定分类的预测
+  getYoloClassPredict(
+    executionSideHttp: string,
+    projectName: string,
+    simulatorHttp: string,
+    className:string,
+    conf: number
+
+  ) {
+    return this.http.get(executionSideHttp + '/你只看一次' + '/分类预测', {
+      params: {
+        项目名: projectName,
+        模拟器的ip和端口: simulatorHttp,
+        分类名:className,
+        置信度: conf
+      },
+      responseType: 'blob',
+    });
+  }
+
+  // 使用yolo对当前模拟器屏幕进行指定分类的预测
+  getYoloClassTrain(
+    executionSideHttp: string,
+    projectName: string,
+    className: string,
+    epoch:number
+
+  ) {
+    const headers = new HttpHeaders();
+    headers.append('Accept', 'application/json');
+    return this.http.get(executionSideHttp + '/你只看一次' + '/训练', {
+      headers: headers,
+      params: {
+        项目名: projectName,
+        分类名: className,
+        轮回数:epoch
+      }
+    });
+  }
+
 }

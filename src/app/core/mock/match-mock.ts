@@ -50,7 +50,7 @@ export const defaulmultitImageMatchMethodArgs: MultiImageMatchMethodType = {
 export const defaulYoloMatchMethodArgs: YOLOMatchMethodType = {
   分类: '',
   轮回数: 160,
-  置信度: 0.8
+  置信度: 0.2
 };
 
 

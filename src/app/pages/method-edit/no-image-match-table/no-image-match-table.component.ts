@@ -29,7 +29,8 @@ import { TranslateModule } from '@ngx-translate/core';
     CommonModule,
     ModalModule,
     ImagePreviewModule,
-    TranslateModule],
+    TranslateModule
+  ],
   templateUrl: './no-image-match-table.component.html',
   styleUrl: './no-image-match-table.component.scss'
 })

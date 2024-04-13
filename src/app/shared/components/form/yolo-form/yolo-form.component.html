@@ -12,10 +12,9 @@
             [options]="classList" 
             name="分类" 
             [isSearch]="true" 
-            [(ngModel)]="currentClass"
+            [(ngModel)]="args['分类']"
             [placeholder]="'选择分类'" 
-            [valueParser]="selectValueParser" 
-            [filterKey]="'分类'" 
+            [filterKey]="'1'" 
             ></d-select>
           </d-col>
           <d-col [dSpan]="8">

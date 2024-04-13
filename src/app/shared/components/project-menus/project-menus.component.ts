@@ -74,7 +74,7 @@ export class ProjectMenusComponent implements OnInit {
         pause:false
       })
     })
-    this.store.dispatch(ProjectActions['加多任务']({
+    this.store.dispatch(ProjectActions['加多项目']({
       projects: tmpDatas
     }))
   }

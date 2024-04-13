@@ -22,6 +22,8 @@
           [projectInfo]="currentProject"></app-no-image-match-table>
         <app-multi-image-match-table *ngSwitchCase="imageMethodList[4]['名称']" [methodType]="tabActiveId"
         [projectInfo]="currentProject"></app-multi-image-match-table>
+        <app-yolo-match-table *ngSwitchCase="imageMethodList[5]['名称']" [methodType]="tabActiveId"
+        [projectInfo]="currentProject"></app-yolo-match-table>
       </container-element>
 
     </d-col>
