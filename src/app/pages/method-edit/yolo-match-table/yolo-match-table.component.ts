@@ -391,7 +391,7 @@ export class YoloMatchTableComponent implements OnInit, OnChanges {
       className
     ).subscribe({
       next: (data: any) => {
-        const tmpStr = this.projectInfo.executionSideInfo?.ipPort + '/项目文件屋/' + this.projectInfo.name + '/智能间/你只看一次/数据箱/' + className + '/images/'
+        const tmpStr = this.projectInfo.executionSideInfo?.ipPort + '/项目文件屋/' + this.projectInfo.name + '/智能间/你只看一次/' + className + '/images/'
         data.forEach((el: string) => {
           this.imgSrcList.push(tmpStr + el)
         });
