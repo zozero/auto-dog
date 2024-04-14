@@ -91,7 +91,7 @@ export class YoloFormComponent implements OnInit {
         textData = textData + String(80) + ' ' + range + '\r\n'
       }
 
-      console.log(textData)
+      // console.log(textData)
       const textBlob = new Blob([textData], { type: 'text/plain;charset=utf-8' });
       // 推送文本到文本文件列表
       const tmpTextFile = new File(
