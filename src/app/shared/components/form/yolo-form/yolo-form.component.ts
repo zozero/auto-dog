@@ -123,7 +123,7 @@ export class YoloFormComponent implements OnInit {
               this.classList = arr;
               // 删除掉最后一行的空数据
               this.classList.pop();
-
+                
               if(this.classList.length>0){
                 const tmpData = this.classList[this.classList.length - 1]
                 this.args = {
@@ -156,10 +156,14 @@ export class YoloFormComponent implements OnInit {
   }
 
   // 当下拉选择框数据改变后执行
-  // onSelectValueChange($event: classEncodeType) {
-  //   this.args['分类'] = $event['分类'];
-  //   this.args['编号'] = $event['编号'];
-  // }
+  onSelectValueChange($event:string[]) {
+    this.args = {
+      序号: parseInt($event[0]),
+      分类: $event[1],
+      轮回数: parseInt($event[2]),
+      置信度: parseFloat($event[3]),
+    }
+  }
 
   // 添加分类
   addClass() {
@@ -245,6 +249,7 @@ export class YoloFormComponent implements OnInit {
       }
     })
   }
+     
 
   // 添加你只看一次方法的一条数据,由于创建时不会重复这里就不做判断了
   addCsvFile() {
@@ -257,7 +262,7 @@ export class YoloFormComponent implements OnInit {
     // const csvStr = this.papa.unparse(csvArr);
     // const csvBlob = new Blob([csvStr], { type: 'text/csv' });
     // const csvFile = new File([csvBlob], 'something.csv', { type: 'text/csv' });
-    console.log("this.args", this.args)
+    // console.log("this.args", this.args)
     this.tableHttpService.postMethodAddData(
       this.projectInfo.executionSideInfo?.ipPort as string,
       this.projectInfo.name,
@@ -295,6 +300,7 @@ export class YoloFormComponent implements OnInit {
       }
     });
   }
+     
 
   // 检查分类名是否重复
   checkClassRepeat() {
