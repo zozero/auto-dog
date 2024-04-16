@@ -560,7 +560,7 @@ $ npm run start
 </table>
 
 
-### 动作编号表格
+### 行为动作编号表格
 
 <table>
   <colgroup>
@@ -571,27 +571,38 @@ $ npm run start
   <tr>
     <th>方法名</th>
     <th>编号</th>
+    <th>示例</th>
     <th>说明</th>
   </tr>
   <tr>
     <td>点击</td>
+    <td>A</td>
     <td>A</td>
     <td>手机中点击一下的操作</td>
   </tr>
   <tr>
     <td>滑动</td>
     <td>B</td>
-    <td>可以向上向下、向左向右滑动。</td>
+    <td>B500Y</td>
+    <td>可以向上向下、向左向右滑动。示例表示沿纵轴上往下滑动。</td>
   </tr>
   <tr>
     <td>返回</td>
+    <td>C</td>
     <td>C</td>
     <td>手机中全局的返回按钮。</td>
   </tr>
   <tr>
     <td>主界面</td>
     <td>D</td>
+    <td>D</td>
     <td>可以直接回到的手机的主界面，相当于手机中home键。</td>
+  </tr>
+  <tr>
+    <td>长按</td>
+    <td>E</td>
+    <td>E1.5</td>
+    <td>长按住识别的位置点。示例1.5表示1.5秒</td>
   </tr>
 </table>
 

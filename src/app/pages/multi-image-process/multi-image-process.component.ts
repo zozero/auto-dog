@@ -329,6 +329,15 @@ export class MultiImageProcessComponent implements OnInit {
     }
   }
 
+  // 清空截图
+  onClearIntercept(){
+    if (this.screenshotList.length > 0) {
+      for (let i = 0; i < this.screenshotList.length; i++) {
+        this.screenshotList[i].cropImageInfos=[]
+      }
+    }
+  }
+
   // 裁剪图片
   async cropImage(data: ScreenshotInfo, cropImageInfo: ImageInfo): Promise<Blob> {
     // 必须要等到图片载入完成才行，不然可能有概率截取到全黑的图片，所以要承诺返回

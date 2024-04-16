@@ -39,6 +39,10 @@ export const defaultBehaviorEncode:BehaviorEncodeType[]=[
     编码: 'D',
     名称: '主界面',
   },
+  {
+    编码: 'E',
+    名称: '长按',
+  },
 ]
 export const defaultDirectionEncode:BehaviorEncodeType[]=[
   {
