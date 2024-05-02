@@ -138,13 +138,5 @@ export const defaultLanguages:OcrLanguageType[] = [
   {
     编号: 1,
     名称: '中文繁体'
-  },
-  {
-    编号: 2,
-    名称: '日语'
-  },
-  {
-    编号: 3,
-    名称: '韩语'
-  },
+  }
 ]
