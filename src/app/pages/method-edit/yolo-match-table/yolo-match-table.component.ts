@@ -294,7 +294,7 @@ export class YoloMatchTableComponent implements OnInit, OnChanges {
     })
   }
   // 训练对应的分类
-  yoloTrain(className: string,epcho:number) {
+  yoloTrain(className: string, epcho: number) {
     // 打开载入效果
     this.btnShowLoading = true
     this.setTrainState(true);
@@ -369,6 +369,8 @@ export class YoloMatchTableComponent implements OnInit, OnChanges {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   beforeEditEnd = (rowItem: any, field: any) => {
+    const csvIndex = findIndex(this.csvData, (o: any) => { return o[0] === rowItem[0] })
+    this.csvData[csvIndex] = rowItem
     if (this.isAutoSave) {
       this.putCsvFile();
     }

@@ -224,11 +224,11 @@ export class TaskTableComponent implements OnInit, OnChanges {
     if (event.direction === SortDirection.ASC) {
       // 转成数字才能按照数字排序
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      this.csvFilterList = orderBy(this.csvFilterList, [(data:any) => parseInt(data[field])], ['asc'])
+      this.csvFilterList = orderBy(this.csvFilterList, [(data: any) => parseInt(data[field])], ['asc'])
 
     } else if (event.direction === SortDirection.DESC) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      this.csvFilterList = orderBy(this.csvFilterList, [(data:any) => parseInt(data[field])], ['desc'])
+      this.csvFilterList = orderBy(this.csvFilterList, [(data: any) => parseInt(data[field])], ['desc'])
 
     }
     else {
@@ -292,7 +292,7 @@ export class TaskTableComponent implements OnInit, OnChanges {
 
     })
   }
-  
+
   // 删除数据
   deleteData(index: number) {
     const csvIndex = findIndex(this.csvData, (o: any) => { return o[0] === this.csvFilterList[index][0] })
@@ -309,14 +309,14 @@ export class TaskTableComponent implements OnInit, OnChanges {
   }
 
   // 测试任务执行
-  testTask(){
+  testTask() {
     // 打开载入效果
     this.btnShowLoading = true
     // 准备数据
-    const testData:TestTaskDataType={
-      模拟器的ip和端口:this.projectInfo.simulatorInfo?.ipPort as string,
-      项目名:this.projectInfo.name,
-      任务名:this.fileName as string
+    const testData: TestTaskDataType = {
+      模拟器的ip和端口: this.projectInfo.simulatorInfo?.ipPort as string,
+      项目名: this.projectInfo.name,
+      任务名: this.fileName as string
     }
     this.executionHttpService.postTestTaskData(
       this.projectInfo.executionSideInfo?.ipPort as string,
@@ -339,21 +339,23 @@ export class TaskTableComponent implements OnInit, OnChanges {
     })
   }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    beforeEditEnd = (rowItem: any, field: any) => {
-      if (this.isAutoSave) {
-        this.saveTaskData();
-      }
-      return true
-    };
-  
-    // 改变自动执行的状态
-    onChageAutoSave($event: any) {
-      if ($event) {
-        this.myLocalStorage.set('autoSave', '1')
-      }
-      else {
-        this.myLocalStorage.set('autoSave', '')
-      }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  beforeEditEnd = (rowItem: any, field: any) => {
+    const csvIndex = findIndex(this.csvData, (o: any) => { return o[0] === rowItem[0] })
+    this.csvData[csvIndex] = rowItem
+    if (this.isAutoSave) {
+      this.saveTaskData();
     }
+    return true
+  };
+
+  // 改变自动执行的状态
+  onChageAutoSave($event: any) {
+    if ($event) {
+      this.myLocalStorage.set('autoSave', '1')
+    }
+    else {
+      this.myLocalStorage.set('autoSave', '')
+    }
+  }
 }
