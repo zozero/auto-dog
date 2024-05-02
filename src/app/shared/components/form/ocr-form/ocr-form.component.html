@@ -1,0 +1,51 @@
+<section>
+    <form dForm [layout]="vertical" ngForm>
+        <d-form-item>
+            <d-form-label [required]="true" [hasHelp]="true" [helpTips]="'帮助.匹配.语种' | translate">
+                语种
+            </d-form-label>
+            <d-form-control>
+                <d-input-group [suffixContent]="preview">
+                    <d-select class="my-method-select-width" name="语种"   [(ngModel)]="args['语种']" [options]="defaultLanguageList" [valueParser]="parserSelectValue" [filterKey]="'名称'" [valueKey]="'编号'"></d-select>
+                </d-input-group>
+                <ng-template #preview>
+                    <d-icon [icon]="'icon-preview'" class="my-icon-preview" (click)="openPreviewImage()"></d-icon>
+                </ng-template>
+            </d-form-control>
+        </d-form-item>
+
+        <d-form-item>
+            <d-form-label [required]="true" [hasHelp]="true" [helpTips]="'帮助.匹配.文本' | translate">
+                文本
+            </d-form-label>
+            <d-form-control>
+                <input dTextInput autocomplete="off" name="文本" [(ngModel)]="args['文本']" />
+            </d-form-control>
+        </d-form-item>
+
+        <d-form-item>
+            <d-form-label [required]="true" [hasHelp]="true" [helpTips]="'帮助.匹配.范围' | translate">
+                范围
+            </d-form-label>
+            <d-form-control>
+                <input dTextInput autocomplete="off" name="范围" [(ngModel)]="args['范围']" />
+            </d-form-control>
+        </d-form-item>
+
+        <d-form-item>
+            <d-form-label [required]="true" [hasHelp]="true" [helpTips]="'帮助.匹配.最低相似度' | translate">
+                最低相似度
+            </d-form-label>
+            <d-form-control>
+                <d-input-number [max]="1.0" [min]="0.0" [step]="0.1" name="最低相似度"
+                    [(ngModel)]="args['最低相似度']"></d-input-number>
+            </d-form-control>
+        </d-form-item>
+    </form>
+</section>
+
+<!-- 图片预览，默认不显示，等到按钮触发才显示 -->
+<div dImagePreview [customSub]="customImageSub" [zIndex]="1150" [backDropZIndex]="1140" [disableDefault]="true"
+  style="display: none;">
+  <img [attr.src]="imgPreviewSrc" style="max-width: 800px" />
+</div>

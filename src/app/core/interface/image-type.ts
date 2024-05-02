@@ -36,3 +36,4 @@ export interface ScreenshotInfo{
   height:number;
   cropImageInfos:CropImageInfo[];
 }
+

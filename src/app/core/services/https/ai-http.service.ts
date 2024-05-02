@@ -84,7 +84,7 @@ export class AiHttpService {
     executionSideHttp: string,
     projectName: string,
     simulatorHttp: string,
-    className:string,
+    className: string,
     conf: number
 
   ) {
@@ -92,7 +92,7 @@ export class AiHttpService {
       params: {
         项目名: projectName,
         模拟器的ip和端口: simulatorHttp,
-        分类名:className,
+        分类名: className,
         置信度: conf
       },
       responseType: 'blob',
@@ -104,7 +104,7 @@ export class AiHttpService {
     executionSideHttp: string,
     projectName: string,
     className: string,
-    epoch:number
+    epoch: number
 
   ) {
     const headers = new HttpHeaders();
@@ -114,7 +114,26 @@ export class AiHttpService {
       params: {
         项目名: projectName,
         分类名: className,
-        轮回数:epoch
+        轮回数: epoch
+      }
+    });
+  }
+
+  // 测试光学字符识别
+  getOcrTest(
+    executionSideHttp: string,
+    simulatorHttp: string,
+    range: string,
+    language: number
+  ) {
+    const headers = new HttpHeaders();
+    headers.append('Accept', 'application/json');
+    return this.http.get(executionSideHttp + '/简单光学字符识别' + '/测试', {
+      headers: headers,
+      params: {
+        模拟器的ip和端口: simulatorHttp,
+        范围: range,
+        语种: language
       }
     });
   }

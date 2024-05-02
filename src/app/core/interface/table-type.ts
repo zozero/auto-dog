@@ -20,6 +20,12 @@ export interface BehaviorEncodeType {
   // 参数: ImageMatchMethodType | BinaryImageMatchMethodType;
 }
 
+
+export interface OcrLanguageType {
+  编号: number;
+  名称: string;
+}
+
 export interface BinaryImageMatchMethodType {
   序号?: number;
   图片名: string;
@@ -60,6 +66,14 @@ export interface YOLOMatchMethodType {
   分类: string;
   轮回数: number;
   置信度: number;
+}
+
+export interface OcrMatchMethodType {
+  序号?: number;
+  文本: string;
+  范围: string;
+  语种: number;
+  最低相似度: number;
 }
 
 export interface ImageArgType {

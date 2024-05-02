@@ -19,25 +19,27 @@ import { BinaryImageMatchFormComponent } from "../../../shared/components/form/b
 import { Subject } from 'rxjs';
 import { MatchAndMatchFormComponent } from "../../../shared/components/form/match-and-match-form/match-and-match-form.component";
 import { NoImageMatchFormComponent } from "../../../shared/components/form/no-image-match-form/no-image-match-form.component";
+import { OcrFormComponent } from "../../../shared/components/form/ocr-form/ocr-form.component";
 
 @Component({
-  selector: 'app-crop-image-upload',
-  standalone: true,
-  templateUrl: './crop-image-upload.component.html',
-  styleUrl: './crop-image-upload.component.scss',
-  imports: [
-    FormModule,
-    FormsModule,
-    SelectModule,
-    CommonModule,
-    ButtonModule,
-    TranslateModule,
-    ImageMatchFormComponent,
-    ImagePreviewModule,
-    BinaryImageMatchFormComponent,
-    MatchAndMatchFormComponent,
-    NoImageMatchFormComponent
-  ]
+    selector: 'app-crop-image-upload',
+    standalone: true,
+    templateUrl: './crop-image-upload.component.html',
+    styleUrl: './crop-image-upload.component.scss',
+    imports: [
+        FormModule,
+        FormsModule,
+        SelectModule,
+        CommonModule,
+        ButtonModule,
+        TranslateModule,
+        ImageMatchFormComponent,
+        ImagePreviewModule,
+        BinaryImageMatchFormComponent,
+        MatchAndMatchFormComponent,
+        NoImageMatchFormComponent,
+        OcrFormComponent
+    ]
 })
 export class CropImageUploadComponent implements OnInit {
   @Input() data: any;
@@ -61,6 +63,8 @@ export class CropImageUploadComponent implements OnInit {
   matchMethodList: MatchMethodType[] = cloneDeep(cropMatchMethodList);
   // 当前图片匹配方法
   currentMethod: MatchMethodType = this.matchMethodList[0]
+  // 发送给匹配方法表单的原始范围
+  rawRange: string = ''
   // 发送给匹配方法表单的范围
   range: string = '';
   // 用于显示图片预览的
@@ -221,21 +225,27 @@ export class CropImageUploadComponent implements OnInit {
     if (x1 < 0) {
       x1 = 0;
     }
+
     let y1 = Math.round(this.imageData.info.y - baseNum);
     if (y1 < 0) {
       y1 = 0;
     }
-    let x2 = x1 + Math.round(this.imageData.info.width + baseNum);
+
+    let x2 = Math.round(this.imageData.info.x  + this.imageData.info.width + baseNum);
     if (x2 > this.imageData.rowImageInfo.width) {
       x2 = this.imageData.rowImageInfo.width;
     }
-    let y2 = y1 + Math.round(this.imageData.info.height + baseNum);
+    
+    let y2 = Math.round(this.imageData.info.y + this.imageData.info.height + baseNum);
     if (y2 > this.imageData.rowImageInfo.height) {
       y2 = this.imageData.rowImageInfo.height;
     }
 
-    this.range =
-      x1 + ' ' + y1 + ' ' + x2 + ' ' + y2;
+    this.range = x1 + ' ' + y1 + ' ' + x2 + ' ' + y2;
+    this.rawRange = String(Math.round(this.imageData.info.x))+ ' ';
+    this.rawRange=this.rawRange+String(Math.round(this.imageData.info.y))+ ' '
+    this.rawRange=this.rawRange+String(Math.round(this.imageData.info.x + this.imageData.info.width))+ ' '
+    this.rawRange=this.rawRange+String(Math.round(this.imageData.info.y + this.imageData.info.height))
   }
 
   // 计算图片中心坐标

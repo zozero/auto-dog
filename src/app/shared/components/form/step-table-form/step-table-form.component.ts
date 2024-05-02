@@ -171,7 +171,9 @@ export class StepTableFormComponent {
       }
     })
   }
-  selectValueParser(data:MatchMethodType){
+  
+  // 解析选择框的值
+  parserSelectValue(data:MatchMethodType){
     if(data.名称===undefined){
       return ''
     }else{

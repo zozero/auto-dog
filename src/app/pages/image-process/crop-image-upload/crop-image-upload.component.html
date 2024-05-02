@@ -13,9 +13,9 @@
     <app-image-match-form #imageMatchForm *ngSwitchCase="'图片匹配'" [range]="range"></app-image-match-form>
     <app-binary-image-match-form #binaryImageMatchForm *ngSwitchCase="'二值图片匹配'" [range]="range"
       (previewImage)="onPreviewImage($event)"></app-binary-image-match-form>
-    
-      <app-no-image-match-form #noImageMatchForm *ngSwitchCase="'无图匹配'" [coordinate]="coordinate"></app-no-image-match-form>
-  </container-element>
+    <app-no-image-match-form #noImageMatchForm *ngSwitchCase="'无图匹配'" [coordinate]="coordinate"></app-no-image-match-form>
+    <app-ocr-form #ocrForm *ngSwitchCase="'光学字符识别'" [range]="rawRange" [projectInfo]="projectInfo"></app-ocr-form>
+    </container-element>
 
   <div class="modal-footer">
     <d-button (click)="submit()" bsStyle="primary" circled="true">提交</d-button>
