@@ -15,27 +15,27 @@ import { Subject } from 'rxjs';
 import { TextSelectModalComponent } from "./text-select-modal/text-select-modal.component";
 
 @Component({
-    selector: 'app-ocr-form',
-    standalone: true,
-    templateUrl: './ocr-form.component.html',
-    styleUrl: './ocr-form.component.scss',
-    imports: [
-        CommonModule,
-        FormModule,
-        FormsModule,
-        SelectModule,
-        InputNumberModule,
-        TranslateModule,
-        IconModule,
-        ImagePreviewModule,
-        InputGroupModule,
-        TextSelectModalComponent
-    ]
+  selector: 'app-ocr-form',
+  standalone: true,
+  templateUrl: './ocr-form.component.html',
+  styleUrl: './ocr-form.component.scss',
+  imports: [
+    CommonModule,
+    FormModule,
+    FormsModule,
+    SelectModule,
+    InputNumberModule,
+    TranslateModule,
+    IconModule,
+    ImagePreviewModule,
+    InputGroupModule,
+    TextSelectModalComponent
+  ]
 })
 export class OcrFormComponent implements OnInit {
   @Input() range!: string;
   @Input() projectInfo!: ProjectInfo;
-  
+
   @ViewChild('textSelectModal', { static: true }) textSelectModalRef!: TemplateRef<any>;
   // 默认的语种列表
   defaultLanguageList: OcrLanguageType[] = cloneDeep(defaultLanguages);
@@ -48,7 +48,7 @@ export class OcrFormComponent implements OnInit {
   // 用于预览识别结果图片
   imgPreviewSrc: string = '';
   // 光学字符识别测试返回的数据
-  data:any;
+  data: any;
   // 用于重新打开，无需再次发送请求
   // textSelectModal:any='';
 
@@ -68,8 +68,7 @@ export class OcrFormComponent implements OnInit {
 
   // 打开预览
   openPreviewImage() {
-    const loadResult=this.loadingService.open()
-    console.log('this.args', this.args)
+    const loadResult = this.loadingService.open()
     this.aiHttpService.getOcrTest(
       this.projectInfo.executionSideInfo?.ipPort as string,
       this.projectInfo.simulatorInfo?.ipPort as string,
@@ -77,9 +76,9 @@ export class OcrFormComponent implements OnInit {
       this.args['语种']
     ).subscribe({
       next: (data: any) => {
-        this.imgPreviewSrc = 'data:image/jpeg;base64,'+data[0];
-        data[0]=this.imgPreviewSrc;
-        this.data=data;
+        this.imgPreviewSrc = 'data:image/jpeg;base64,' + data[0];
+        data[0] = this.imgPreviewSrc;
+        this.data = data;
         // this.customImageSub.next(this.elementRef.nativeElement.querySelector('img'));
         this.openTextSelectModal();
         this.toastService.open({
@@ -121,8 +120,9 @@ export class OcrFormComponent implements OnInit {
   }
 
   // 接收选中的数据用于自动填充。
-  recvSelectData($event:[[],string,number]){
-    this.args['文本']=$event[1]
-    this.args['最低相似度']=parseFloat(($event[2]-0.1).toFixed(2))
+  recvSelectData($event: [[], string, number]) {
+    this.args['图片名'] = $event[1] + '文字识别';
+    this.args['文本'] = $event[1];
+    this.args['最低相似度'] = parseFloat(($event[2] - 0.1).toFixed(2))
   }
 }

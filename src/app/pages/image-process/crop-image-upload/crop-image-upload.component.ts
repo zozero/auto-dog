@@ -6,7 +6,7 @@ import { cropMatchMethodList } from '../../../core/mock/match-mock';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'ng-devui/button';
 import { cloneDeep } from 'lodash-es';
-import { BinaryImageMatchMethodType, ImageMatchMethodType, MatchMethodType, NoImageMatchMethodType } from '../../../core/interface/table-type';
+import { BinaryImageMatchMethodType, ImageMatchMethodType, MatchMethodType, NoImageMatchMethodType, OcrMatchMethodType } from '../../../core/interface/table-type';
 import { ProjectInfo } from '../../../core/interface/config-type';
 import { CropImageInfo } from '../../../core/interface/image-type';
 import { ImageMatchFormComponent } from "../../../shared/components/form/image-match-form/image-match-form.component";
@@ -49,8 +49,10 @@ export class CropImageUploadComponent implements OnInit {
   @ViewChild('binaryImageMatchForm') public binaryImageMatchForm!: BinaryImageMatchFormComponent;
   // 无图匹配的表单视图
   @ViewChild('noImageMatchForm') public noImageMatchForm!: NoImageMatchFormComponent;
+  // 无图匹配的表单视图
+  @ViewChild('ocrForm') public ocrForm!: OcrFormComponent;
   // 用于获取当前匹配方法的参数
-  currentArgs!: ImageMatchMethodType | BinaryImageMatchMethodType | NoImageMatchMethodType;
+  currentArgs!: ImageMatchMethodType | BinaryImageMatchMethodType | NoImageMatchMethodType|OcrMatchMethodType;
   // 裁剪的图片信息
   imageData!: CropImageInfo;
   // 项目信息
@@ -116,6 +118,12 @@ export class CropImageUploadComponent implements OnInit {
       case '无图匹配': {
         this.currentArgs = this.noImageMatchForm.args;
 
+        this.uploadImage();
+        this.addCsvData();
+        break
+      }
+      case '光学字符识别': {
+        this.currentArgs =this.ocrForm.args;
         this.uploadImage();
         this.addCsvData();
         break

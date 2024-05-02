@@ -70,6 +70,7 @@ export interface YOLOMatchMethodType {
 
 export interface OcrMatchMethodType {
   序号?: number;
+  图片名: string;
   文本: string;
   范围: string;
   语种: number;

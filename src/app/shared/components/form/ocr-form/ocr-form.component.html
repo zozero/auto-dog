@@ -15,6 +15,15 @@
         </d-form-item>
 
         <d-form-item>
+            <d-form-label [required]="true" [hasHelp]="true" [helpTips]="'帮助.匹配.图片名' | translate">
+                图片名
+            </d-form-label>
+            <d-form-control>
+                <input dTextInput autocomplete="off" name="图片名" [(ngModel)]="args['图片名']" />
+            </d-form-control>
+        </d-form-item>
+
+        <d-form-item>
             <d-form-label [required]="true" [hasHelp]="true" [helpTips]="'帮助.匹配.文本' | translate">
                 文本
             </d-form-label>

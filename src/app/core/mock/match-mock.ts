@@ -57,13 +57,12 @@ export const defaulYoloMatchMethodArgs: YOLOMatchMethodType = {
 
 
 export const defaulOcrMethodArgs: OcrMatchMethodType = {
+  图片名: '',
   文本: '',
   范围: '0 0 1.0 1.0',
   语种: 0,
   最低相似度: 0.1
 };
-
-
 
 // 参数无法对应，所以需要额外增加列表
 export const matchMethodTotalList: MatchMethodType[] = [
@@ -90,6 +89,10 @@ export const matchMethodTotalList: MatchMethodType[] = [
   {
     编码: 'F',
     名称: '你只看一次',
+  },
+  {
+    编码: 'G',
+    名称: '光学字符识别',
   },
 ];
 

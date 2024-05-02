@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BinaryImageMatchMethodType, ImageMatchMethodType, MatchAndMatchMethodType, MultiImageMatchMethodType, NoImageMatchMethodType, StepTableType, TaskTableType, YOLOMatchMethodType } from '../../interface/table-type';
+import { BinaryImageMatchMethodType, ImageMatchMethodType, MatchAndMatchMethodType, MultiImageMatchMethodType, NoImageMatchMethodType, OcrMatchMethodType, StepTableType, TaskTableType, YOLOMatchMethodType } from '../../interface/table-type';
 @Injectable({
   providedIn: 'root',
 })
@@ -58,7 +58,7 @@ export class TableHttpService {
     executionSideUrl: string,
     projectName: string,
     methodName: string,
-    imageArgs: ImageMatchMethodType | BinaryImageMatchMethodType | MatchAndMatchMethodType | NoImageMatchMethodType | MultiImageMatchMethodType | YOLOMatchMethodType,
+    imageArgs: ImageMatchMethodType | BinaryImageMatchMethodType | MatchAndMatchMethodType | NoImageMatchMethodType | MultiImageMatchMethodType | YOLOMatchMethodType|OcrMatchMethodType,
   ) {
 
     const headers = new HttpHeaders();
