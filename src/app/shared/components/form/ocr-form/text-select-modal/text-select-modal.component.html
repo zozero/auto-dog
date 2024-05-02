@@ -1,0 +1,14 @@
+<d-card class="card-container">
+    <img dCardMeta [src]="data[0]" />
+    <d-card-content>
+        <div>
+            <div class="title">结果列表（点击选中后关闭）</div>
+            <ul class="menu">
+                <li class="menu-item" (click)="close(item)" *ngFor="let item of data[1]">
+                    <span class="item-title">{{item[1]}}</span>
+                    <d-badge [count]="item[2]" status="common"> </d-badge>
+                </li>
+            </ul>
+        </div>
+    </d-card-content>
+</d-card>

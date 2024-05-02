@@ -45,7 +45,11 @@
 </section>
 
 <!-- 图片预览，默认不显示，等到按钮触发才显示 -->
-<div dImagePreview [customSub]="customImageSub" [zIndex]="1150" [backDropZIndex]="1140" [disableDefault]="true"
+<!-- <div dImagePreview [customSub]="customImageSub" [zIndex]="1150" [backDropZIndex]="1140" [disableDefault]="true"
   style="display: none;">
   <img [attr.src]="imgPreviewSrc" style="max-width: 800px" />
-</div>
+</div> -->
+
+<ng-template #textSelectModal let-modalInstance="modalInstance">
+    <app-text-select-modal [data]="data" [modalInstance]="modalInstance" (emitSelectData)="recvSelectData($event)"></app-text-select-modal>
+</ng-template>
