@@ -7,7 +7,7 @@ import { InputGroupModule } from 'ng-devui/input-group';
 import { TableHttpService } from '../../../core/services/https/table-http.service';
 import { Papa, ParseResult } from 'ngx-papaparse';
 import { TipsDialogService } from '../../../core/services/tips-dialog/tips-dialog.service';
-import { filter, orderBy } from 'lodash-es';
+import { cloneDeep, filter, findIndex, orderBy } from 'lodash-es';
 import { defaultEncode } from '../../../core/mock/app-mock';
 import { TaskTableFormComponent } from "../../../shared/components/form/task-table-form/task-table-form.component";
 import { DownloadFileService } from '../../../core/services/https/download-file.service';
@@ -103,7 +103,7 @@ export class TaskTableComponent implements OnInit, OnChanges {
               this.csvData = arr;
               // 删除掉最后一行的空数据
               this.csvData.pop();
-              this.csvFilterList = this.csvData;
+              this.csvFilterList = cloneDeep(this.csvData);
               // 设置筛选数据
               this.setOrdinalFilterList();
               this.setImgNameFilterList();
@@ -232,14 +232,14 @@ export class TaskTableComponent implements OnInit, OnChanges {
 
     }
     else {
-      this.csvFilterList = this.csvData
+      this.csvFilterList = cloneDeep(this.csvData)
     }
   }
 
   // 多选过滤改变
   filterChangeMutil($event: FilterConfig[], key: number) {
     if ($event.length === this.csvData.length) {
-      this.csvFilterList = this.csvData
+      this.csvFilterList = cloneDeep(this.csvData)
     }
     else {
       // eslint-disable-next-line prefer-const
@@ -255,7 +255,7 @@ export class TaskTableComponent implements OnInit, OnChanges {
         })
       })
 
-      this.csvFilterList = dataList
+      this.csvFilterList = cloneDeep(dataList)
     }
 
   }
@@ -269,7 +269,7 @@ export class TaskTableComponent implements OnInit, OnChanges {
       模拟器的ip和端口: this.projectInfo.simulatorInfo?.ipPort as string,
       项目名: this.projectInfo.name,
       名称: this.csvData[index][1],
-      编号: parseInt(this.csvData[index][2])
+      编号: parseInt(this.csvFilterList[index][2])
     }
     this.executionHttpService.postTestStepData(
       this.projectInfo.executionSideInfo?.ipPort as string,
@@ -295,7 +295,9 @@ export class TaskTableComponent implements OnInit, OnChanges {
   
   // 删除数据
   deleteData(index: number) {
-    this.csvData.splice(index, 1);
+    const csvIndex = findIndex(this.csvData, (o: any) => { return o[0] === this.csvFilterList[index][0] })
+    this.csvFilterList.splice(index, 1);
+    this.csvData.splice(csvIndex, 1);
     this.saveTaskData()
 
   }

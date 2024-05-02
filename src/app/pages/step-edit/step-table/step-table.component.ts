@@ -6,7 +6,7 @@ import { DevUIModule, LoadingService, LoadingType, ToastService } from 'ng-devui
 import { TableHttpService } from '../../../core/services/https/table-http.service';
 import { Papa, ParseResult } from 'ngx-papaparse';
 import { CommonModule } from '@angular/common';
-import { filter, orderBy } from 'lodash-es';
+import { cloneDeep, filter, findIndex, orderBy } from 'lodash-es';
 import { ProjectInfo } from '../../../core/interface/config-type';
 import { defaultEncode } from '../../../core/mock/app-mock';
 import { DialogService, ModalModule } from 'ng-devui/modal';
@@ -77,7 +77,7 @@ export class StepTableComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     // console.log("StepTableComponent");
     const tmpStr: string | null = this.myLocalStorage.get('autoExe');
-    if (tmpStr !=null) {
+    if (tmpStr != null) {
       this.isAutoExe = Boolean(tmpStr);
     }
     const tmpStr2: string | null = this.myLocalStorage.get('autoSave');
@@ -85,7 +85,7 @@ export class StepTableComponent implements OnInit, OnChanges {
       this.isAutoSave = Boolean(tmpStr2);
     }
   }
-  
+
   ngOnChanges(changes: SimpleChanges) {
     if ('projectInfo' in changes || 'fileName' in changes) {
       this.getcsvFile();
@@ -113,7 +113,7 @@ export class StepTableComponent implements OnInit, OnChanges {
               this.csvData = arr;
               // 删除掉最后一行的空数据
               this.csvData.pop();
-              this.csvFilterList = this.csvData;
+              this.csvFilterList = cloneDeep(this.csvData);
               // 设置筛选数据
               this.setOrdinalFilterList();
               this.setImgNameFilterList();
@@ -237,22 +237,22 @@ export class StepTableComponent implements OnInit, OnChanges {
     if (event.direction === SortDirection.ASC) {
       // 转成数字才能按照数字排序
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      this.csvFilterList = orderBy(this.csvFilterList, [(data:any) => parseInt(data[field])], ['asc'])
+      this.csvFilterList = orderBy(this.csvFilterList, [(data: any) => parseInt(data[field])], ['asc'])
 
     } else if (event.direction === SortDirection.DESC) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      this.csvFilterList = orderBy(this.csvFilterList, [(data:any) => parseInt(data[field])], ['desc'])
+      this.csvFilterList = orderBy(this.csvFilterList, [(data: any) => parseInt(data[field])], ['desc'])
 
     }
     else {
-      this.csvFilterList = this.csvData
+      this.csvFilterList = cloneDeep(this.csvData)
     }
   }
 
   // 多选过滤改变
   filterChangeMutil($event: FilterConfig[], key: number) {
     if ($event.length === this.csvData.length) {
-      this.csvFilterList = this.csvData
+      this.csvFilterList = cloneDeep(this.csvData)
     }
     else {
       // eslint-disable-next-line prefer-const
@@ -268,7 +268,7 @@ export class StepTableComponent implements OnInit, OnChanges {
         })
       })
 
-      this.csvFilterList = dataList
+      this.csvFilterList = cloneDeep(dataList)
     }
 
   }
@@ -282,7 +282,7 @@ export class StepTableComponent implements OnInit, OnChanges {
       模拟器的ip和端口: this.projectInfo.simulatorInfo?.ipPort as string,
       项目名: this.projectInfo.name,
       名称: this.fileName as string,
-      编号: parseInt(this.csvData[index][0])
+      编号: parseInt(this.csvFilterList[index][0])
     }
     this.executionHttpService.postTestStepData(
       this.projectInfo.executionSideInfo?.ipPort as string,
@@ -307,7 +307,9 @@ export class StepTableComponent implements OnInit, OnChanges {
 
   // 删除数据
   deleteData(index: number) {
-    this.csvData.splice(index, 1);
+    const csvIndex = findIndex(this.csvData, (o: any) => { return o[0] === this.csvFilterList[index][0] })
+    this.csvFilterList.splice(index, 1);
+    this.csvData.splice(csvIndex, 1);
     this.saveStepData()
   }
 
@@ -316,30 +318,30 @@ export class StepTableComponent implements OnInit, OnChanges {
     const csvUrl = this.projectInfo.executionSideInfo?.ipPort + '/步骤' + '/表格?' + '项目名=' + this.projectInfo.name + '&文件名=' + this.fileName
     this.downloadFileService.exportCsvFile(csvUrl);
   }
-  
+
   // 改变自动执行的状态
   onChageAutoExe($event: any) {
-    if($event){
+    if ($event) {
       this.myLocalStorage.set('autoExe', '1')
     }
-    else{
+    else {
       this.myLocalStorage.set('autoExe', '')
     }
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   beforeEditEnd = (rowItem: any, field: any) => {
-    if(this.isAutoSave){
+    if (this.isAutoSave) {
       this.saveStepData();
     }
     return true
   };
-    // 改变自动执行的状态
-    onChageAutoSave($event: any) {
-      if ($event) {
-        this.myLocalStorage.set('autoSave', '1')
-      }
-      else {
-        this.myLocalStorage.set('autoSave', '')
-      }
+  // 改变自动执行的状态
+  onChageAutoSave($event: any) {
+    if ($event) {
+      this.myLocalStorage.set('autoSave', '1')
     }
+    else {
+      this.myLocalStorage.set('autoSave', '')
+    }
+  }
 }

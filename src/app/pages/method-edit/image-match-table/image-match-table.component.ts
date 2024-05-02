@@ -10,7 +10,7 @@ import { ProjectInfo } from '../../../core/interface/config-type';
 import { defaultEncode } from '../../../core/mock/app-mock';
 import { ModalModule } from 'ng-devui/modal';
 import { TipsDialogService } from '../../../core/services/tips-dialog/tips-dialog.service';
-import { filter, orderBy } from 'lodash-es';
+import { cloneDeep, filter, findIndex, orderBy } from 'lodash-es';
 import { DownloadFileService } from '../../../core/services/https/download-file.service';
 import { Subject } from 'rxjs';
 import { ImagePreviewModule } from 'ng-devui/image-preview';
@@ -107,7 +107,7 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
               this.csvData = arr;
               // 删除掉最后一行的空数据
               this.csvData.pop();
-              this.csvFilterList = this.csvData;
+              this.csvFilterList = cloneDeep(this.csvData);
               // 设置筛选数据
               this.setOrdinalFilterList();
               this.setImgNameFilterList();
@@ -219,14 +219,14 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
 
     }
     else {
-      this.csvFilterList = this.csvData
+      this.csvFilterList = cloneDeep(this.csvData)
     }
   }
 
   // 多选过滤改变
   filterChangeMutil($event: FilterConfig[], key: number) {
     if ($event.length === this.csvData.length) {
-      this.csvFilterList = this.csvData
+      this.csvFilterList = cloneDeep(this.csvData)
     }
     else {
       // eslint-disable-next-line prefer-const
@@ -242,13 +242,15 @@ export class ImageMatchTableComponent implements OnInit, OnChanges {
         })
       })
 
-      this.csvFilterList = dataList
+      this.csvFilterList = cloneDeep(dataList)
     }
 
   }
   // 删除数据
   deleteData(index: number) {
-    this.csvData.splice(index, 1);
+    const csvIndex = findIndex(this.csvData, (o: any) => { return o[0] === this.csvFilterList[index][0] })
+    this.csvFilterList.splice(index, 1);
+    this.csvData.splice(csvIndex, 1);
     this.putCsvFile()
 
   }
