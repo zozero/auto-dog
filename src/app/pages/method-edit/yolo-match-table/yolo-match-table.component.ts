@@ -26,7 +26,6 @@ import { selectProjectById } from '../../../store/project/project.selectors';
   selector: 'app-yolo-match-table',
   standalone: true,
   imports: [
-
     DataTableModule,
     FormsModule,
     InputGroupModule,
@@ -63,7 +62,7 @@ export class YoloMatchTableComponent implements OnInit, OnChanges {
   // 它就是子菜单
   @Input() projectInfo!: ProjectInfo;
   // 方法的类型
-  @Input() methodType: string | number = '多图匹配';
+  @Input() methodType: string | number = '你只看一次';
   editableTip = EditableTip.hover;
   // 用于显示图片预览的
   customImageSub = new Subject<HTMLElement>();
